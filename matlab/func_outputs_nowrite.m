@@ -97,9 +97,10 @@ function outputs = func_outputs_nowrite(inputs_rod, varargin)
 
         catch ME
             outputs(i) = Inf;
+            error_report = getReport(ME, 'extended', 'hyperlinks', 'off');
             disp([num2str(i), ': beam calculation failed']);
-            disp(ME.message);
-            local_append_beam_history(rod_i, Inf, history_seq, NaN, false, ME.message, history_log_path);
+            disp(error_report);
+            local_append_beam_history(rod_i, Inf, history_seq, NaN, false, error_report, history_log_path);
         end
     end
 end
@@ -175,7 +176,9 @@ function local_apply_rod_params_mptest(model, rod_params)
             '当前可用编号为: %s。'], mat2str(missing), mat2str(sort(available_indices)));
     end
     for j = available_indices
-        feature_collection.feature(sprintf('r%d', j)).active(j <= num_bars);
+        feat_name = sprintf('r%d', j);
+        model.component('comp1').geom('geom1').feature('wp4') ...
+            .geom.feature(feat_name).active(j <= num_bars);
     end
     for j = 1:num_bars
         feat_name = sprintf('r%d', j);
