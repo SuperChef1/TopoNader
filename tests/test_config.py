@@ -15,7 +15,9 @@ class TopoNaderConfigTests(unittest.TestCase):
         config = load_config(path)
         self.assertFalse(config.method.architecture_adaptation)
         self.assertFalse(config.method.uncertainty_sampling)
-        self.assertEqual(config.optimization.fe_batch_size, 10)
+        self.assertEqual(config.optimization.fe_batch_size, 20)
+        self.assertEqual(config.optimization.exploitation_count, 10)
+        self.assertEqual(config.optimization.exploration_count, 10)
 
     def test_resolved_config_cli_includes_default_paths(self):
         path = Path(__file__).parents[1] / "configs" / "smoke.json"

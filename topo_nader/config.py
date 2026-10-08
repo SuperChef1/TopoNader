@@ -63,9 +63,9 @@ class TopoNaderOptimizationConfig:
     mutation_rate: float = 0.1
     stall_limit: int = 15
     candidate_pool_size: int = 100
-    fe_batch_size: int = 10
-    exploitation_count: int = 5
-    exploration_count: int = 5
+    fe_batch_size: int = 20
+    exploitation_count: int = 10
+    exploration_count: int = 10
     coverage: TopoNaderCoverageConfig = field(default_factory=TopoNaderCoverageConfig)
     grid_nx: int = 55
     grid_ny: int = 90
