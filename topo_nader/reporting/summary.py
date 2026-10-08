@@ -72,6 +72,10 @@ class TopoNaderRunReporter:
             "provisional_architecture_id",
             "inherited_architecture_id",
             "next_audit_due",
+            "coverage_actual_min",
+            "coverage_actual_max",
+            "coverage_actual_mean",
+            "coverage_actual_std",
         ]
         csv_temp = tempfile.NamedTemporaryFile(
             mode="w", encoding="utf-8-sig", newline="", delete=False, dir=self.run_dir, suffix=".tmp"
@@ -103,6 +107,17 @@ class TopoNaderRunReporter:
                     if float(row["best_performance_so_far"]) >= self.target_performance:
                         calls_to_target = calls_so_far
                         break
+        coverage_count = sum(int(row.get("coverage_actual_count", 0)) for row in rows)
+        coverage_sum = sum(float(row.get("coverage_actual_sum", 0.0)) for row in rows)
+        coverage_sum_squares = sum(float(row.get("coverage_actual_sum_squares", 0.0)) for row in rows)
+        coverage_mean = coverage_sum / coverage_count if coverage_count else None
+        coverage_variance = (
+            max(0.0, coverage_sum_squares / coverage_count - coverage_mean**2)
+            if coverage_count
+            else None
+        )
+        coverage_mins = [row.get("coverage_actual_min") for row in rows if row.get("coverage_actual_min") is not None]
+        coverage_maxes = [row.get("coverage_actual_max") for row in rows if row.get("coverage_actual_max") is not None]
         summary = {
             "iterations_completed": len(rows),
             "last_iteration": int(rows[-1]["iteration"]),
@@ -118,6 +133,10 @@ class TopoNaderRunReporter:
             "target_performance": self.target_performance,
             "target_reached": calls_to_target is not None,
             "fe_calls_to_target_upper_bound": calls_to_target,
+            "coverage_actual_min": min(coverage_mins) if coverage_mins else None,
+            "coverage_actual_max": max(coverage_maxes) if coverage_maxes else None,
+            "coverage_actual_mean": coverage_mean,
+            "coverage_actual_std": coverage_variance**0.5 if coverage_variance is not None else None,
         }
         write_json_atomic(self.run_dir / "summary.json", summary)
         return summary

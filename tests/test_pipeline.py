@@ -11,6 +11,7 @@ from topo_nader.config import (
     TopoNaderAgentConfig,
     TopoNaderArchitectureConfig,
     TopoNaderConfig,
+    TopoNaderCoverageConfig,
     TopoNaderDataConfig,
     TopoNaderMethodConfig,
     TopoNaderOptimizationConfig,
@@ -51,7 +52,7 @@ class TopoNaderPipelineTests(unittest.TestCase):
                 fe_batch_size=2,
                 exploitation_count=1,
                 exploration_count=1,
-                ratio_target=1.0,
+                coverage=TopoNaderCoverageConfig(upper_bound=1.0, upper_tolerance=0.0),
             ),
             method=TopoNaderMethodConfig(
                 architecture_adaptation=False,
@@ -75,7 +76,7 @@ class TopoNaderPipelineTests(unittest.TestCase):
             model, transform, _ = load_toponader_checkpoint(checkpoint)
             predictor = TopoNaderDeterministicPredictor(model, transform)
             exact, _ = predictor.predict(
-                engine.geometry.normalize(request["inputs"]).reshape(-1, 16)
+                engine.geometry.normalize(request["inputs"]).reshape(-1, engine.geometry.input_dim)
             )
             np.testing.assert_allclose(request["predicted_mean"].reshape(-1), exact, rtol=1e-6)
             result_path = root / "result.mat"
@@ -132,7 +133,7 @@ class TopoNaderPipelineTests(unittest.TestCase):
                 fe_batch_size=2,
                 exploitation_count=1,
                 exploration_count=1,
-                ratio_target=1.0,
+                coverage=TopoNaderCoverageConfig(upper_bound=1.0, upper_tolerance=0.0),
             ),
             architecture=TopoNaderArchitectureConfig(
                 candidate_count=1,
@@ -157,6 +158,67 @@ class TopoNaderPipelineTests(unittest.TestCase):
         self.assertTrue(client.saw_parent_training)
         self.assertEqual(trace["accepted_candidate_count"], 1)
         self.assertIn("validation", trace["parent_diagnostics"])
+
+    def test_six_bar_prepare_uses_24_input_dimensions(self):
+        config = TopoNaderConfig(
+            experiment_name="six-bar-test",
+            data=TopoNaderDataConfig(
+                num_bars=6,
+                validation_fraction=0.25,
+                output_log10=False,
+            ),
+            training=TopoNaderTrainingConfig(
+                epochs=1, quick_epochs=1, batch_size=8, patience=1, device="cpu"
+            ),
+            uncertainty=TopoNaderUncertaintyConfig(mc_samples=2),
+            optimization=TopoNaderOptimizationConfig(
+                particles=5,
+                iterations=1,
+                candidate_pool_size=8,
+                fe_batch_size=2,
+                exploitation_count=2,
+                exploration_count=0,
+                coverage=TopoNaderCoverageConfig(upper_bound_enabled=False),
+            ),
+            method=TopoNaderMethodConfig(
+                architecture_adaptation=False,
+                uncertainty_sampling=False,
+                diversity_sampling=True,
+            ),
+            agents=TopoNaderAgentConfig(enabled=False),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            engine = TinyTopoNaderEngine(config, Path(__file__).parents[1])
+            normalized = np.random.default_rng(9).random((12, 6, 4))
+            designs = engine.geometry.denormalize(normalized)
+            dataset_path = root / "initial.mat"
+            savemat(dataset_path, {"inputs": designs, "outputs": np.linspace(1.0, 2.0, 12)})
+            request_path = engine.prepare_iteration(root / "run", dataset_path, 1)
+            request = loadmat(request_path)
+            architecture = json.loads(
+                (root / "run" / "state" / "current_architecture.json").read_text()
+            )
+        self.assertEqual(request["inputs"].shape[1:], (6, 4))
+        self.assertEqual(int(request["num_bars"][0, 0]), 6)
+        self.assertEqual(architecture["input_dim"], 24)
+
+    def test_existing_experiment_rejects_changed_configuration(self):
+        base = TopoNaderConfig(
+            experiment_name="config-lock-test",
+            random_seed=10,
+            agents=TopoNaderAgentConfig(enabled=False),
+        )
+        changed = TopoNaderConfig(
+            experiment_name="config-lock-test",
+            random_seed=11,
+            agents=TopoNaderAgentConfig(enabled=False),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory) / "run"
+            TinyTopoNaderEngine(base, Path(__file__).parents[1]).initialize_run(run)
+            with self.assertRaisesRegex(ValueError, "different configuration"):
+                TinyTopoNaderEngine(changed, Path(__file__).parents[1]).initialize_run(run)
 
 
 if __name__ == "__main__":

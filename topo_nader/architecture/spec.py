@@ -28,7 +28,11 @@ class TopoNaderArchitectureSpec:
 
     @property
     def architecture_id(self) -> str:
-        body = json.dumps(self.to_dict(include_metadata=False), sort_keys=True, separators=(",", ":"))
+        canonical = self.to_dict(include_metadata=False)
+        if self.predictor_type == "mlp":
+            canonical.pop("predictor_depth", None)
+            canonical.pop("attention_heads", None)
+        body = json.dumps(canonical, sort_keys=True, separators=(",", ":"))
         return "toponader-" + hashlib.sha256(body.encode("utf-8")).hexdigest()[:12]
 
     def to_dict(self, include_metadata: bool = True) -> dict[str, Any]:

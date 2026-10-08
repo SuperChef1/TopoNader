@@ -24,7 +24,24 @@ class TopoNaderArchitectureTests(unittest.TestCase):
         report = TopoNaderArchitectureValidator(TopoNaderArchitectureConfig()).validate(spec)
         self.assertFalse(report.valid)
 
+    def test_equivalent_mlp_ignores_transformer_only_identity_fields(self):
+        left = TopoNaderArchitectureSpec(
+            predictor_type="mlp", predictor_depth=1, attention_heads=1
+        )
+        right = TopoNaderArchitectureSpec(
+            predictor_type="mlp", predictor_depth=7, attention_heads=8
+        )
+        self.assertEqual(left.architecture_id, right.architecture_id)
+
+    def test_transformer_supports_variable_bar_count(self):
+        spec = TopoNaderArchitectureSpec(input_dim=24, latent_dim=10)
+        report = TopoNaderArchitectureValidator(
+            TopoNaderArchitectureConfig(), expected_input_dim=24
+        ).validate(spec)
+        self.assertTrue(report.valid, report.errors)
+        output = TopoNaderModelFactory.build(spec)(torch.zeros(3, 24))
+        self.assertEqual(tuple(output.shape), (3, 1))
+
 
 if __name__ == "__main__":
     unittest.main()
-

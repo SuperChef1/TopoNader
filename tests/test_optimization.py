@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from topo_nader.config import TopoNaderOptimizationConfig
+from topo_nader.config import TopoNaderCoverageConfig, TopoNaderOptimizationConfig
 from topo_nader.optimization import (
     TopoNaderGeometry,
     TopoNaderPSO,
@@ -15,7 +15,7 @@ class TopoNaderOptimizationTests(unittest.TestCase):
     def test_pso_maximizes_objective(self):
         target = np.full(16, 0.75)
         pso = TopoNaderPSO(particles=20, iterations=20, seed=7)
-        result = pso.optimize(lambda x: -np.sum((x - target) ** 2, axis=1))
+        result = pso.optimize(lambda x: -np.sum((x - target) ** 2, axis=1), dimensions=16)
         self.assertGreater(float(np.max(result.scores)), -1.0)
 
     def test_active_batch_contains_exploitation_and_exploration(self):
@@ -23,7 +23,7 @@ class TopoNaderOptimizationTests(unittest.TestCase):
             fe_batch_size=4,
             exploitation_count=2,
             exploration_count=2,
-            ratio_target=1.0,
+            coverage=TopoNaderCoverageConfig(upper_bound=1.0, upper_tolerance=0.0),
         )
         geometry = TopoNaderGeometry(config)
         rng = np.random.default_rng(4)
@@ -40,7 +40,7 @@ class TopoNaderOptimizationTests(unittest.TestCase):
             fe_batch_size=2,
             exploitation_count=1,
             exploration_count=1,
-            ratio_target=1.0,
+            coverage=TopoNaderCoverageConfig(upper_bound=1.0, upper_tolerance=0.0),
         )
         geometry = TopoNaderGeometry(config)
         pool = np.full((4, 16), 0.5137)
@@ -69,7 +69,7 @@ class TopoNaderOptimizationTests(unittest.TestCase):
             fe_batch_size=2,
             exploitation_count=1,
             exploration_count=1,
-            ratio_target=1.0,
+            coverage=TopoNaderCoverageConfig(upper_bound=1.0, upper_tolerance=0.0),
         )
         geometry = TopoNaderGeometry(config)
         pool = np.full((5, 16), 0.35)
@@ -89,6 +89,45 @@ class TopoNaderOptimizationTests(unittest.TestCase):
         )
         self.assertEqual(batch.designs.shape[0], 2)
         self.assertFalse(any(np.array_equal(design, historical[0]) for design in batch.designs))
+
+    def test_geometry_supports_six_bars(self):
+        config = TopoNaderOptimizationConfig(
+            coverage=TopoNaderCoverageConfig(upper_bound_enabled=False)
+        )
+        geometry = TopoNaderGeometry(config, num_bars=6)
+        normalized = np.full((3, 24), 0.5)
+        designs = geometry.denormalize(normalized)
+        self.assertEqual(designs.shape, (3, 6, 4))
+        self.assertEqual(geometry.normalize(designs).reshape(3, -1).shape, (3, 24))
+
+    def test_disabled_lower_bound_accepts_low_coverage(self):
+        config = TopoNaderOptimizationConfig(
+            coverage=TopoNaderCoverageConfig(
+                upper_bound_enabled=False,
+                lower_bound_enabled=False,
+            )
+        )
+        geometry = TopoNaderGeometry(config, num_bars=2)
+        design = geometry.lower.copy()
+        result = geometry.finalize(design)
+        self.assertTrue(result.valid)
+
+    def test_enabled_coverage_bounds_repair_widths(self):
+        config = TopoNaderOptimizationConfig(
+            coverage=TopoNaderCoverageConfig(
+                upper_bound_enabled=True,
+                upper_bound=0.20,
+                upper_tolerance=0.01,
+                lower_bound_enabled=True,
+                lower_bound=0.10,
+            )
+        )
+        geometry = TopoNaderGeometry(config, num_bars=4)
+        design = geometry.upper.copy()
+        result = geometry.finalize(design)
+        self.assertTrue(result.valid, result.reason)
+        self.assertGreaterEqual(result.coverage_ratio, 0.10)
+        self.assertLessEqual(result.coverage_ratio, 0.21)
 
 
 if __name__ == "__main__":

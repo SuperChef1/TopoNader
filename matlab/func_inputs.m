@@ -1,14 +1,20 @@
-function inputs = func_inputs(n, coordx, coordy, r)
+function inputs = func_inputs(n, coordx, coordy, r, num_bars, random_seed)
 % 生成参数化输入样本（覆盖率定义与 WAE_func_edit.py 一致：有效域 mask 上求杆带并集占比）
 % 输出尺寸: n x num x 4
 % 每一行: [xc, yc, theta_deg, w]
-% 这里杆件数固定为 num，且所有参数最终都为整数
+% 杆件数由 num_bars 指定，且所有参数最终都为整数
 %
 % 有效域：默认全板参与；若脚本同目录存在 Coord_True_coords.mat 且含变量 coords，
 %         则与 Python 相同——coords 每行为 [i,j]（COMSOL arr1(i,j) 的 1 基下标），
 %         对应格点从覆盖率分子/分母中剔除（mask_coords=false）。
 
-    fixed_num = 4;   % 固定杆件数
+    if nargin < 5 || isempty(num_bars)
+        num_bars = 4;
+    end
+    if nargin >= 6 && ~isempty(random_seed)
+        rng(double(random_seed), 'twister');
+    end
+    validateattributes(num_bars, {'numeric'}, {'scalar', 'integer', 'positive'});
     w_min = 10;      % 宽度下限（整数）
     w_max = 100;     % 宽度上限（整数）
 
@@ -19,16 +25,16 @@ function inputs = func_inputs(n, coordx, coordy, r)
 
     mask_coords = load_mask_coords_wae(size(coordx));
 
-    inputs = zeros(n, fixed_num, 4);
+    inputs = zeros(n, num_bars, 4);
 
     for k = 1:n
-        sample = zeros(fixed_num, 4);
+        sample = zeros(num_bars, 4);
 
         % 生成整数参数
-        xc    = randi([xmin, xmax], fixed_num, 1);
-        yc    = randi([ymin, ymax], fixed_num, 1);
-        theta = randi([0, 179], fixed_num, 1);      % 角度取整数
-        w     = randi([w_min, w_max], fixed_num, 1); % 宽度取整数
+        xc    = randi([xmin, xmax], num_bars, 1);
+        yc    = randi([ymin, ymax], num_bars, 1);
+        theta = randi([0, 179], num_bars, 1);      % 角度取整数
+        w     = randi([w_min, w_max], num_bars, 1); % 宽度取整数
 
         sample(:, 1) = xc;
         sample(:, 2) = yc;
@@ -36,7 +42,7 @@ function inputs = func_inputs(n, coordx, coordy, r)
         sample(:, 4) = w;
 
         % 用整数宽度约束材料分布率（覆盖率在 mask 有效格上计算，r_safe 与 Python 对齐）
-        s_opt = find_safe_scale(sample, coordx, coordy, r, fixed_num, mask_coords);
+        s_opt = find_safe_scale(sample, coordx, coordy, r, num_bars, mask_coords);
 
         % 最终宽度仍然强制为整数
         sample(:, 4) = max(1, floor(s_opt * sample(:, 4)));

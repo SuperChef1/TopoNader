@@ -18,10 +18,19 @@ class TopoNaderGeometryResult:
 
 
 class TopoNaderGeometry:
-    """Four-bar geometry contract migrated from the original topology project."""
+    """Variable-bar geometry contract migrated from the original topology project."""
 
-    def __init__(self, config: TopoNaderOptimizationConfig, excluded_coords_mat: str | Path | None = None):
+    def __init__(
+        self,
+        config: TopoNaderOptimizationConfig,
+        excluded_coords_mat: str | Path | None = None,
+        num_bars: int = 4,
+    ):
         self.config = config
+        self.num_bars = int(num_bars)
+        if self.num_bars < 1:
+            raise ValueError("num_bars must be positive")
+        self.parameters_per_bar = 4
         x = config.grid_x0 - np.arange(config.grid_nx) * config.grid_step
         y = config.grid_y0 - np.arange(config.grid_ny) * config.grid_step
         self.coordx, self.coordy = np.meshgrid(x, y, indexing="ij")
@@ -36,8 +45,16 @@ class TopoNaderGeometry:
                         self.design_mask[ix, iy] = False
 
     @property
+    def design_shape(self) -> tuple[int, int]:
+        return self.num_bars, self.parameters_per_bar
+
+    @property
+    def input_dim(self) -> int:
+        return self.num_bars * self.parameters_per_bar
+
+    @property
     def lower(self) -> np.ndarray:
-        result = np.zeros((4, 4), dtype=np.float64)
+        result = np.zeros(self.design_shape, dtype=np.float64)
         result[:, 0] = np.ceil(self.coordx.min())
         result[:, 1] = np.ceil(self.coordy.min())
         result[:, 2] = 0.0
@@ -46,7 +63,7 @@ class TopoNaderGeometry:
 
     @property
     def upper(self) -> np.ndarray:
-        result = np.zeros((4, 4), dtype=np.float64)
+        result = np.zeros(self.design_shape, dtype=np.float64)
         result[:, 0] = np.floor(self.coordx.max())
         result[:, 1] = np.floor(self.coordy.max())
         result[:, 2] = 179.0
@@ -54,15 +71,15 @@ class TopoNaderGeometry:
         return result
 
     def normalize(self, designs: np.ndarray) -> np.ndarray:
-        designs = np.asarray(designs, dtype=np.float64).reshape(-1, 4, 4)
+        designs = np.asarray(designs, dtype=np.float64).reshape(-1, *self.design_shape)
         return np.clip((designs - self.lower) / (self.upper - self.lower), 0.0, 1.0)
 
     def denormalize(self, designs: np.ndarray) -> np.ndarray:
-        designs = np.asarray(designs, dtype=np.float64).reshape(-1, 4, 4)
+        designs = np.asarray(designs, dtype=np.float64).reshape(-1, *self.design_shape)
         return designs * (self.upper - self.lower) + self.lower
 
     def discretize(self, design: np.ndarray) -> np.ndarray:
-        result = np.nan_to_num(np.asarray(design, dtype=np.float64).reshape(4, 4)).copy()
+        result = np.nan_to_num(np.asarray(design, dtype=np.float64).reshape(self.design_shape)).copy()
         result[:, 0] = np.clip(np.rint(result[:, 0]), self.lower[0, 0], self.upper[0, 0])
         result[:, 1] = np.clip(np.rint(result[:, 1]), self.lower[0, 1], self.upper[0, 1])
         result[:, 2] = np.mod(np.rint(result[:, 2]), 180)
@@ -71,7 +88,7 @@ class TopoNaderGeometry:
 
     def coverage(self, design: np.ndarray) -> float:
         filled = np.zeros_like(self.coordx, dtype=bool)
-        for xc, yc, theta, width in np.asarray(design).reshape(4, 4):
+        for xc, yc, theta, width in np.asarray(design).reshape(self.design_shape):
             radians = np.deg2rad(theta)
             normal_distance = (self.coordx - xc) * np.cos(radians) + (self.coordy - yc) * np.sin(radians)
             filled |= np.abs(normal_distance) <= width / 2.0
@@ -81,7 +98,8 @@ class TopoNaderGeometry:
     def finalize(self, design: np.ndarray) -> TopoNaderGeometryResult:
         candidate = self.discretize(design)
         ratio = self.coverage(candidate)
-        if ratio > self.config.ratio_target:
+        coverage = self.config.coverage
+        if coverage.upper_bound_enabled and ratio > coverage.upper_bound:
             original_widths = candidate[:, 3].copy()
             low, high = 0.0, 1.0
             best = None
@@ -94,7 +112,7 @@ class TopoNaderGeometry:
                     self.config.rod_width_max,
                 )
                 trial_ratio = self.coverage(trial)
-                if trial_ratio <= self.config.ratio_target:
+                if trial_ratio <= coverage.upper_bound:
                     best = trial
                     low = scale
                 else:
@@ -102,12 +120,48 @@ class TopoNaderGeometry:
             if best is not None:
                 candidate = best
                 ratio = self.coverage(candidate)
-        allowed = self.config.ratio_target + self.config.ratio_tolerance
+
+        if coverage.lower_bound_enabled and ratio < float(coverage.lower_bound):
+            original_widths = candidate[:, 3].copy()
+            maximum_scale = float(np.max(self.config.rod_width_max / np.maximum(original_widths, 1e-12)))
+            low, high = 1.0, max(1.0, maximum_scale)
+            best = None
+            for _ in range(40):
+                scale = (low + high) / 2.0
+                trial = candidate.copy()
+                trial[:, 3] = np.clip(
+                    np.rint(original_widths * scale),
+                    self.config.rod_width_min,
+                    self.config.rod_width_max,
+                )
+                trial_ratio = self.coverage(trial)
+                if trial_ratio >= float(coverage.lower_bound):
+                    best = trial
+                    high = scale
+                else:
+                    low = scale
+            if best is not None:
+                candidate = best
+                ratio = self.coverage(candidate)
+
+        upper_valid = (
+            not coverage.upper_bound_enabled
+            or ratio <= coverage.upper_bound + coverage.upper_tolerance
+        )
+        lower_valid = (
+            not coverage.lower_bound_enabled
+            or ratio >= float(coverage.lower_bound)
+        )
+        reason = None
+        if not upper_valid:
+            reason = "coverage_upper_limit"
+        elif not lower_valid:
+            reason = "coverage_lower_limit"
         return TopoNaderGeometryResult(
-            valid=bool(ratio <= allowed),
+            valid=bool(upper_valid and lower_valid),
             design=candidate,
             coverage_ratio=ratio,
-            reason=None if ratio <= allowed else "coverage_limit",
+            reason=reason,
         )
 
 
@@ -116,4 +170,3 @@ def relatively_duplicate(left: np.ndarray, right: np.ndarray, tolerance: float =
     b = np.asarray(right, dtype=np.float64).reshape(-1)
     scale = np.maximum(np.maximum(np.abs(a), np.abs(b)), 1e-12)
     return bool(np.all(np.abs(a - b) / scale < tolerance))
-

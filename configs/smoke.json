@@ -1,5 +1,6 @@
 {
   "experiment_name": "toponader-smoke",
+  "random_seed": 3,
   "training": {
     "epochs": 2,
     "quick_epochs": 1,
@@ -7,7 +8,6 @@
     "learning_rate": 0.001,
     "weight_decay": 0.0001,
     "patience": 2,
-    "seed": 3,
     "device": "cpu"
   },
   "uncertainty": {
@@ -24,8 +24,13 @@
     "fe_batch_size": 4,
     "exploitation_count": 2,
     "exploration_count": 2,
-    "ratio_target": 0.3,
-    "ratio_tolerance": 0.02,
+    "coverage": {
+      "upper_bound_enabled": true,
+      "upper_bound": 0.3,
+      "upper_tolerance": 0.02,
+      "lower_bound_enabled": false,
+      "lower_bound": null
+    },
     "grid_nx": 55,
     "grid_ny": 90,
     "grid_step": 10.0,

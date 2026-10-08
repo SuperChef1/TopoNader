@@ -34,9 +34,19 @@ class TopoNaderPSO:
     def optimize(
         self,
         objective: Callable[[np.ndarray], np.ndarray],
-        dimensions: int = 16,
+        dimensions: int | None = None,
         seeds: np.ndarray | None = None,
     ) -> TopoNaderPSOResult:
+        if dimensions is None:
+            if seeds is None:
+                raise ValueError("dimensions is required when seeds are not provided")
+            seed_values = np.asarray(seeds)
+            if seed_values.ndim < 2:
+                raise ValueError("seeds must be a two-dimensional array")
+            dimensions = int(seed_values.reshape(seed_values.shape[0], -1).shape[1])
+        dimensions = int(dimensions)
+        if dimensions < 1:
+            raise ValueError("dimensions must be positive")
         positions = self.rng.random((self.particles, dimensions))
         if seeds is not None:
             seed_array = np.asarray(seeds, dtype=np.float64).reshape(-1, dimensions)
@@ -92,4 +102,3 @@ class TopoNaderPSO:
             np.vstack(trajectory_x),
             np.concatenate(trajectory_y),
         )
-

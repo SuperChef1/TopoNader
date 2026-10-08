@@ -21,21 +21,31 @@ class TopoNaderValidationReport:
 
 
 class TopoNaderArchitectureValidator:
-    def __init__(self, config: TopoNaderArchitectureConfig):
+    def __init__(self, config: TopoNaderArchitectureConfig, expected_input_dim: int = 16):
         self.config = config
+        self.expected_input_dim = int(expected_input_dim)
 
     def validate(self, spec: TopoNaderArchitectureSpec) -> TopoNaderValidationReport:
         errors: list[str] = []
-        if spec.input_dim != 16:
-            errors.append("input_dim must be 16")
+        if spec.input_dim != self.expected_input_dim:
+            errors.append(f"input_dim must be {self.expected_input_dim}")
+        if spec.input_dim % 4:
+            errors.append("input_dim must be divisible by 4 parameters per bar")
         if not spec.hidden_widths or len(spec.hidden_widths) > self.config.max_depth:
             errors.append("hidden_widths depth is outside the configured range")
         if any(w < self.config.min_hidden_width or w > self.config.max_hidden_width for w in spec.hidden_widths):
             errors.append("a hidden width is outside the configured range")
         if not 0 <= spec.dropout < 0.8:
             errors.append("dropout must be in [0, 0.8)")
-        if spec.predictor_type == "transformer" and spec.predictor_width % spec.attention_heads:
-            errors.append("predictor_width must be divisible by attention_heads")
+        if not self.config.min_latent_dim <= spec.latent_dim <= self.config.max_latent_dim:
+            errors.append("latent_dim is outside the configured range")
+        if spec.predictor_type == "transformer":
+            if spec.attention_heads < 1:
+                errors.append("attention_heads must be positive")
+            elif spec.predictor_width % spec.attention_heads:
+                errors.append("predictor_width must be divisible by attention_heads")
+            if spec.predictor_depth < 1:
+                errors.append("predictor_depth must be positive")
         count = 0
         if not errors:
             try:
@@ -50,4 +60,3 @@ class TopoNaderArchitectureValidator:
         if count > self.config.max_parameters:
             errors.append(f"parameter count {count} exceeds {self.config.max_parameters}")
         return TopoNaderValidationReport(not errors, spec.architecture_id, count, tuple(errors))
-
