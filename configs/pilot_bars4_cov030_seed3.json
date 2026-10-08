@@ -1,0 +1,26 @@
+{
+  "extends": "default.json",
+  "experiment_name": "pilot-bars4-cov030-seed3",
+  "random_seed": 3,
+
+  "training": {
+    "epochs": 50,
+    "quick_epochs": 10,
+    "patience": 10
+  },
+
+  "optimization": {
+    "particles": 50,
+    "iterations": 100,
+    "candidate_pool_size": 40,
+    "fe_batch_size": 4,
+    "exploitation_count": 2,
+    "exploration_count": 2
+  },
+
+  "architecture": {
+    "candidate_count": 2,
+    "fully_train_count": 2,
+    "zero_cost_keep_count": 2
+  }
+}
