@@ -31,9 +31,9 @@
     "mutation_rate": 0.1,
     "stall_limit": 15,
     "candidate_pool_size": 100,
-    "fe_batch_size": 10,
-    "exploitation_count": 5,
-    "exploration_count": 5,
+    "fe_batch_size": 20,
+    "exploitation_count": 10,
+    "exploration_count": 10,
     "coverage": {
       "upper_bound_enabled": true,
       "upper_bound": 0.3,

@@ -148,7 +148,8 @@ The zero-cost score is deliberately treated as a heuristic filter rather than a
 scientific performance metric. Set `architecture.zero_cost_enabled` to `false`
 to disable it during later ablations.
 
-The FE selector targets `optimization.fe_batch_size` designs (10 by default),
+The FE selector targets `optimization.fe_batch_size` designs (20 by default:
+10 exploitation and 10 exploration),
 but may return fewer after geometry repair and deduplication. It never writes an
 empty FE request: no valid candidate raises an error before COMSOL is called.
 Feedback with one valid FE result is accepted, while ranking correlations are
