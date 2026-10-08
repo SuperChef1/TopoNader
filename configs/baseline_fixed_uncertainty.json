@@ -1,0 +1,11 @@
+{
+  "extends": "default.json",
+  "experiment_name": "baseline-fixed-surrogate-uncertainty",
+  "method": {
+    "architecture_adaptation": false,
+    "architecture_review_mode": "event_triggered",
+    "uncertainty_sampling": true,
+    "diversity_sampling": true
+  }
+}
+
