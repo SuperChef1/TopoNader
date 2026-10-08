@@ -1,0 +1,44 @@
+{
+  "experiment_name": "toponader-smoke",
+  "training": {
+    "epochs": 2,
+    "quick_epochs": 1,
+    "batch_size": 8,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 2,
+    "seed": 3,
+    "device": "cpu"
+  },
+  "uncertainty": {
+    "method": "mc_dropout",
+    "mc_samples": 3,
+    "kappa": 1.0
+  },
+  "optimization": {
+    "particles": 8,
+    "iterations": 2,
+    "mutation_rate": 0.1,
+    "stall_limit": 2,
+    "candidate_pool_size": 20,
+    "fe_batch_size": 4,
+    "exploitation_count": 2,
+    "exploration_count": 2,
+    "ratio_target": 0.3,
+    "ratio_tolerance": 0.02,
+    "grid_nx": 55,
+    "grid_ny": 90,
+    "grid_step": 10.0,
+    "grid_x0": -5.0,
+    "grid_y0": 445.0,
+    "rod_width_min": 1.0,
+    "rod_width_max": 500.0
+  },
+  "agents": {
+    "enabled": false,
+    "model": "gpt-5.5",
+    "base_url": "https://api.openai.com/v1",
+    "timeout_seconds": 30,
+    "max_retries": 1
+  }
+}

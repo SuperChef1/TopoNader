@@ -1,0 +1,10 @@
+{
+  "extends": "smoke.json",
+  "experiment_name": "toponader-smoke-audit",
+  "method": {
+    "architecture_adaptation": true,
+    "architecture_review_mode": "every_round",
+    "uncertainty_sampling": true,
+    "diversity_sampling": true
+  }
+}
