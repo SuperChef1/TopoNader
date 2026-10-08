@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from dataclasses import replace
 from pathlib import Path
 
@@ -64,33 +65,23 @@ class TopoNaderEngine:
     def __init__(self, config: TopoNaderConfig, project_root: str | Path, agent_client_factory=None):
         config.validate()
         self.config = config
+        self.seeds = config.seed_manifest()
+        self.data_config = replace(config.data, split_seed=self.seeds["data_split"])
+        self.training_config = replace(config.training, seed=self.seeds["training"])
         self.project_root = Path(project_root).resolve()
         excluded = (self.project_root / config.paths.source_topology_dir / "Coord_True_coords.mat").resolve()
-        self.geometry = TopoNaderGeometry(config.optimization, excluded)
-        self.validator = TopoNaderArchitectureValidator(config.architecture)
-        self.trainer = TopoNaderTrainer(config.training)
+        self.geometry = TopoNaderGeometry(config.optimization, excluded, num_bars=config.data.num_bars)
+        self.validator = TopoNaderArchitectureValidator(config.architecture, config.data.input_dim)
+        self.trainer = TopoNaderTrainer(self.training_config)
         self.agent_client_factory = agent_client_factory or TopoNaderOpenAICompatibleClient
 
     @property
     def default_architecture(self) -> TopoNaderArchitectureSpec:
-        return TopoNaderArchitectureSpec()
+        return TopoNaderArchitectureSpec(input_dim=self.config.data.input_dim)
 
     def initialize_run(self, run_dir: str | Path, force: bool = False) -> TopoNaderRunState:
         run = Path(run_dir)
         state_path = run / "state.json"
-        if state_path.exists() and not force:
-            return TopoNaderRunState.load(state_path)
-        run.mkdir(parents=True, exist_ok=True)
-        spec_path = run / "state" / "current_architecture.json"
-        self.default_architecture.save(spec_path)
-        state = TopoNaderRunState(
-            current_architecture_id=self.default_architecture.architecture_id,
-            audit_due=(
-                self.config.method.architecture_adaptation
-                and self.config.method.architecture_review_mode == "every_round"
-            ),
-        )
-        write_json_atomic(state_path, state.to_dict())
         runtime_model, runtime_base_url = resolve_toponader_llm_runtime(self.config.agents)
         snapshot_config = replace(
             self.config,
@@ -100,15 +91,41 @@ class TopoNaderEngine:
                 base_url=runtime_base_url,
             ),
         )
+        if state_path.exists() and not force:
+            snapshot_path = run / "config.snapshot.json"
+            if not snapshot_path.exists():
+                raise ValueError(f"existing run is missing its config snapshot: {snapshot_path}")
+            stored = json.loads(snapshot_path.read_text(encoding="utf-8"))
+            if stored != snapshot_config.to_dict():
+                raise ValueError(
+                    f"experiment directory already contains a different configuration: {run}"
+                )
+            return TopoNaderRunState.load(state_path)
+        run.mkdir(parents=True, exist_ok=True)
+        spec_path = run / "state" / "current_architecture.json"
+        initial_architecture = replace(
+            self.default_architecture,
+            input_dim=self.config.data.input_dim,
+        )
+        initial_architecture.save(spec_path)
+        state = TopoNaderRunState(
+            current_architecture_id=initial_architecture.architecture_id,
+            audit_due=(
+                self.config.method.architecture_adaptation
+                and self.config.method.architecture_review_mode == "every_round"
+            ),
+        )
+        write_json_atomic(state_path, state.to_dict())
         save_config(snapshot_config, run / "config.snapshot.json")
+        write_json_atomic(run / "seed_manifest.json", self.seeds)
         return state
 
     def _normalized_split(self, dataset: TopoNaderDataset) -> TopoNaderSplit:
         split = dataset.chronological_split()
         return replace(
             split,
-            x_train=self.geometry.normalize(split.x_train).reshape(-1, 16),
-            x_validation=self.geometry.normalize(split.x_validation).reshape(-1, 16),
+            x_train=self.geometry.normalize(split.x_train).reshape(-1, self.geometry.input_dim),
+            x_validation=self.geometry.normalize(split.x_validation).reshape(-1, self.geometry.input_dim),
         )
 
     def _train_architecture_set(
@@ -196,7 +213,7 @@ class TopoNaderEngine:
         )
         zero_cost_reports = []
         if self.config.architecture.zero_cost_enabled and candidates:
-            evaluator = TopoNaderZeroCostEvaluator(seed=self.config.training.seed)
+            evaluator = TopoNaderZeroCostEvaluator(seed=self.seeds["zero_cost"])
             scored = []
             zero_cost_inputs = np.vstack([split.x_train, split.x_validation])
             for candidate in candidates:
@@ -229,7 +246,16 @@ class TopoNaderEngine:
         if (iteration_dir / "fe_request.mat").exists():
             raise FileExistsError(f"iteration {iteration} already has an FE request")
         iteration_dir.mkdir(parents=True, exist_ok=True)
-        dataset = TopoNaderDataset.from_mat(dataset_path, self.config.data)
+        source_dataset_path = Path(dataset_path).resolve()
+        dataset_snapshot = run / "datasets" / f"dataset_{iteration:04d}.mat"
+        if iteration == 1:
+            dataset_snapshot.parent.mkdir(parents=True, exist_ok=True)
+            if dataset_snapshot.exists():
+                if file_sha256(dataset_snapshot) != file_sha256(source_dataset_path):
+                    raise ValueError(f"initial dataset snapshot differs from the supplied dataset: {dataset_snapshot}")
+            elif source_dataset_path != dataset_snapshot.resolve():
+                shutil.copy2(source_dataset_path, dataset_snapshot)
+        dataset = TopoNaderDataset.from_mat(source_dataset_path, self.data_config)
         split = self._normalized_split(dataset)
         current_path = run / state.current_architecture_file
         current = TopoNaderArchitectureSpec.load(current_path)
@@ -261,7 +287,7 @@ class TopoNaderEngine:
             provisional = current
         deterministic_predictor = TopoNaderDeterministicPredictor(model, transform)
         uncertainty_predictor = TopoNaderMCDropoutPredictor(
-            model, transform, self.config.uncertainty.mc_samples, self.config.training.seed
+            model, transform, self.config.uncertainty.mc_samples, self.seeds["mc_dropout"]
         )
 
         def predict_mean(positions: np.ndarray) -> np.ndarray:
@@ -272,23 +298,23 @@ class TopoNaderEngine:
             return mean + self.config.uncertainty.kappa * uncertainty
 
         seed_order = np.argsort(-dataset.outputs)[: min(10, dataset.outputs.size)]
-        seeds = self.geometry.normalize(dataset.inputs[seed_order]).reshape(-1, 16)
+        seeds = self.geometry.normalize(dataset.inputs[seed_order]).reshape(-1, self.geometry.input_dim)
         optimization = self.config.optimization
         mean_pso = TopoNaderPSO(
             optimization.particles,
             optimization.iterations,
             optimization.mutation_rate,
             optimization.stall_limit,
-            self.config.training.seed,
-        ).optimize(predict_mean, seeds=seeds)
+            self.seeds["pso_mean"],
+        ).optimize(predict_mean, dimensions=self.geometry.input_dim, seeds=seeds)
         if self.config.method.uncertainty_sampling:
             ucb_pso = TopoNaderPSO(
                 optimization.particles,
                 optimization.iterations,
                 optimization.mutation_rate,
                 optimization.stall_limit,
-                self.config.training.seed + 1,
-            ).optimize(predict_ucb, seeds=seeds)
+                self.seeds["pso_ucb"],
+            ).optimize(predict_ucb, dimensions=self.geometry.input_dim, seeds=seeds)
             mean_count = min(
                 max(1, optimization.candidate_pool_size // 2), mean_pso.trajectory_positions.shape[0]
             )
@@ -330,6 +356,11 @@ class TopoNaderEngine:
         extra = {
             "iteration": np.asarray([[iteration]], dtype=np.int64),
             "architecture_id": np.asarray([provisional.architecture_id], dtype=object),
+            "num_bars": np.asarray([[self.config.data.num_bars]], dtype=np.int64),
+            "parameters_per_bar": np.asarray(
+                [[self.config.data.parameters_per_bar]], dtype=np.int64
+            ),
+            "random_seed": np.asarray([[self.config.random_seed]], dtype=np.int64),
         }
         if audit_requested and parent_model is not None and parent_transform is not None:
             parent_predictor = (
@@ -337,13 +368,13 @@ class TopoNaderEngine:
                     parent_model,
                     parent_transform,
                     self.config.uncertainty.mc_samples,
-                    self.config.training.seed,
+                    self.seeds["mc_dropout"],
                 )
                 if self.config.method.uncertainty_sampling
                 else TopoNaderDeterministicPredictor(parent_model, parent_transform)
             )
             parent_mean, parent_uncertainty = parent_predictor.predict(
-                self.geometry.normalize(batch.designs).reshape(-1, 16)
+                self.geometry.normalize(batch.designs).reshape(-1, self.geometry.input_dim)
             )
             extra["parent_predicted_mean"] = parent_mean.reshape(-1, 1)
             extra["parent_predicted_uncertainty"] = parent_uncertainty.reshape(-1, 1)
@@ -352,15 +383,30 @@ class TopoNaderEngine:
         provisional.save(iteration_dir / "provisional_architecture.json")
         manifest = {
             "iteration": iteration,
-            "dataset_path": str(Path(dataset_path).resolve()),
-            "dataset_sha256": file_sha256(dataset_path),
+            "dataset_path": str(source_dataset_path),
+            "dataset_snapshot": str(dataset_snapshot.resolve()) if dataset_snapshot.exists() else None,
+            "dataset_sha256": file_sha256(source_dataset_path),
             "sample_count": int(dataset.outputs.size),
+            "design_space": {
+                "num_bars": self.config.data.num_bars,
+                "parameters_per_bar": self.config.data.parameters_per_bar,
+                "input_dim": self.config.data.input_dim,
+            },
+            "seeds": self.seeds,
             "audit": audit_requested,
             "parent_architecture_id": current.architecture_id,
             "provisional_architecture_id": provisional.architecture_id,
             "training": result.to_dict(),
             "method": self.config.method.__dict__,
             "requested_fe_samples": int(batch.designs.shape[0]),
+            "coverage": {
+                "constraint": self.config.optimization.coverage.__dict__,
+                "actual_min": float(np.min(batch.coverage_ratios)),
+                "actual_max": float(np.max(batch.coverage_ratios)),
+                "actual_mean": float(np.mean(batch.coverage_ratios)),
+                "actual_std": float(np.std(batch.coverage_ratios)),
+                "rejection_counts": batch.rejection_counts,
+            },
             "audit_trace_file": "audit/trace.json" if audit_trace is not None else None,
         }
         write_json_atomic(iteration_dir / "manifest.json", manifest)
@@ -375,13 +421,13 @@ class TopoNaderEngine:
         next_dataset_path: str | Path,
     ) -> Path:
         run = Path(run_dir)
-        state = TopoNaderRunState.load(run / "state.json")
+        state = self.initialize_run(run)
         iteration_dir = run / f"iteration_{iteration:04d}"
         if iteration != state.next_iteration:
             raise ValueError(f"expected feedback for iteration {state.next_iteration}")
         request = loadmat(iteration_dir / "fe_request.mat")
         outputs = load_fe_result(fe_result_path)
-        designs = np.asarray(request["inputs"], dtype=np.float64).reshape(-1, 4, 4)
+        designs = np.asarray(request["inputs"], dtype=np.float64).reshape(-1, *self.geometry.design_shape)
         predicted = np.asarray(request["predicted_mean"], dtype=np.float64).reshape(-1)
         uncertainty = np.asarray(request["predicted_uncertainty"], dtype=np.float64).reshape(-1)
         if outputs.size != designs.shape[0]:
@@ -429,7 +475,7 @@ class TopoNaderEngine:
                 state.trigger = decision.state
                 state.audit_due = decision.audit_required
                 metric_payload["trigger_decision"] = decision.to_dict()
-        dataset = TopoNaderDataset.from_mat(dataset_path, self.config.data)
+        dataset = TopoNaderDataset.from_mat(dataset_path, self.data_config)
         updated = dataset.append(designs[valid], outputs[valid])
         updated.save_mat(next_dataset_path)
         inherited.save(run / state.current_architecture_file)
@@ -480,6 +526,7 @@ class TopoNaderEngine:
         reporter = TopoNaderRunReporter(run, self.config.reporting.target_performance)
         best_before = float(np.max(dataset.outputs))
         batch_best = float(np.max(outputs[valid]))
+        requested_coverage = np.asarray(request.get("coverage_ratios", []), dtype=np.float64).reshape(-1)
         reporter.update(iteration_dir, {
             "iteration": iteration,
             "dataset_size_before": int(dataset.outputs.size),
@@ -510,5 +557,12 @@ class TopoNaderEngine:
             "inherited_architecture_id": inherited.architecture_id,
             "next_audit_due": state.audit_due,
             "method": manifest.get("method", {}),
+            "coverage_actual_min": float(np.min(requested_coverage)) if requested_coverage.size else None,
+            "coverage_actual_max": float(np.max(requested_coverage)) if requested_coverage.size else None,
+            "coverage_actual_mean": float(np.mean(requested_coverage)) if requested_coverage.size else None,
+            "coverage_actual_std": float(np.std(requested_coverage)) if requested_coverage.size else None,
+            "coverage_actual_count": int(requested_coverage.size),
+            "coverage_actual_sum": float(np.sum(requested_coverage)) if requested_coverage.size else 0.0,
+            "coverage_actual_sum_squares": float(np.sum(requested_coverage**2)) if requested_coverage.size else 0.0,
         })
         return Path(next_dataset_path)

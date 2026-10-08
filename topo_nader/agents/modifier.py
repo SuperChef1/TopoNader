@@ -12,7 +12,7 @@ class TopoNaderModifier(TopoNaderBaseAgent):
             "You are TopoNaderModifier. Convert one proposal into one complete architecture JSON. "
             "Allowed encoder_type: mlp,residual_mlp; predictor_type: mlp,transformer; "
             "activation: relu,gelu,leaky_relu,silu; normalization: layer_norm,batch_norm,none. "
-            "Preserve input_dim=16. Return only the complete JSON object with fields name,input_dim,encoder_type,"
+            f"Preserve the parent's input_dim={current.input_dim} exactly. Return only the complete JSON object with fields name,input_dim,encoder_type,"
             "hidden_widths,latent_dim,activation,normalization,dropout,predictor_type,predictor_depth,"
             "predictor_width,predictor_activation,attention_heads,metadata."
         )

@@ -46,9 +46,12 @@ class TopoNaderResidualBlock(nn.Module):
 class TopoNaderTransformerPredictor(nn.Module):
     def __init__(self, spec: TopoNaderArchitectureSpec):
         super().__init__()
+        if spec.input_dim % 4:
+            raise ValueError("transformer input_dim must be divisible by 4 parameters per bar")
         if spec.predictor_width % spec.attention_heads:
             raise ValueError("predictor_width must be divisible by attention_heads")
-        self.to_tokens = nn.Linear(spec.latent_dim, 4 * 4)
+        self.num_bars = spec.input_dim // 4
+        self.to_tokens = nn.Linear(spec.latent_dim, spec.input_dim)
         self.input_projection = nn.Linear(4, spec.predictor_width)
         layer = nn.TransformerEncoderLayer(
             d_model=spec.predictor_width,
@@ -68,7 +71,7 @@ class TopoNaderTransformerPredictor(nn.Module):
         )
 
     def forward(self, latent: torch.Tensor) -> torch.Tensor:
-        tokens = self.to_tokens(latent).reshape(latent.shape[0], 4, 4)
+        tokens = self.to_tokens(latent).reshape(latent.shape[0], self.num_bars, 4)
         encoded = self.encoder(self.input_projection(tokens))
         return self.head(encoded.mean(dim=1))
 

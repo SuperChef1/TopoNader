@@ -39,6 +39,8 @@ def _set_seed(seed: int) -> None:
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.deterministic = True
 
 
 def _device(name: str) -> torch.device:
@@ -60,7 +62,7 @@ class TopoNaderTrainer:
         epochs: int | None = None,
         output_log10: bool = True,
     ) -> tuple[TopoNaderSurrogate, TopoNaderTargetTransform, TopoNaderTrainingResult]:
-        _set_seed(self.config.seed)
+        _set_seed(3 if self.config.seed is None else int(self.config.seed))
         model = TopoNaderModelFactory.build(spec)
         model.to(self.device)
         transform = TopoNaderTargetTransform.fit(split.y_train, log10=output_log10)

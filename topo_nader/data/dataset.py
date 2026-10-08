@@ -47,7 +47,7 @@ class TopoNaderDataset:
         config: TopoNaderDataConfig,
         chronological_order: bool = False,
     ):
-        x = np.asarray(inputs, dtype=np.float64).reshape(-1, config.num_bars, config.parameters_per_bar)
+        x = np.asarray(inputs, dtype=np.float64).reshape(-1, *config.design_shape)
         y = np.asarray(outputs, dtype=np.float64).reshape(-1)
         if x.shape[0] != y.shape[0]:
             raise ValueError("inputs and outputs have different sample counts")
@@ -83,7 +83,8 @@ class TopoNaderDataset:
         if self.chronological_order:
             order = np.arange(count)
         else:
-            order = np.random.default_rng(self.config.split_seed).permutation(count)
+            seed = 3 if self.config.split_seed is None else int(self.config.split_seed)
+            order = np.random.default_rng(seed).permutation(count)
         train_indices = order[:split_at]
         indices = order[split_at:]
         return TopoNaderSplit(
@@ -95,7 +96,9 @@ class TopoNaderDataset:
         )
 
     def append(self, inputs: np.ndarray, outputs: np.ndarray) -> "TopoNaderDataset":
-        joined_x = np.concatenate([self.inputs, np.asarray(inputs).reshape(-1, 4, 4)], axis=0)
+        joined_x = np.concatenate(
+            [self.inputs, np.asarray(inputs).reshape(-1, *self.config.design_shape)], axis=0
+        )
         joined_y = np.concatenate([self.outputs, np.asarray(outputs).reshape(-1)], axis=0)
         return TopoNaderDataset(joined_x, joined_y, self.config, chronological_order=True)
 

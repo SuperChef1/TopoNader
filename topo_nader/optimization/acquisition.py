@@ -16,6 +16,7 @@ class TopoNaderBatchSelection:
     acquisition: np.ndarray
     sources: tuple[str, ...]
     coverage_ratios: np.ndarray
+    rejection_counts: dict[str, int] | None = None
 
 
 def _farthest_choice(pool: np.ndarray, candidates: list[int], selected: list[int], priority: np.ndarray) -> int:
@@ -41,7 +42,7 @@ def select_active_batch(
     use_diversity: bool = True,
     excluded_designs: np.ndarray | None = None,
 ) -> TopoNaderBatchSelection:
-    pool = np.asarray(normalized_pool, dtype=np.float64).reshape(-1, 16)
+    pool = np.asarray(normalized_pool, dtype=np.float64).reshape(-1, geometry.input_dim)
     mu = np.asarray(mean, dtype=np.float64).reshape(-1)
     sigma = np.asarray(uncertainty, dtype=np.float64).reshape(-1)
     if not (pool.shape[0] == mu.size == sigma.size):
@@ -51,10 +52,11 @@ def select_active_batch(
     sources: list[str] = []
     finalized: list[np.ndarray] = []
     coverage: list[float] = []
+    rejection_counts = {"coverage": 0, "historical_duplicate": 0, "batch_duplicate": 0}
     historical = (
-        np.asarray(excluded_designs, dtype=np.float64).reshape(-1, 4, 4)
+        np.asarray(excluded_designs, dtype=np.float64).reshape(-1, *geometry.design_shape)
         if excluded_designs is not None
-        else np.empty((0, 4, 4), dtype=np.float64)
+        else np.empty((0, *geometry.design_shape), dtype=np.float64)
     )
 
     def fill(count: int, priority: np.ndarray, source: str) -> None:
@@ -66,12 +68,17 @@ def select_active_batch(
                 else int(remaining[0])
             )
             remaining.remove(chosen)
-            result = geometry.finalize(geometry.denormalize(pool[chosen].reshape(1, 4, 4))[0])
+            result = geometry.finalize(
+                geometry.denormalize(pool[chosen].reshape(1, *geometry.design_shape))[0]
+            )
             if not result.valid:
+                rejection_counts["coverage"] += 1
                 continue
             if any(relatively_duplicate(result.design, previous) for previous in historical):
+                rejection_counts["historical_duplicate"] += 1
                 continue
             if any(relatively_duplicate(result.design, previous) for previous in finalized):
+                rejection_counts["batch_duplicate"] += 1
                 continue
             accepted.append(chosen)
             sources.append(source)
@@ -90,6 +97,7 @@ def select_active_batch(
         acquisition=ucb[idx],
         sources=tuple(sources),
         coverage_ratios=np.asarray(coverage),
+        rejection_counts=rejection_counts,
     )
 
 
@@ -100,7 +108,7 @@ def refresh_batch_predictions(
     kappa: float,
 ) -> TopoNaderBatchSelection:
     """Re-predict the exact discretized/repaired designs sent to FE."""
-    normalized = geometry.normalize(batch.designs).reshape(-1, 16)
+    normalized = geometry.normalize(batch.designs).reshape(-1, geometry.input_dim)
     mean, uncertainty = predictor(normalized)
     mean = np.asarray(mean, dtype=np.float64).reshape(-1)
     uncertainty = np.asarray(uncertainty, dtype=np.float64).reshape(-1)

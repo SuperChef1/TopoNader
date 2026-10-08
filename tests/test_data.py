@@ -36,6 +36,13 @@ class TopoNaderDataTests(unittest.TestCase):
         np.testing.assert_array_equal(first, second)
         self.assertFalse(np.array_equal(first, np.array([6, 7])))
 
+    def test_variable_bar_dataset_round_trip_shape(self):
+        config = TopoNaderDataConfig(num_bars=6, split_seed=7)
+        dataset = TopoNaderDataset(np.zeros((8, 6, 4)), np.arange(1, 9), config)
+        appended = dataset.append(np.ones((2, 6, 4)), np.array([9.0, 10.0]))
+        self.assertEqual(appended.inputs.shape, (10, 6, 4))
+        self.assertEqual(appended.flat_inputs.shape, (10, 24))
+
 
 if __name__ == "__main__":
     unittest.main()

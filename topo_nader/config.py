@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -15,8 +16,16 @@ class TopoNaderDataConfig:
     num_bars: int = 4
     parameters_per_bar: int = 4
     validation_fraction: float = 0.2
-    split_seed: int = 3
+    split_seed: int | None = None
     output_log10: bool = True
+
+    @property
+    def input_dim(self) -> int:
+        return int(self.num_bars * self.parameters_per_bar)
+
+    @property
+    def design_shape(self) -> tuple[int, int]:
+        return int(self.num_bars), int(self.parameters_per_bar)
 
 
 @dataclass
@@ -27,7 +36,7 @@ class TopoNaderTrainingConfig:
     learning_rate: float = 1e-3
     weight_decay: float = 1e-4
     patience: int = 40
-    seed: int = 3
+    seed: int | None = None
     device: str = "auto"
 
 
@@ -36,6 +45,15 @@ class TopoNaderUncertaintyConfig:
     method: str = "mc_dropout"
     mc_samples: int = 20
     kappa: float = 1.5
+
+
+@dataclass
+class TopoNaderCoverageConfig:
+    upper_bound_enabled: bool = True
+    upper_bound: float = 0.30
+    upper_tolerance: float = 0.02
+    lower_bound_enabled: bool = False
+    lower_bound: float | None = None
 
 
 @dataclass
@@ -48,8 +66,7 @@ class TopoNaderOptimizationConfig:
     fe_batch_size: int = 10
     exploitation_count: int = 5
     exploration_count: int = 5
-    ratio_target: float = 0.30
-    ratio_tolerance: float = 0.02
+    coverage: TopoNaderCoverageConfig = field(default_factory=TopoNaderCoverageConfig)
     grid_nx: int = 55
     grid_ny: int = 90
     grid_step: float = 10.0
@@ -57,6 +74,10 @@ class TopoNaderOptimizationConfig:
     grid_y0: float = 445.0
     rod_width_min: float = 1.0
     rod_width_max: float = 500.0
+
+    def __post_init__(self) -> None:
+        if isinstance(self.coverage, dict):
+            self.coverage = TopoNaderCoverageConfig(**self.coverage)
 
 
 @dataclass
@@ -78,6 +99,8 @@ class TopoNaderArchitectureConfig:
     min_hidden_width: int = 16
     max_hidden_width: int = 2048
     max_depth: int = 8
+    min_latent_dim: int = 2
+    max_latent_dim: int = 512
     candidate_retry_limit: int = 3
     zero_cost_enabled: bool = True
     zero_cost_keep_count: int = 4
@@ -116,6 +139,7 @@ class TopoNaderPathsConfig:
 @dataclass
 class TopoNaderConfig:
     experiment_name: str = "toponader-default"
+    random_seed: int = 3
     data: TopoNaderDataConfig = field(default_factory=TopoNaderDataConfig)
     training: TopoNaderTrainingConfig = field(default_factory=TopoNaderTrainingConfig)
     uncertainty: TopoNaderUncertaintyConfig = field(default_factory=TopoNaderUncertaintyConfig)
@@ -128,8 +152,22 @@ class TopoNaderConfig:
     paths: TopoNaderPathsConfig = field(default_factory=TopoNaderPathsConfig)
 
     def validate(self) -> None:
-        if self.data.num_bars * self.data.parameters_per_bar != 16:
-            raise ValueError("TopoNader currently requires 4 bars x 4 parameters = 16 inputs")
+        name = self.experiment_name
+        reserved = {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}
+        invalid_character = any(ord(character) < 32 or character in '<>:"/\\|?*' for character in name)
+        if (
+            not name
+            or len(name) > 128
+            or name in {".", ".."}
+            or name.endswith((" ", "."))
+            or invalid_character
+            or name.split(".", 1)[0].upper() in reserved
+        ):
+            raise ValueError("experiment_name must be a single path-safe folder name of at most 128 characters")
+        if self.data.num_bars < 1:
+            raise ValueError("num_bars must be positive")
+        if self.data.parameters_per_bar != 4:
+            raise ValueError("TopoNader currently requires 4 parameters per bar: xc, yc, theta and width")
         if not 0.0 < self.data.validation_fraction < 0.5:
             raise ValueError("validation_fraction must be between 0 and 0.5")
         if self.optimization.exploitation_count + self.optimization.exploration_count != self.optimization.fe_batch_size:
@@ -142,11 +180,51 @@ class TopoNaderConfig:
             raise ValueError("candidate_retry_limit must be positive")
         if self.architecture.zero_cost_keep_count < 1:
             raise ValueError("zero_cost_keep_count must be positive")
+        if not 1 <= self.architecture.min_latent_dim <= self.architecture.max_latent_dim:
+            raise ValueError("latent dimension bounds are invalid")
         if self.method.architecture_review_mode not in {"event_triggered", "every_round"}:
             raise ValueError("architecture_review_mode must be event_triggered or every_round")
+        coverage = self.optimization.coverage
+        if coverage.upper_bound_enabled:
+            if not 0.0 <= coverage.upper_bound <= 1.0:
+                raise ValueError("coverage upper_bound must be in [0, 1]")
+            if coverage.upper_tolerance < 0.0:
+                raise ValueError("coverage upper_tolerance must be non-negative")
+        if coverage.lower_bound_enabled:
+            if coverage.lower_bound is None or not 0.0 <= coverage.lower_bound <= 1.0:
+                raise ValueError("enabled coverage lower_bound must be in [0, 1]")
+            if coverage.upper_bound_enabled and coverage.lower_bound > coverage.upper_bound + coverage.upper_tolerance:
+                raise ValueError("coverage lower_bound exceeds the allowed upper bound")
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+    def seed_for(self, namespace: str) -> int:
+        """Derive a stable independent 32-bit seed from the experiment seed."""
+        override = None
+        if namespace == "data_split":
+            override = self.data.split_seed
+        elif namespace == "training":
+            override = self.training.seed
+        if override is not None:
+            return int(override)
+        digest = hashlib.sha256(f"{int(self.random_seed)}:{namespace}".encode("utf-8")).digest()
+        return int.from_bytes(digest[:4], "big", signed=False)
+
+    def seed_manifest(self) -> dict[str, int]:
+        namespaces = (
+            "data_split",
+            "training",
+            "pso_mean",
+            "pso_ucb",
+            "mc_dropout",
+            "zero_cost",
+            "matlab_inputs",
+        )
+        return {name: self.seed_for(name) for name in namespaces}
+
+    def default_run_dir(self, project_root: str | Path) -> Path:
+        return Path(project_root).resolve() / self.paths.runs_dir / self.experiment_name
 
 
 _SECTIONS = {
@@ -189,6 +267,19 @@ def _load_payload(path: Path, visited: set[Path] | None = None) -> dict[str, Any
 
 def load_config(path: str | Path) -> TopoNaderConfig:
     payload = _load_payload(Path(path))
+    optimization = payload.get("optimization")
+    if isinstance(optimization, dict):
+        optimization = dict(optimization)
+        legacy_target = optimization.pop("ratio_target", None)
+        legacy_tolerance = optimization.pop("ratio_tolerance", None)
+        if legacy_target is not None or legacy_tolerance is not None:
+            coverage = dict(optimization.get("coverage", {}))
+            if legacy_target is not None:
+                coverage["upper_bound"] = legacy_target
+            if legacy_tolerance is not None:
+                coverage["upper_tolerance"] = legacy_tolerance
+            optimization["coverage"] = coverage
+        payload["optimization"] = optimization
     kwargs: dict[str, Any] = {}
     for key, value in payload.items():
         kwargs[key] = _SECTIONS[key](**value) if key in _SECTIONS else value

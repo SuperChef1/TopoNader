@@ -23,7 +23,10 @@ class TopoNaderMCDropoutPredictor:
         self.device = next(model.parameters()).device
 
     def predict(self, inputs: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        x = torch.as_tensor(np.asarray(inputs).reshape(-1, 16), dtype=torch.float32, device=self.device)
+        input_dim = int(self.model.spec.input_dim)
+        x = torch.as_tensor(
+            np.asarray(inputs).reshape(-1, input_dim), dtype=torch.float32, device=self.device
+        )
         torch.manual_seed(self.seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(self.seed)
@@ -46,7 +49,10 @@ class TopoNaderDeterministicPredictor:
         self.device = next(model.parameters()).device
 
     def predict(self, inputs: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        x = torch.as_tensor(np.asarray(inputs).reshape(-1, 16), dtype=torch.float32, device=self.device)
+        input_dim = int(self.model.spec.input_dim)
+        x = torch.as_tensor(
+            np.asarray(inputs).reshape(-1, input_dim), dtype=torch.float32, device=self.device
+        )
         self.model.eval()
         with torch.no_grad():
             prediction = self.model(x).detach().cpu().numpy().reshape(-1)

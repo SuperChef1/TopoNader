@@ -1,7 +1,8 @@
 # TopoNader
 
 TopoNader is a topology-task-specific adaptation of NADER for surrogate-assisted
-optimization. It combines the original four-bar topology/COMSOL workflow with a
+optimization. It generalizes the original four-bar topology/COMSOL workflow to a
+configuration-driven number of bars and material-coverage constraints, together with a
 Reader-free, event-triggered architecture review pipeline.
 
 The runtime has one optimization channel only:
@@ -28,7 +29,7 @@ outside this project only as an experimental baseline.
 - `topo_nader.training`: chronological validation, early stopping, physical-scale
   metrics, MC-dropout uncertainty, and switchable training-free Jacobian screening.
 - `topo_nader.monitoring`: ranking metrics and deterministic audit trigger.
-- `topo_nader.optimization`: four-bar geometry, PSO, UCB acquisition, diversity,
+- `topo_nader.optimization`: variable-bar geometry, PSO, UCB acquisition, diversity,
   and deduplication.
 - `topo_nader.pipeline`: resumable prepare/feedback state machine and parent-child
   inheritance/rollback.
@@ -44,7 +45,8 @@ structured proposal/modification/reflection loop, retry/logging approach, and
 architecture validation concept. NADER's image-classification training, CNN
 search space, Reader, and CIFAR/ImageNet metrics are not used.
 
-From `test37_4Beam_Best`, TopoNader keeps the 4 x 4 physical representation,
+From `test37_4Beam_Best`, TopoNader keeps four parameters per bar
+(`[xc, yc, theta_deg, width]`) while allowing the number of bars to vary through configuration. It also keeps the
 grid convention, width/angle bounds, coverage constraint, EPSO update ideas,
 MATLAB finite-element oracle, COMSOL model, and the original
 `1024-512-256 -> latent-12 -> Transformer` surrogate as the initial parent. The WAE branch and train-loss-only
@@ -64,24 +66,52 @@ cd D:\Nader\Topo_Nader
 py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .
 .\run_TopoNader.ps1 --config configs\default.json validate-config
-.\run_TopoNader.ps1 --config configs\default.json init --run-dir runs\trial1
+.\run_TopoNader.ps1 --config configs\default.json init
 .\run_TopoNader.ps1 --config configs\default.json prepare `
-  --run-dir runs\trial1 `
   --dataset ..\test37_4Beam_Best\test37_4Beam_Best\data_g\300ntrain_train_step1.mat `
   --iteration 1
 ```
 
-`prepare` creates `runs/trial1/iteration_0001/fe_request.mat`. MATLAB evaluates
+The default run directory is `paths.runs_dir/experiment_name`, so the default
+configuration creates `runs/toponader-four-bar-beam/iteration_0001/fe_request.mat`.
+`--run-dir` remains available as an explicit override. MATLAB evaluates
 that request and writes `fe_result.mat`; then run:
 
 ```powershell
 .\run_TopoNader.ps1 --config configs\default.json feedback `
-  --run-dir runs\trial1 `
   --dataset ..\test37_4Beam_Best\test37_4Beam_Best\data_g\300ntrain_train_step1.mat `
   --iteration 1 `
-  --fe-result runs\trial1\iteration_0001\fe_result.mat `
-  --next-dataset runs\trial1\datasets\dataset_0002.mat
+  --fe-result runs\toponader-four-bar-beam\iteration_0001\fe_result.mat
 ```
+
+When `--next-dataset` is omitted, feedback writes the next dataset under the same
+experiment directory. Reusing an experiment directory with a different resolved
+configuration is rejected instead of mixing results.
+
+The main experiment controls in `default.json` are:
+
+```json
+{
+  "experiment_name": "bars4-cov030-seed3",
+  "random_seed": 3,
+  "data": {"num_bars": 4, "parameters_per_bar": 4},
+  "optimization": {
+    "coverage": {
+      "upper_bound_enabled": true,
+      "upper_bound": 0.30,
+      "upper_tolerance": 0.02,
+      "lower_bound_enabled": false,
+      "lower_bound": null
+    }
+  }
+}
+```
+
+`upper_bound` is an upper material-use constraint, not an equality target. The
+lower-bound path is implemented but disabled by default. The Python pipeline can
+use any positive number of bars; COMSOL execution additionally requires the `.mph`
+model to contain `r1` through `rN`. Missing features fail explicitly, and prebuilt
+features above `N` are disabled for that run.
 
 For the MATLAB-driven loop, set `TOPONADER_PYTHON` if `python` is not the desired
 interpreter and call `TopoNader_main` as documented in the file.
@@ -152,7 +182,8 @@ After every successful `feedback` call, TopoNader writes:
 - `iterations.jsonl`: machine-readable records for every completed iteration;
 - `iterations.csv`: plotting/table input;
 - `summary.json`: cumulative FE calls, valid/failed FE results, best performance,
-  audit count, architecture changes, rollbacks, and target attainment.
+  achieved-coverage statistics, audit count, architecture changes, rollbacks, and
+  target attainment.
 
 Set `reporting.target_performance` to calculate an iteration-level upper bound on
 the FE calls needed to reach a target. The cumulative FE count includes the
@@ -173,7 +204,9 @@ initial dataset and counts failed new FE calls as spent budget.
   same FE batch; post-FE feedback either inherits the child or rolls back.
 - Predictions are recomputed after discretization and coverage repair, so logged
   predictions and FE truth always refer to the exact same final design.
-- MC-dropout prediction uses the configured experiment seed so repeated objective
+- `random_seed` deterministically derives independent seeds for the split, training,
+  mean/UCB PSO, MC-dropout, zero-cost screening, and MATLAB input generation.
+- MC-dropout prediction uses its derived experiment seed so repeated objective
   calls and parent-child comparisons use reproducible stochastic masks.
 - Every run stores a config snapshot, dataset hash, iteration manifest, model
   metrics, agent transcript, trigger state, and experience log.
