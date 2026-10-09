@@ -13,10 +13,16 @@ from .reflector import TopoNaderReflector
 class TopoNaderAgentOrchestrator:
     """Reader-free TopoNader collaboration: Reflector -> Proposer -> Modifier."""
 
-    def __init__(self, client: TopoNaderLLMClient, log_dir: str | Path):
-        self.reflector = TopoNaderReflector("TopoNaderReflector", client, log_dir)
-        self.proposer = TopoNaderProposer("TopoNaderProposer", client, log_dir)
-        self.modifier = TopoNaderModifier("TopoNaderModifier", client, log_dir)
+    def __init__(
+        self,
+        client: TopoNaderLLMClient,
+        log_dir: str | Path,
+        structured_output_retries: int = 2,
+    ):
+        agent_args = (client, log_dir, structured_output_retries)
+        self.reflector = TopoNaderReflector("TopoNaderReflector", *agent_args)
+        self.proposer = TopoNaderProposer("TopoNaderProposer", *agent_args)
+        self.modifier = TopoNaderModifier("TopoNaderModifier", *agent_args)
 
     def generate_candidates(
         self,

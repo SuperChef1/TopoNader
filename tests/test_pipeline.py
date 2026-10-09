@@ -220,6 +220,22 @@ class TopoNaderPipelineTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "different configuration"):
                 TinyTopoNaderEngine(changed, Path(__file__).parents[1]).initialize_run(run)
 
+    def test_existing_experiment_accepts_snapshot_from_before_structured_retry_setting(self):
+        config = TopoNaderConfig(
+            experiment_name="legacy-agent-config-test",
+            agents=TopoNaderAgentConfig(enabled=False, structured_output_retries=2),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory) / "run"
+            engine = TinyTopoNaderEngine(config, Path(__file__).parents[1])
+            expected = engine.initialize_run(run)
+            snapshot_path = run / "config.snapshot.json"
+            snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+            del snapshot["agents"]["structured_output_retries"]
+            snapshot_path.write_text(json.dumps(snapshot), encoding="utf-8")
+            restored = engine.initialize_run(run)
+        self.assertEqual(restored.to_dict(), expected.to_dict())
+
 
 if __name__ == "__main__":
     unittest.main()
