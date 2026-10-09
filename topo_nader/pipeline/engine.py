@@ -96,7 +96,15 @@ class TopoNaderEngine:
             if not snapshot_path.exists():
                 raise ValueError(f"existing run is missing its config snapshot: {snapshot_path}")
             stored = json.loads(snapshot_path.read_text(encoding="utf-8"))
-            if stored != snapshot_config.to_dict():
+            resolved_snapshot = snapshot_config.to_dict()
+            stored_agents = stored.get("agents")
+            if isinstance(stored_agents, dict) and "structured_output_retries" not in stored_agents:
+                stored = dict(stored)
+                stored["agents"] = dict(stored_agents)
+                stored["agents"]["structured_output_retries"] = resolved_snapshot["agents"][
+                    "structured_output_retries"
+                ]
+            if stored != resolved_snapshot:
                 raise ValueError(
                     f"experiment directory already contains a different configuration: {run}"
                 )
@@ -202,7 +210,11 @@ class TopoNaderEngine:
         experience_path = run / self.config.paths.experience_file
         experiences = TopoNaderExperienceStore(experience_path).recent()
         client = self.agent_client_factory(self.config.agents)
-        agents = TopoNaderAgentOrchestrator(client, iteration_dir / "agents")
+        agents = TopoNaderAgentOrchestrator(
+            client,
+            iteration_dir / "agents",
+            structured_output_retries=self.config.agents.structured_output_retries,
+        )
         candidates, trace = agents.generate_candidates(
             current,
             metrics,
@@ -494,7 +506,11 @@ class TopoNaderEngine:
             }
             try:
                 client = self.agent_client_factory(self.config.agents)
-                agents = TopoNaderAgentOrchestrator(client, iteration_dir / "agents")
+                agents = TopoNaderAgentOrchestrator(
+                    client,
+                    iteration_dir / "agents",
+                    structured_output_retries=self.config.agents.structured_output_retries,
+                )
                 post_reflection, reflection_usage = agents.reflector.reflect(reflection_input)
                 write_json_atomic(iteration_dir / "audit" / "post_reflection.json", {
                     "reflection": post_reflection,

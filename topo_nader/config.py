@@ -126,6 +126,7 @@ class TopoNaderAgentConfig:
     base_url: str = "https://api.openai.com/v1"
     timeout_seconds: int = 300
     max_retries: int = 3
+    structured_output_retries: int = 2
 
 
 @dataclass
@@ -180,6 +181,10 @@ class TopoNaderConfig:
             raise ValueError("candidate_retry_limit must be positive")
         if self.architecture.zero_cost_keep_count < 1:
             raise ValueError("zero_cost_keep_count must be positive")
+        if self.agents.max_retries < 1:
+            raise ValueError("agents max_retries must be positive")
+        if self.agents.structured_output_retries < 0:
+            raise ValueError("agents structured_output_retries must be non-negative")
         if not 1 <= self.architecture.min_latent_dim <= self.architecture.max_latent_dim:
             raise ValueError("latent dimension bounds are invalid")
         if self.method.architecture_review_mode not in {"event_triggered", "every_round"}:

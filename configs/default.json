@@ -85,7 +85,8 @@
     "model": "gpt-5.5",
     "base_url": "https://api.openai.com/v1",
     "timeout_seconds": 300,
-    "max_retries": 3
+    "max_retries": 3,
+    "structured_output_retries": 2
   },
   "paths": {
     "runs_dir": "runs",

@@ -33,6 +33,7 @@ class TopoNaderConfigTests(unittest.TestCase):
         )
         self.assertEqual(payload["paths"]["comsol_model"], "matlab/fuban_Beam.mph")
         self.assertEqual(payload["random_seed"], 3)
+        self.assertEqual(payload["agents"]["structured_output_retries"], 2)
         self.assertIn("matlab_inputs", payload["resolved_seeds"])
         self.assertTrue(payload["optimization"]["coverage"]["upper_bound_enabled"])
 
