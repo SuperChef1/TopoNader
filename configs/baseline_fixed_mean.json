@@ -6,6 +6,8 @@
     "architecture_review_mode": "event_triggered",
     "uncertainty_sampling": false,
     "diversity_sampling": false
+  },
+  "optimization": {
+    "elite_local_search": {"enabled": false}
   }
 }
-

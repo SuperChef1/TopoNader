@@ -1,5 +1,5 @@
 {
-  "experiment_name": "toponader-four-bar-beam",
+  "experiment_name": "toponader-four-bar-beam-elite-local",
   "random_seed": 3,
   "data": {
     "input_key": "inputs",
@@ -40,6 +40,21 @@
       "upper_tolerance": 0.02,
       "lower_bound_enabled": false,
       "lower_bound": null
+    },
+    "elite_local_search": {
+      "enabled": true,
+      "elite_count": 5,
+      "particle_weights": [0.4, 0.2, 0.16, 0.12, 0.12],
+      "selected_weights": [0.4, 0.2, 0.2, 0.1, 0.1],
+      "small_position_radius": 20.0,
+      "small_angle_radius": 5.0,
+      "small_width_radius": 10.0,
+      "medium_position_radius": 40.0,
+      "medium_angle_radius": 10.0,
+      "medium_width_radius": 20.0,
+      "single_parameter_fraction": 0.6,
+      "single_bar_two_parameter_fraction": 0.25,
+      "candidates_per_elite": 100
     },
     "grid_nx": 55,
     "grid_ny": 90,

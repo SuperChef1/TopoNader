@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import shutil
-from dataclasses import replace
+from dataclasses import asdict, replace
 from pathlib import Path
 
 import numpy as np
@@ -13,13 +13,19 @@ from ..agents.orchestrator import TopoNaderAgentOrchestrator
 from ..architecture.spec import TopoNaderArchitectureSpec
 from ..architecture.validator import TopoNaderArchitectureValidator
 from ..bridge.matlab import load_fe_result, save_fe_request
-from ..config import TopoNaderConfig, save_config
+from ..config import TopoNaderConfig, TopoNaderEliteLocalSearchConfig, save_config
 from ..data.dataset import TopoNaderDataset, TopoNaderSplit
 from ..logging.experience import TopoNaderExperienceStore
 from ..logging.provenance import file_sha256, write_json_atomic
 from ..monitoring.selection import select_provisional_architecture
 from ..monitoring.trigger import TopoNaderTrigger
-from ..optimization.acquisition import refresh_batch_predictions, select_active_batch
+from ..optimization.acquisition import (
+    combine_batches,
+    finalize_candidate_pool,
+    refresh_batch_predictions,
+    select_active_batch,
+    select_from_finalized_pool,
+)
 from ..optimization.geometry import TopoNaderGeometry
 from ..optimization.pso import TopoNaderPSO
 from ..reporting.summary import TopoNaderRunReporter
@@ -61,6 +67,20 @@ def _evaluate_feedback(
     raise ValueError("no valid positive FE results were returned")
 
 
+def _allocate_integer(total: int, weights: tuple[float, ...]) -> list[int]:
+    total = int(total)
+    values = np.asarray(weights, dtype=np.float64)
+    if total < 0 or values.size == 0 or np.any(values < 0) or float(values.sum()) <= 0:
+        raise ValueError("invalid weighted integer allocation")
+    scaled = values / values.sum() * total
+    allocation = np.floor(scaled).astype(int)
+    remainder = total - int(allocation.sum())
+    if remainder:
+        order = np.argsort(-(scaled - allocation), kind="stable")
+        allocation[order[:remainder]] += 1
+    return allocation.tolist()
+
+
 class TopoNaderEngine:
     def __init__(self, config: TopoNaderConfig, project_root: str | Path, agent_client_factory=None):
         config.validate()
@@ -96,7 +116,9 @@ class TopoNaderEngine:
             if not snapshot_path.exists():
                 raise ValueError(f"existing run is missing its config snapshot: {snapshot_path}")
             stored = json.loads(snapshot_path.read_text(encoding="utf-8"))
-            resolved_snapshot = snapshot_config.to_dict()
+            # Compare the JSON representation because tuple-valued settings are
+            # persisted as lists in config.snapshot.json.
+            resolved_snapshot = json.loads(json.dumps(snapshot_config.to_dict()))
             stored_agents = stored.get("agents")
             if isinstance(stored_agents, dict) and "structured_output_retries" not in stored_agents:
                 stored = dict(stored)
@@ -104,6 +126,13 @@ class TopoNaderEngine:
                 stored["agents"]["structured_output_retries"] = resolved_snapshot["agents"][
                     "structured_output_retries"
                 ]
+            stored_optimization = stored.get("optimization")
+            if isinstance(stored_optimization, dict) and "elite_local_search" not in stored_optimization:
+                stored = dict(stored)
+                stored["optimization"] = dict(stored_optimization)
+                stored["optimization"]["elite_local_search"] = json.loads(
+                    json.dumps(asdict(TopoNaderEliteLocalSearchConfig()))
+                )
             if stored != resolved_snapshot:
                 raise ValueError(
                     f"experiment directory already contains a different configuration: {run}"
@@ -135,6 +164,274 @@ class TopoNaderEngine:
             x_train=self.geometry.normalize(split.x_train).reshape(-1, self.geometry.input_dim),
             x_validation=self.geometry.normalize(split.x_validation).reshape(-1, self.geometry.input_dim),
         )
+
+    def _local_initial_positions(
+        self,
+        elite_design: np.ndarray,
+        count: int,
+        rank: int,
+        seed: int,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        settings = self.config.optimization.elite_local_search
+        center = self.geometry.normalize(
+            np.asarray(elite_design, dtype=np.float64).reshape(1, *self.geometry.design_shape)
+        ).reshape(-1)
+        if rank == 0:
+            physical_radius = np.tile(
+                [
+                    settings.small_position_radius,
+                    settings.small_position_radius,
+                    settings.small_angle_radius,
+                    settings.small_width_radius,
+                ],
+                self.geometry.num_bars,
+            )
+        else:
+            physical_radius = np.tile(
+                [
+                    settings.medium_position_radius,
+                    settings.medium_position_radius,
+                    settings.medium_angle_radius,
+                    settings.medium_width_radius,
+                ],
+                self.geometry.num_bars,
+            )
+        span = (self.geometry.upper - self.geometry.lower).reshape(-1)
+        radius = np.asarray(physical_radius, dtype=np.float64) / span
+        lower = np.maximum(0.0, center - radius)
+        upper = np.minimum(1.0, center + radius)
+        rng = np.random.default_rng(seed)
+        positions = np.repeat(center.reshape(1, -1), int(count), axis=0)
+        for row in range(1, int(count)):
+            draw = float(rng.random())
+            if draw < settings.single_parameter_fraction:
+                dimensions = [int(rng.integers(0, self.geometry.input_dim))]
+            elif draw < (
+                settings.single_parameter_fraction
+                + settings.single_bar_two_parameter_fraction
+            ):
+                bar = int(rng.integers(0, self.geometry.num_bars))
+                parameters = rng.choice(self.geometry.parameters_per_bar, size=2, replace=False)
+                dimensions = [bar * self.geometry.parameters_per_bar + int(value) for value in parameters]
+            else:
+                bars = rng.choice(self.geometry.num_bars, size=min(2, self.geometry.num_bars), replace=False)
+                dimensions = [
+                    int(bar) * self.geometry.parameters_per_bar
+                    + int(rng.integers(0, self.geometry.parameters_per_bar))
+                    for bar in bars
+                ]
+            for dimension in dimensions:
+                positions[row, dimension] += rng.uniform(-radius[dimension], radius[dimension])
+        return np.clip(positions, lower, upper), lower, upper
+
+    def _elite_local_exploitation(
+        self,
+        dataset: TopoNaderDataset,
+        iteration: int,
+        predictor,
+        predict_mean,
+        target_count: int,
+    ):
+        settings = self.config.optimization.elite_local_search
+        elite_count = min(settings.elite_count, dataset.outputs.size)
+        elite_order = np.argsort(-dataset.outputs)[:elite_count]
+        particle_allocation = _allocate_integer(
+            self.config.optimization.particles,
+            tuple(settings.particle_weights[:elite_count]),
+        )
+        selected_allocation = _allocate_integer(
+            target_count,
+            tuple(settings.selected_weights[:elite_count]),
+        )
+        pools = []
+        trace = {
+            "enabled": True,
+            "elite_dataset_indices": [int(index) for index in elite_order],
+            "elite_true_outputs": [float(dataset.outputs[index]) for index in elite_order],
+            "particle_allocation": particle_allocation,
+            "selected_allocation": selected_allocation,
+            "candidate_counts": [],
+            "candidate_pool_statistics": [],
+        }
+        selected_batches = []
+        selected_designs = np.empty((0, *self.geometry.design_shape), dtype=np.float64)
+        rejection_counts = {"coverage": 0, "historical_duplicate": 0, "batch_duplicate": 0}
+        for rank, (dataset_index, particle_count, quota) in enumerate(
+            zip(elite_order, particle_allocation, selected_allocation)
+        ):
+            if particle_count <= 0:
+                pools.append(None)
+                trace["candidate_counts"].append(0)
+                trace["candidate_pool_statistics"].append(None)
+                continue
+            local_seed = self.config.seed_for(f"pso_mean:{iteration}:elite:{rank}")
+            initial, lower, upper = self._local_initial_positions(
+                dataset.inputs[dataset_index], particle_count, rank, local_seed
+            )
+            result = TopoNaderPSO(
+                particle_count,
+                self.config.optimization.iterations,
+                self.config.optimization.mutation_rate,
+                self.config.optimization.stall_limit,
+                local_seed,
+            ).optimize(
+                predict_mean,
+                dimensions=self.geometry.input_dim,
+                initial_positions=initial,
+                lower_bounds=lower,
+                upper_bounds=upper,
+            )
+            keep_count = min(
+                max(settings.candidates_per_elite, quota * 20),
+                result.trajectory_positions.shape[0],
+            )
+            keep = np.argsort(-result.trajectory_scores)[:keep_count]
+            raw_pool = np.vstack([initial, result.trajectory_positions[keep]])
+            raw_priority = np.concatenate(
+                [result.trajectory_scores[:particle_count], result.trajectory_scores[keep]]
+            )
+            pool = finalize_candidate_pool(
+                raw_pool,
+                self.geometry,
+                predictor,
+                excluded_designs=dataset.inputs,
+                ranking_mode="mean",
+                raw_priority=raw_priority,
+            )
+            pools.append(pool)
+            trace["candidate_counts"].append(int(pool.designs.shape[0]))
+            trace["candidate_pool_statistics"].append(pool.finalization_stats)
+            for key, value in pool.rejection_counts.items():
+                rejection_counts[key] = rejection_counts.get(key, 0) + int(value)
+            if quota <= 0:
+                continue
+            batch = select_from_finalized_pool(
+                pool,
+                quota,
+                self.config.uncertainty.kappa,
+                "exploitation",
+                use_uncertainty=False,
+                use_diversity=self.config.method.diversity_sampling,
+                excluded_designs=selected_designs,
+            )
+            if batch.designs.shape[0]:
+                selected_batches.append(replace(batch, rejection_counts=None))
+                selected_designs = np.concatenate([selected_designs, batch.designs], axis=0)
+        while selected_designs.shape[0] < target_count:
+            progress = False
+            for pool in pools:
+                if pool is None or selected_designs.shape[0] >= target_count:
+                    continue
+                batch = select_from_finalized_pool(
+                    pool,
+                    target_count - selected_designs.shape[0],
+                    self.config.uncertainty.kappa,
+                    "exploitation",
+                    use_uncertainty=False,
+                    use_diversity=self.config.method.diversity_sampling,
+                    excluded_designs=selected_designs,
+                )
+                if batch.designs.shape[0]:
+                    selected_batches.append(replace(batch, rejection_counts=None))
+                    selected_designs = np.concatenate([selected_designs, batch.designs], axis=0)
+                    progress = True
+            if not progress:
+                break
+        if selected_designs.shape[0] != target_count:
+            raise RuntimeError(
+                f"elite-local EPSO produced {selected_designs.shape[0]} unique exploitation designs; "
+                f"expected {target_count}"
+            )
+        trace["selected_count"] = int(selected_designs.shape[0])
+        combined = combine_batches(*selected_batches)
+        combined.rejection_counts = rejection_counts
+        return combined, trace
+
+    def _global_exploration(
+        self,
+        dataset: TopoNaderDataset,
+        iteration: int,
+        predictor,
+        predict_ucb,
+        seeds: np.ndarray,
+        excluded_designs: np.ndarray,
+        target_count: int,
+    ):
+        seed = self.config.seed_for(f"pso_ucb:{iteration}")
+        result = TopoNaderPSO(
+            self.config.optimization.particles,
+            self.config.optimization.iterations,
+            self.config.optimization.mutation_rate,
+            self.config.optimization.stall_limit,
+            seed,
+        ).optimize(predict_ucb, dimensions=self.geometry.input_dim, seeds=seeds)
+        keep_count = min(
+            max(self.config.optimization.candidate_pool_size * 10, target_count * 50),
+            result.trajectory_positions.shape[0],
+        )
+        keep = np.argsort(-result.trajectory_scores)[:keep_count]
+        pool = finalize_candidate_pool(
+            result.trajectory_positions[keep],
+            self.geometry,
+            predictor,
+            excluded_designs=np.concatenate([dataset.inputs, excluded_designs], axis=0),
+            ranking_mode="ucb",
+            kappa=self.config.uncertainty.kappa,
+            raw_priority=result.trajectory_scores[keep],
+        )
+        batches = []
+        selected = np.empty((0, *self.geometry.design_shape), dtype=np.float64)
+        batch = select_from_finalized_pool(
+            pool,
+            target_count,
+            self.config.uncertainty.kappa,
+            "exploration",
+            use_uncertainty=True,
+            use_diversity=self.config.method.diversity_sampling,
+        )
+        if batch.designs.shape[0]:
+            batches.append(batch)
+            selected = batch.designs
+        rng = np.random.default_rng(self.config.seed_for(f"exploration_refill:{iteration}"))
+        attempts = 0
+        refill_statistics = []
+        while selected.shape[0] < target_count and attempts < 4:
+            attempts += 1
+            random_pool = rng.random((max(500, target_count * 100), self.geometry.input_dim))
+            finalized = finalize_candidate_pool(
+                random_pool,
+                self.geometry,
+                predictor,
+                excluded_designs=np.concatenate(
+                    [dataset.inputs, excluded_designs, selected], axis=0
+                ),
+                ranking_mode="ucb",
+                kappa=self.config.uncertainty.kappa,
+            )
+            refill_statistics.append(finalized.finalization_stats)
+            refill = select_from_finalized_pool(
+                finalized,
+                target_count - selected.shape[0],
+                self.config.uncertainty.kappa,
+                "exploration",
+                use_uncertainty=True,
+                use_diversity=self.config.method.diversity_sampling,
+            )
+            if refill.designs.shape[0]:
+                batches.append(refill)
+                selected = np.concatenate([selected, refill.designs], axis=0)
+        if selected.shape[0] != target_count:
+            raise RuntimeError(
+                f"global UCB-EPSO produced {selected.shape[0]} unique exploration designs; "
+                f"expected {target_count}"
+            )
+        return combine_batches(*batches), {
+            "candidate_count": int(pool.designs.shape[0]),
+            "refill_attempts": attempts,
+            "selected_count": int(selected.shape[0]),
+            "candidate_pool_statistics": pool.finalization_stats,
+            "refill_pool_statistics": refill_statistics,
+        }
 
     def _train_architecture_set(
         self,
@@ -312,59 +609,94 @@ class TopoNaderEngine:
         seed_order = np.argsort(-dataset.outputs)[: min(10, dataset.outputs.size)]
         seeds = self.geometry.normalize(dataset.inputs[seed_order]).reshape(-1, self.geometry.input_dim)
         optimization = self.config.optimization
-        mean_pso = TopoNaderPSO(
-            optimization.particles,
-            optimization.iterations,
-            optimization.mutation_rate,
-            optimization.stall_limit,
-            self.seeds["pso_mean"],
-        ).optimize(predict_mean, dimensions=self.geometry.input_dim, seeds=seeds)
-        if self.config.method.uncertainty_sampling:
-            ucb_pso = TopoNaderPSO(
+        search_trace = {"elite_local_search": {"enabled": False}}
+        if optimization.elite_local_search.enabled:
+            exploitation_target = (
+                optimization.exploitation_count
+                if self.config.method.uncertainty_sampling
+                else optimization.fe_batch_size
+            )
+            exploitation_batch, elite_trace = self._elite_local_exploitation(
+                dataset,
+                iteration,
+                uncertainty_predictor.predict,
+                predict_mean,
+                exploitation_target,
+            )
+            search_trace["elite_local_search"] = elite_trace
+            batches = [exploitation_batch]
+            if self.config.method.uncertainty_sampling and optimization.exploration_count:
+                exploration_batch, exploration_trace = self._global_exploration(
+                    dataset,
+                    iteration,
+                    uncertainty_predictor.predict,
+                    predict_ucb,
+                    seeds,
+                    exploitation_batch.designs,
+                    optimization.exploration_count,
+                )
+                batches.append(exploration_batch)
+                search_trace["global_exploration"] = exploration_trace
+            batch = combine_batches(*batches)
+            if batch.designs.shape[0] != optimization.fe_batch_size:
+                raise RuntimeError(
+                    f"elite-local search prepared {batch.designs.shape[0]} FE designs; "
+                    f"expected {optimization.fe_batch_size}"
+                )
+        else:
+            mean_pso = TopoNaderPSO(
                 optimization.particles,
                 optimization.iterations,
                 optimization.mutation_rate,
                 optimization.stall_limit,
-                self.seeds["pso_ucb"],
-            ).optimize(predict_ucb, dimensions=self.geometry.input_dim, seeds=seeds)
-            mean_count = min(
-                max(1, optimization.candidate_pool_size // 2), mean_pso.trajectory_positions.shape[0]
+                self.config.seed_for(f"pso_mean:{iteration}"),
+            ).optimize(predict_mean, dimensions=self.geometry.input_dim, seeds=seeds)
+            if self.config.method.uncertainty_sampling:
+                ucb_pso = TopoNaderPSO(
+                    optimization.particles,
+                    optimization.iterations,
+                    optimization.mutation_rate,
+                    optimization.stall_limit,
+                    self.config.seed_for(f"pso_ucb:{iteration}"),
+                ).optimize(predict_ucb, dimensions=self.geometry.input_dim, seeds=seeds)
+                mean_count = min(
+                    max(1, optimization.candidate_pool_size // 2), mean_pso.trajectory_positions.shape[0]
+                )
+                ucb_count = min(
+                    max(1, optimization.candidate_pool_size - mean_count), ucb_pso.trajectory_positions.shape[0]
+                )
+                mean_keep = np.argsort(-mean_pso.trajectory_scores)[:mean_count]
+                ucb_keep = np.argsort(-ucb_pso.trajectory_scores)[:ucb_count]
+                pool = np.vstack([
+                    mean_pso.trajectory_positions[mean_keep],
+                    ucb_pso.trajectory_positions[ucb_keep],
+                ])
+                mean, uncertainty = uncertainty_predictor.predict(pool)
+                exploitation_count = optimization.exploitation_count
+                exploration_count = optimization.exploration_count
+                final_predictor = uncertainty_predictor.predict
+            else:
+                keep_count = min(optimization.candidate_pool_size, mean_pso.trajectory_positions.shape[0])
+                keep = np.argsort(-mean_pso.trajectory_scores)[:keep_count]
+                pool = mean_pso.trajectory_positions[keep]
+                mean, uncertainty = deterministic_predictor.predict(pool)
+                exploitation_count = optimization.fe_batch_size
+                exploration_count = 0
+                final_predictor = deterministic_predictor.predict
+            batch = select_active_batch(
+                pool,
+                mean,
+                uncertainty,
+                self.geometry,
+                exploitation_count,
+                exploration_count,
+                self.config.uncertainty.kappa,
+                use_diversity=self.config.method.diversity_sampling,
+                excluded_designs=dataset.inputs,
             )
-            ucb_count = min(
-                max(1, optimization.candidate_pool_size - mean_count), ucb_pso.trajectory_positions.shape[0]
+            batch = refresh_batch_predictions(
+                batch, self.geometry, final_predictor, self.config.uncertainty.kappa
             )
-            mean_keep = np.argsort(-mean_pso.trajectory_scores)[:mean_count]
-            ucb_keep = np.argsort(-ucb_pso.trajectory_scores)[:ucb_count]
-            pool = np.vstack([
-                mean_pso.trajectory_positions[mean_keep],
-                ucb_pso.trajectory_positions[ucb_keep],
-            ])
-            mean, uncertainty = uncertainty_predictor.predict(pool)
-            exploitation_count = optimization.exploitation_count
-            exploration_count = optimization.exploration_count
-            final_predictor = uncertainty_predictor.predict
-        else:
-            keep_count = min(optimization.candidate_pool_size, mean_pso.trajectory_positions.shape[0])
-            keep = np.argsort(-mean_pso.trajectory_scores)[:keep_count]
-            pool = mean_pso.trajectory_positions[keep]
-            mean, uncertainty = deterministic_predictor.predict(pool)
-            exploitation_count = optimization.fe_batch_size
-            exploration_count = 0
-            final_predictor = deterministic_predictor.predict
-        batch = select_active_batch(
-            pool,
-            mean,
-            uncertainty,
-            self.geometry,
-            exploitation_count,
-            exploration_count,
-            self.config.uncertainty.kappa,
-            use_diversity=self.config.method.diversity_sampling,
-            excluded_designs=dataset.inputs,
-        )
-        batch = refresh_batch_predictions(
-            batch, self.geometry, final_predictor, self.config.uncertainty.kappa
-        )
         extra = {
             "iteration": np.asarray([[iteration]], dtype=np.int64),
             "architecture_id": np.asarray([provisional.architecture_id], dtype=object),
@@ -419,6 +751,7 @@ class TopoNaderEngine:
                 "actual_std": float(np.std(batch.coverage_ratios)),
                 "rejection_counts": batch.rejection_counts,
             },
+            "search": search_trace,
             "audit_trace_file": "audit/trace.json" if audit_trace is not None else None,
         }
         write_json_atomic(iteration_dir / "manifest.json", manifest)

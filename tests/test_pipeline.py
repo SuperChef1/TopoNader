@@ -13,12 +13,14 @@ from topo_nader.config import (
     TopoNaderConfig,
     TopoNaderCoverageConfig,
     TopoNaderDataConfig,
+    TopoNaderEliteLocalSearchConfig,
     TopoNaderMethodConfig,
     TopoNaderOptimizationConfig,
     TopoNaderTrainingConfig,
     TopoNaderUncertaintyConfig,
 )
 from topo_nader.pipeline import TopoNaderEngine
+from topo_nader.pipeline.engine import _allocate_integer
 from topo_nader.training.trainer import load_toponader_checkpoint
 from topo_nader.training.uncertainty import TopoNaderDeterministicPredictor
 
@@ -38,6 +40,67 @@ class TinyTopoNaderEngine(TopoNaderEngine):
 
 
 class TopoNaderPipelineTests(unittest.TestCase):
+    def test_formal_elite_allocations_are_exact(self):
+        self.assertEqual(_allocate_integer(300, (0.40, 0.20, 0.16, 0.12, 0.12)), [120, 60, 48, 36, 36])
+        self.assertEqual(_allocate_integer(10, (0.40, 0.20, 0.20, 0.10, 0.10)), [4, 2, 2, 1, 1])
+
+    def test_elite_local_prepare_keeps_exact_exploitation_and_exploration_counts(self):
+        config = TopoNaderConfig(
+            experiment_name="elite-local-test",
+            data=TopoNaderDataConfig(validation_fraction=0.25, output_log10=False),
+            training=TopoNaderTrainingConfig(
+                epochs=1, quick_epochs=1, batch_size=8, patience=1, device="cpu"
+            ),
+            uncertainty=TopoNaderUncertaintyConfig(mc_samples=2),
+            optimization=TopoNaderOptimizationConfig(
+                particles=8,
+                iterations=1,
+                candidate_pool_size=10,
+                fe_batch_size=4,
+                exploitation_count=2,
+                exploration_count=2,
+                coverage=TopoNaderCoverageConfig(upper_bound_enabled=False),
+                elite_local_search=TopoNaderEliteLocalSearchConfig(
+                    enabled=True,
+                    elite_count=2,
+                    particle_weights=(0.6, 0.4),
+                    selected_weights=(0.5, 0.5),
+                    candidates_per_elite=10,
+                ),
+            ),
+            method=TopoNaderMethodConfig(
+                architecture_adaptation=False,
+                uncertainty_sampling=True,
+                diversity_sampling=True,
+            ),
+            agents=TopoNaderAgentConfig(enabled=False),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            engine = TinyTopoNaderEngine(config, Path(__file__).parents[1])
+            normalized = np.random.default_rng(31).random((16, 4, 4))
+            designs = engine.geometry.denormalize(normalized)
+            dataset_path = root / "initial.mat"
+            savemat(dataset_path, {"inputs": designs, "outputs": np.linspace(1.0, 2.0, 16)})
+            request_path = engine.prepare_iteration(root / "run", dataset_path, 1)
+            request = loadmat(request_path)
+            manifest = json.loads(
+                (root / "run" / "iteration_0001" / "manifest.json").read_text()
+            )
+        sources = [str(value[0]) for value in request["source"].reshape(-1)]
+        self.assertEqual(request["inputs"].shape[0], 4)
+        self.assertEqual(sources.count("exploitation"), 2)
+        self.assertEqual(sources.count("exploration"), 2)
+        self.assertTrue(manifest["search"]["elite_local_search"]["enabled"])
+        elite_stats = manifest["search"]["elite_local_search"]["candidate_pool_statistics"]
+        self.assertEqual(len(elite_stats), 2)
+        self.assertIn("coverage_repaired_fraction", elite_stats[0])
+        self.assertIn("ranking_stability", elite_stats[0])
+        exploration_stats = manifest["search"]["global_exploration"][
+            "candidate_pool_statistics"
+        ]
+        self.assertIn("final_structure_duplicate_fraction", exploration_stats)
+
     def test_prepare_feedback_and_per_iteration_summary(self):
         config = TopoNaderConfig(
             data=TopoNaderDataConfig(validation_fraction=0.25, output_log10=False),
