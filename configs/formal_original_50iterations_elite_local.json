@@ -1,0 +1,13 @@
+{
+  "extends": "default.json",
+  "experiment_name": "formal-original-50iterations-elite-local-10x10",
+  "method": {
+    "architecture_adaptation": false,
+    "architecture_review_mode": "event_triggered",
+    "uncertainty_sampling": true,
+    "diversity_sampling": true
+  },
+  "agents": {
+    "enabled": false
+  }
+}

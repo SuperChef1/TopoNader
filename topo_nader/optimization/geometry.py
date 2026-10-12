@@ -15,6 +15,8 @@ class TopoNaderGeometryResult:
     design: np.ndarray
     coverage_ratio: float
     reason: str | None = None
+    original_coverage_ratio: float | None = None
+    coverage_repaired: bool = False
 
 
 class TopoNaderGeometry:
@@ -98,6 +100,8 @@ class TopoNaderGeometry:
     def finalize(self, design: np.ndarray) -> TopoNaderGeometryResult:
         candidate = self.discretize(design)
         ratio = self.coverage(candidate)
+        original_ratio = ratio
+        original_candidate = candidate.copy()
         coverage = self.config.coverage
         if coverage.upper_bound_enabled and ratio > coverage.upper_bound:
             original_widths = candidate[:, 3].copy()
@@ -162,6 +166,8 @@ class TopoNaderGeometry:
             design=candidate,
             coverage_ratio=ratio,
             reason=reason,
+            original_coverage_ratio=original_ratio,
+            coverage_repaired=bool(not np.array_equal(candidate, original_candidate)),
         )
 
 

@@ -57,6 +57,23 @@ class TopoNaderCoverageConfig:
 
 
 @dataclass
+class TopoNaderEliteLocalSearchConfig:
+    enabled: bool = False
+    elite_count: int = 5
+    particle_weights: tuple[float, ...] = (0.40, 0.20, 0.16, 0.12, 0.12)
+    selected_weights: tuple[float, ...] = (0.40, 0.20, 0.20, 0.10, 0.10)
+    small_position_radius: float = 20.0
+    small_angle_radius: float = 5.0
+    small_width_radius: float = 10.0
+    medium_position_radius: float = 40.0
+    medium_angle_radius: float = 10.0
+    medium_width_radius: float = 20.0
+    single_parameter_fraction: float = 0.60
+    single_bar_two_parameter_fraction: float = 0.25
+    candidates_per_elite: int = 100
+
+
+@dataclass
 class TopoNaderOptimizationConfig:
     particles: int = 300
     iterations: int = 500
@@ -67,6 +84,9 @@ class TopoNaderOptimizationConfig:
     exploitation_count: int = 10
     exploration_count: int = 10
     coverage: TopoNaderCoverageConfig = field(default_factory=TopoNaderCoverageConfig)
+    elite_local_search: TopoNaderEliteLocalSearchConfig = field(
+        default_factory=TopoNaderEliteLocalSearchConfig
+    )
     grid_nx: int = 55
     grid_ny: int = 90
     grid_step: float = 10.0
@@ -78,6 +98,12 @@ class TopoNaderOptimizationConfig:
     def __post_init__(self) -> None:
         if isinstance(self.coverage, dict):
             self.coverage = TopoNaderCoverageConfig(**self.coverage)
+        if isinstance(self.elite_local_search, dict):
+            payload = dict(self.elite_local_search)
+            for key in ("particle_weights", "selected_weights"):
+                if key in payload:
+                    payload[key] = tuple(float(value) for value in payload[key])
+            self.elite_local_search = TopoNaderEliteLocalSearchConfig(**payload)
 
 
 @dataclass
@@ -173,6 +199,38 @@ class TopoNaderConfig:
             raise ValueError("validation_fraction must be between 0 and 0.5")
         if self.optimization.exploitation_count + self.optimization.exploration_count != self.optimization.fe_batch_size:
             raise ValueError("exploitation_count + exploration_count must equal fe_batch_size")
+        elite = self.optimization.elite_local_search
+        if elite.enabled:
+            if elite.elite_count < 1:
+                raise ValueError("elite_local_search elite_count must be positive")
+            if self.optimization.particles < elite.elite_count:
+                raise ValueError("elite_local_search requires at least one particle per elite")
+            if len(elite.particle_weights) != elite.elite_count or any(
+                weight <= 0 for weight in elite.particle_weights
+            ):
+                raise ValueError("elite_local_search particle_weights must contain one positive value per elite")
+            if len(elite.selected_weights) != elite.elite_count or any(
+                weight < 0 for weight in elite.selected_weights
+            ) or sum(elite.selected_weights) <= 0:
+                raise ValueError("elite_local_search selected_weights must contain one non-negative value per elite")
+            radii = (
+                elite.small_position_radius,
+                elite.small_angle_radius,
+                elite.small_width_radius,
+                elite.medium_position_radius,
+                elite.medium_angle_radius,
+                elite.medium_width_radius,
+            )
+            if any(radius <= 0 for radius in radii):
+                raise ValueError("elite_local_search radii must be positive")
+            if not 0.0 <= elite.single_parameter_fraction <= 1.0:
+                raise ValueError("elite_local_search single_parameter_fraction must be in [0, 1]")
+            if not 0.0 <= elite.single_bar_two_parameter_fraction <= 1.0:
+                raise ValueError("elite_local_search single_bar_two_parameter_fraction must be in [0, 1]")
+            if elite.single_parameter_fraction + elite.single_bar_two_parameter_fraction > 1.0:
+                raise ValueError("elite_local_search sparse initialization fractions exceed 1")
+            if elite.candidates_per_elite < 1:
+                raise ValueError("elite_local_search candidates_per_elite must be positive")
         if self.uncertainty.method != "mc_dropout":
             raise ValueError("only mc_dropout is implemented in this version")
         if self.architecture.candidate_count < 1 or self.architecture.fully_train_count < 1:

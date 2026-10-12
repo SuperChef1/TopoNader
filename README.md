@@ -10,7 +10,7 @@ The runtime has one optimization channel only:
 ```text
 current FE dataset
   -> train the inherited TopoNader surrogate
-  -> PSO over predicted mean and UCB
+  -> elite-local mean EPSO + global UCB EPSO
   -> exploit/explore/diversity batch
   -> MATLAB/COMSOL truth evaluation
   -> ranking and calibration feedback
@@ -73,7 +73,7 @@ py -3.11 -m venv .venv
 ```
 
 The default run directory is `paths.runs_dir/experiment_name`, so the default
-configuration creates `runs/toponader-four-bar-beam/iteration_0001/fe_request.mat`.
+configuration creates `runs/toponader-four-bar-beam-elite-local/iteration_0001/fe_request.mat`.
 `--run-dir` remains available as an explicit override. MATLAB evaluates
 that request and writes `fe_result.mat`; then run:
 
@@ -81,7 +81,7 @@ that request and writes `fe_result.mat`; then run:
 .\run_TopoNader.ps1 --config configs\default.json feedback `
   --dataset ..\test37_4Beam_Best\test37_4Beam_Best\data_g\300ntrain_train_step1.mat `
   --iteration 1 `
-  --fe-result runs\toponader-four-bar-beam\iteration_0001\fe_result.mat
+  --fe-result runs\toponader-four-bar-beam-elite-local\iteration_0001\fe_result.mat
 ```
 
 When `--next-dataset` is omitted, feedback writes the next dataset under the same
@@ -92,7 +92,7 @@ The main experiment controls in `default.json` are:
 
 ```json
 {
-  "experiment_name": "bars4-cov030-seed3",
+  "experiment_name": "toponader-four-bar-beam-elite-local",
   "random_seed": 3,
   "data": {"num_bars": 4, "parameters_per_bar": 4},
   "optimization": {
@@ -102,6 +102,12 @@ The main experiment controls in `default.json` are:
       "upper_tolerance": 0.02,
       "lower_bound_enabled": false,
       "lower_bound": null
+    },
+    "elite_local_search": {
+      "enabled": true,
+      "elite_count": 5,
+      "particle_weights": [0.40, 0.20, 0.16, 0.12, 0.12],
+      "selected_weights": [0.40, 0.20, 0.20, 0.10, 0.10]
     }
   }
 }
@@ -112,6 +118,13 @@ lower-bound path is implemented but disabled by default. The Python pipeline can
 use any positive number of bars; COMSOL execution additionally requires the `.mph`
 model to contain `r1` through `rN`. Missing features fail explicitly, and prebuilt
 features above `N` are disabled for that run.
+
+With `elite_local_search.enabled`, the 10 exploitation designs are searched by
+five independent local EPSO swarms centred on the five best true FE samples. The
+default 300 particles are allocated `120/60/48/36/36`, and the final exploitation
+quota is `4/2/2/1/1`. This changes initialization and bounds only; the EPSO velocity,
+personal-best, global-best, mutation, and stall-reset equations are unchanged.
+Exploration remains a separate global UCB-EPSO search.
 
 For the MATLAB-driven loop, set `TOPONADER_PYTHON` if `python` is not the desired
 interpreter and call `TopoNader_main` as documented in the file.
@@ -149,9 +162,9 @@ scientific performance metric. Set `architecture.zero_cost_enabled` to `false`
 to disable it during later ablations.
 
 The FE selector targets `optimization.fe_batch_size` designs (20 by default:
-10 exploitation and 10 exploration),
-but may return fewer after geometry repair and deduplication. It never writes an
-empty FE request: no valid candidate raises an error before COMSOL is called.
+10 exploitation and 10 exploration). With elite-local search enabled, it either
+returns the exact configured counts after geometry repair and deduplication or
+raises an error before COMSOL is called; it does not silently shrink the batch.
 Feedback with one valid FE result is accepted, while ranking correlations are
 recorded conservatively because a single sample cannot define an ordering.
 
@@ -211,6 +224,14 @@ initial dataset and counts failed new FE calls as spent budget.
   calls and parent-child comparisons use reproducible stochastic masks.
 - Every run stores a config snapshot, dataset hash, iteration manifest, model
   metrics, agent transcript, trigger state, and experience log.
+
+For elite-local runs, `iteration_NNNN/manifest.json` also records candidate-pool
+finalization diagnostics under `search`: the fraction requiring coverage repair,
+absolute and relative width changes, normalized projection distance, historical
+and post-repair duplicate counts, unique-candidate yield, and raw-versus-final
+ranking stability (Spearman correlation, pairwise order agreement, top-10 overlap,
+and priority-value changes). These statistics are computed only for shortlisted
+candidates, not for every PSO particle at every generation.
 
 Thresholds in `configs/default.json` are initial engineering defaults, not
 validated scientific constants. They should be fixed by pilot experiments before
