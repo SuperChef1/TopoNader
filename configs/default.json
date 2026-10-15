@@ -97,7 +97,7 @@
   },
   "agents": {
     "enabled": true,
-    "model": "gpt-5.5",
+    "model": "gpt-5.6-sol",
     "base_url": "https://api.openai.com/v1",
     "timeout_seconds": 300,
     "max_retries": 3,

@@ -1,0 +1,13 @@
+{
+  "extends": "default.json",
+  "experiment_name": "formal-llm-event-triggered-50iterations-elite-local-10x10",
+  "method": {
+    "architecture_adaptation": true,
+    "architecture_review_mode": "event_triggered",
+    "uncertainty_sampling": true,
+    "diversity_sampling": true
+  },
+  "agents": {
+    "enabled": true
+  }
+}

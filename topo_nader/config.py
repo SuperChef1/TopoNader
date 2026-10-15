@@ -148,7 +148,7 @@ class TopoNaderReportingConfig:
 @dataclass
 class TopoNaderAgentConfig:
     enabled: bool = True
-    model: str = "gpt-5.5"
+    model: str = "gpt-5.6-sol"
     base_url: str = "https://api.openai.com/v1"
     timeout_seconds: int = 300
     max_retries: int = 3
