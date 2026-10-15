@@ -1,0 +1,124 @@
+{
+  "experiment_name": "Baseline-4bars-30coverage",
+  "random_seed": 3,
+  "data": {
+    "input_key": "inputs",
+    "output_key": "outputs",
+    "chronological_input_key": "inputsX",
+    "chronological_output_key": "outputsX",
+    "num_bars": 4,
+    "parameters_per_bar": 4,
+    "validation_fraction": 0.2,
+    "output_log10": true
+  },
+  "training": {
+    "epochs": 300,
+    "quick_epochs": 30,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 40,
+    "device": "auto"
+  },
+  "uncertainty": {
+    "method": "mc_dropout",
+    "mc_samples": 20,
+    "kappa": 1.5
+  },
+  "optimization": {
+    "particles": 300,
+    "iterations": 500,
+    "mutation_rate": 0.1,
+    "stall_limit": 15,
+    "candidate_pool_size": 100,
+    "fe_batch_size": 20,
+    "exploitation_count": 10,
+    "exploration_count": 10,
+    "coverage": {
+      "upper_bound_enabled": true,
+      "upper_bound": 0.3,
+      "upper_tolerance": 0.02,
+      "lower_bound_enabled": false,
+      "lower_bound": null
+    },
+    "elite_local_search": {
+      "enabled": true,
+      "elite_count": 5,
+      "particle_weights": [
+        0.4,
+        0.2,
+        0.16,
+        0.12,
+        0.12
+      ],
+      "selected_weights": [
+        0.4,
+        0.2,
+        0.2,
+        0.1,
+        0.1
+      ],
+      "small_position_radius": 20.0,
+      "small_angle_radius": 5.0,
+      "small_width_radius": 10.0,
+      "medium_position_radius": 40.0,
+      "medium_angle_radius": 10.0,
+      "medium_width_radius": 20.0,
+      "single_parameter_fraction": 0.6,
+      "single_bar_two_parameter_fraction": 0.25,
+      "candidates_per_elite": 100
+    },
+    "grid_nx": 55,
+    "grid_ny": 90,
+    "grid_step": 10.0,
+    "grid_x0": -5.0,
+    "grid_y0": 445.0,
+    "rod_width_min": 1.0,
+    "rod_width_max": 500.0
+  },
+  "trigger": {
+    "enabled": true,
+    "patience": 3,
+    "max_architecture_age": 10,
+    "min_pairwise_accuracy": 0.6,
+    "min_kendall_tau": 0.2,
+    "max_topk_regret": 0.2,
+    "min_feedback_samples": 4
+  },
+  "architecture": {
+    "max_parameters": 5000000,
+    "candidate_count": 5,
+    "fully_train_count": 3,
+    "min_hidden_width": 16,
+    "max_hidden_width": 2048,
+    "max_depth": 8,
+    "min_latent_dim": 2,
+    "max_latent_dim": 512,
+    "candidate_retry_limit": 3,
+    "zero_cost_enabled": true,
+    "zero_cost_keep_count": 4
+  },
+  "method": {
+    "architecture_adaptation": false,
+    "architecture_review_mode": "event_triggered",
+    "uncertainty_sampling": true,
+    "diversity_sampling": true
+  },
+  "reporting": {
+    "target_performance": null
+  },
+  "agents": {
+    "enabled": false,
+    "model": "gpt-5.6-sol",
+    "base_url": "https://www.onetopai.com/v1",
+    "timeout_seconds": 300,
+    "max_retries": 3,
+    "structured_output_retries": 2
+  },
+  "paths": {
+    "runs_dir": "runs",
+    "experience_file": "state/architecture_experiences.jsonl",
+    "source_topology_dir": "matlab",
+    "comsol_model": "matlab/fuban_Beam.mph"
+  }
+}
