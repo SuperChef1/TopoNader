@@ -49,6 +49,17 @@ def _device(name: str) -> torch.device:
     return torch.device(name)
 
 
+def _validation_predictions(
+    model: nn.Module, inputs: torch.Tensor, device: torch.device, batch_size: int
+) -> torch.Tensor:
+    """Keep validation activations bounded as the cumulative dataset grows."""
+    with torch.no_grad():
+        return torch.cat([
+            model(batch.to(device)).detach().cpu()
+            for batch in inputs.split(batch_size)
+        ], dim=0)
+
+
 class TopoNaderTrainer:
     def __init__(self, config: TopoNaderTrainingConfig):
         self.config = config
@@ -68,9 +79,9 @@ class TopoNaderTrainer:
         transform = TopoNaderTargetTransform.fit(split.y_train, log10=output_log10)
         train_x = torch.as_tensor(split.x_train, dtype=torch.float32)
         train_y = torch.as_tensor(transform.transform(split.y_train).reshape(-1, 1), dtype=torch.float32)
-        validation_x = torch.as_tensor(split.x_validation, dtype=torch.float32, device=self.device)
+        validation_x = torch.as_tensor(split.x_validation, dtype=torch.float32)
         validation_y = torch.as_tensor(
-            transform.transform(split.y_validation).reshape(-1, 1), dtype=torch.float32, device=self.device
+            transform.transform(split.y_validation).reshape(-1, 1), dtype=torch.float32
         )
         drop_last = train_x.shape[0] % self.config.batch_size == 1
         loader = DataLoader(
@@ -102,8 +113,10 @@ class TopoNaderTrainer:
                 weighted_loss += float(loss.detach()) * batch_x.shape[0]
                 seen += batch_x.shape[0]
             model.eval()
-            with torch.no_grad():
-                validation_loss = float(loss_function(model(validation_x), validation_y))
+            validation_prediction = _validation_predictions(
+                model, validation_x, self.device, self.config.batch_size
+            )
+            validation_loss = float(loss_function(validation_prediction, validation_y))
             history.append({"epoch": float(epoch), "train_loss": weighted_loss / max(seen, 1), "validation_loss": validation_loss})
             if validation_loss < best_loss - 1e-10:
                 best_loss = validation_loss
@@ -116,8 +129,9 @@ class TopoNaderTrainer:
                     break
         model.load_state_dict(best_state)
         model.eval()
-        with torch.no_grad():
-            pred_z = model(validation_x).cpu().numpy().reshape(-1)
+        pred_z = _validation_predictions(
+            model, validation_x, self.device, self.config.batch_size
+        ).numpy().reshape(-1)
         pred_physical = transform.inverse(pred_z)
         evaluation = evaluate_predictions(split.y_validation, pred_physical, topk=min(3, split.y_validation.size))
         saved_path = None
