@@ -1,2 +1,0 @@
-[console_scripts]
-toponader = topo_nader.cli:main

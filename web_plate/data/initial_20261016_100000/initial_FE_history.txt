@@ -1,5 +1,5 @@
-===== history_00001 | success_idx_000001 | 2026-10-14 21:07:24 | SUCCESS =====
-output_metric=0.0044654378703065266
+===== history_00001 | success_idx_000001 | 2026-10-16 10:00:21 | SUCCESS =====
+output_metric=0.0055817973411367754
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -298, -127, 144, 82;
@@ -8,8 +8,8 @@ rod_params = [
  -311, -208, 135, 72
 ];
 
-===== history_00002 | success_idx_000002 | 2026-10-14 21:07:34 | SUCCESS =====
-output_metric=0.0062639133129192334
+===== history_00002 | success_idx_000002 | 2026-10-16 10:00:31 | SUCCESS =====
+output_metric=0.0078298916407146708
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -37, -358, 154, 177;
@@ -18,8 +18,8 @@ rod_params = [
  -141, -442, 65, 136
 ];
 
-===== history_00003 | success_idx_000003 | 2026-10-14 21:07:44 | SUCCESS =====
-output_metric=0.0018973279263492216
+===== history_00003 | success_idx_000003 | 2026-10-16 10:00:41 | SUCCESS =====
+output_metric=0.0023716599080352086
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -119, -356, 53, 28;
@@ -28,8 +28,8 @@ rod_params = [
  -231, -338, 161, 124
 ];
 
-===== history_00004 | success_idx_000004 | 2026-10-14 21:07:53 | SUCCESS =====
-output_metric=0.0023990367526191083
+===== history_00004 | success_idx_000004 | 2026-10-16 10:00:50 | SUCCESS =====
+output_metric=0.0029987959409613365
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -362, 437, 41, 49;
@@ -38,8 +38,8 @@ rod_params = [
  -189, 42, 55, 39
 ];
 
-===== history_00005 | success_idx_000005 | 2026-10-14 21:08:03 | SUCCESS =====
-output_metric=0.0016604683159370469
+===== history_00005 | success_idx_000005 | 2026-10-16 10:00:59 | SUCCESS =====
+output_metric=0.0020755853952867664
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -168, 45, 26, 28;
@@ -48,8 +48,8 @@ rod_params = [
  -45, 225, 140, 28
 ];
 
-===== history_00006 | success_idx_000006 | 2026-10-14 21:08:12 | SUCCESS =====
-output_metric=0.0055679176093262747
+===== history_00006 | success_idx_000006 | 2026-10-16 10:01:09 | SUCCESS =====
+output_metric=0.0069598970113651099
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -82, 225, 172, 60;
@@ -58,8 +58,8 @@ rod_params = [
  -100, 145, 58, 7
 ];
 
-===== history_00007 | success_idx_000007 | 2026-10-14 21:08:21 | SUCCESS =====
-output_metric=0.021741218438489942
+===== history_00007 | success_idx_000007 | 2026-10-16 10:01:18 | SUCCESS =====
+output_metric=0.02717652304826074
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -349, 11, 74, 36;
@@ -68,8 +68,8 @@ rod_params = [
  -177, 353, 25, 34
 ];
 
-===== history_00008 | success_idx_000008 | 2026-10-14 21:08:30 | SUCCESS =====
-output_metric=0.067554031572095843
+===== history_00008 | success_idx_000008 | 2026-10-16 10:01:27 | SUCCESS =====
+output_metric=0.084442539472056849
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -297, -236, 89, 45;
@@ -78,8 +78,8 @@ rod_params = [
  -261, -299, 34, 80
 ];
 
-===== history_00009 | success_idx_000009 | 2026-10-14 21:08:39 | SUCCESS =====
-output_metric=0.0051955933825265877
+===== history_00009 | success_idx_000009 | 2026-10-16 10:01:36 | SUCCESS =====
+output_metric=0.0064944917275252959
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -529, 358, 134, 110;
@@ -88,8 +88,8 @@ rod_params = [
  -6, 156, 148, 106
 ];
 
-===== history_00010 | success_idx_000010 | 2026-10-14 21:08:50 | SUCCESS =====
-output_metric=0.0012894677967339601
+===== history_00010 | success_idx_000010 | 2026-10-16 10:01:46 | SUCCESS =====
+output_metric=0.0016118347474554555
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -193, -404, 42, 17;
@@ -98,8 +98,8 @@ rod_params = [
  -487, -165, 145, 78
 ];
 
-===== history_00011 | success_idx_000011 | 2026-10-14 21:08:59 | SUCCESS =====
-output_metric=0.024421049487553373
+===== history_00011 | success_idx_000011 | 2026-10-16 10:01:55 | SUCCESS =====
+output_metric=0.030526311860958517
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -495, 66, 26, 68;
@@ -108,8 +108,8 @@ rod_params = [
  -161, 125, 139, 63
 ];
 
-===== history_00012 | success_idx_000012 | 2026-10-14 21:09:08 | SUCCESS =====
-output_metric=0.015320189225754921
+===== history_00012 | success_idx_000012 | 2026-10-16 10:02:05 | SUCCESS =====
+output_metric=0.019150236534478077
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -192, 244, 144, 75;
@@ -118,8 +118,8 @@ rod_params = [
  -110, -404, 30, 23
 ];
 
-===== history_00013 | success_idx_000013 | 2026-10-14 21:09:17 | SUCCESS =====
-output_metric=0.0031564009861853818
+===== history_00013 | success_idx_000013 | 2026-10-16 10:02:14 | SUCCESS =====
+output_metric=0.0039455012320205049
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -118, -410, 143, 69;
@@ -128,8 +128,8 @@ rod_params = [
  -541, -279, 126, 75
 ];
 
-===== history_00014 | success_idx_000014 | 2026-10-14 21:09:27 | SUCCESS =====
-output_metric=0.004231755673028509
+===== history_00014 | success_idx_000014 | 2026-10-16 10:02:23 | SUCCESS =====
+output_metric=0.0052896945915204769
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -149, 298, 176, 92;
@@ -138,8 +138,8 @@ rod_params = [
  -44, 262, 44, 26
 ];
 
-===== history_00015 | success_idx_000015 | 2026-10-14 21:09:37 | SUCCESS =====
-output_metric=0.0013232699205173901
+===== history_00015 | success_idx_000015 | 2026-10-16 10:02:33 | SUCCESS =====
+output_metric=0.0016540873999026518
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -46, 200, 166, 94;
@@ -148,8 +148,8 @@ rod_params = [
  -162, -269, 134, 46
 ];
 
-===== history_00016 | success_idx_000016 | 2026-10-14 21:09:46 | SUCCESS =====
-output_metric=0.0027388943673079345
+===== history_00016 | success_idx_000016 | 2026-10-16 10:02:42 | SUCCESS =====
+output_metric=0.0034236179594887058
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -192, 168, 21, 61;
@@ -158,8 +158,8 @@ rod_params = [
  -468, -95, 78, 25
 ];
 
-===== history_00017 | success_idx_000017 | 2026-10-14 21:09:55 | SUCCESS =====
-output_metric=0.0095420526581599645
+===== history_00017 | success_idx_000017 | 2026-10-16 10:02:51 | SUCCESS =====
+output_metric=0.011927565827889713
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -224, -137, 172, 94;
@@ -168,8 +168,8 @@ rod_params = [
  -236, -341, 175, 73
 ];
 
-===== history_00018 | success_idx_000018 | 2026-10-14 21:10:04 | SUCCESS =====
-output_metric=0.001626682041070469
+===== history_00018 | success_idx_000018 | 2026-10-16 10:03:00 | SUCCESS =====
+output_metric=0.0020333525526493959
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -65, -423, 63, 29;
@@ -178,8 +178,8 @@ rod_params = [
  -408, 4, 111, 81
 ];
 
-===== history_00019 | success_idx_000019 | 2026-10-14 21:10:13 | SUCCESS =====
-output_metric=0.024225389703750547
+===== history_00019 | success_idx_000019 | 2026-10-16 10:03:09 | SUCCESS =====
+output_metric=0.030281737128964495
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -388, 91, 160, 40;
@@ -188,8 +188,8 @@ rod_params = [
  -493, 88, 141, 86
 ];
 
-===== history_00020 | success_idx_000020 | 2026-10-14 21:10:22 | SUCCESS =====
-output_metric=0.029181095022251514
+===== history_00020 | success_idx_000020 | 2026-10-16 10:03:18 | SUCCESS =====
+output_metric=0.036476368776379414
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -507, -195, 133, 37;
@@ -198,8 +198,8 @@ rod_params = [
  -375, 306, 29, 42
 ];
 
-===== history_00021 | success_idx_000021 | 2026-10-14 21:10:31 | SUCCESS =====
-output_metric=0.021003806286636759
+===== history_00021 | success_idx_000021 | 2026-10-16 10:03:27 | SUCCESS =====
+output_metric=0.026254757835337712
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -399, 325, 166, 79;
@@ -208,8 +208,8 @@ rod_params = [
  -544, 56, 71, 59
 ];
 
-===== history_00022 | success_idx_000022 | 2026-10-14 21:10:40 | SUCCESS =====
-output_metric=0.066752342274116847
+===== history_00022 | success_idx_000022 | 2026-10-16 10:03:36 | SUCCESS =====
+output_metric=0.083440427863526442
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -190, -198, 62, 52;
@@ -218,8 +218,8 @@ rod_params = [
  -367, 39, 177, 91
 ];
 
-===== history_00023 | success_idx_000023 | 2026-10-14 21:10:49 | SUCCESS =====
-output_metric=0.018497732936642416
+===== history_00023 | success_idx_000023 | 2026-10-16 10:03:45 | SUCCESS =====
+output_metric=0.023122166170922467
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -366, 148, 173, 105;
@@ -228,8 +228,8 @@ rod_params = [
  -22, -187, 99, 75
 ];
 
-===== history_00024 | success_idx_000024 | 2026-10-14 21:10:58 | SUCCESS =====
-output_metric=0.00038608822866331065
+===== history_00024 | success_idx_000024 | 2026-10-16 10:03:54 | SUCCESS =====
+output_metric=0.00048261028539176379
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -62, -247, 112, 31;
@@ -238,8 +238,8 @@ rod_params = [
  -413, 400, 42, 102
 ];
 
-===== history_00025 | success_idx_000025 | 2026-10-14 21:11:07 | SUCCESS =====
-output_metric=0.04690042924375077
+===== history_00025 | success_idx_000025 | 2026-10-16 10:04:03 | SUCCESS =====
+output_metric=0.058625536550081535
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -506, 413, 18, 77;
@@ -248,8 +248,8 @@ rod_params = [
  -232, -116, 96, 70
 ];
 
-===== history_00026 | success_idx_000026 | 2026-10-14 21:11:16 | SUCCESS =====
-output_metric=0.022451424596962467
+===== history_00026 | success_idx_000026 | 2026-10-16 10:04:12 | SUCCESS =====
+output_metric=0.028064280748005519
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -121, -325, 125, 38;
@@ -258,8 +258,8 @@ rod_params = [
  -327, -359, 7, 22
 ];
 
-===== history_00027 | success_idx_000027 | 2026-10-14 21:11:25 | SUCCESS =====
-output_metric=0.010085559893066396
+===== history_00027 | success_idx_000027 | 2026-10-16 10:04:21 | SUCCESS =====
+output_metric=0.012606949866493347
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -408, 195, 52, 75;
@@ -268,8 +268,8 @@ rod_params = [
  -129, 336, 153, 60
 ];
 
-===== history_00028 | success_idx_000028 | 2026-10-14 21:11:34 | SUCCESS =====
-output_metric=0.044217951998173188
+===== history_00028 | success_idx_000028 | 2026-10-16 10:04:30 | SUCCESS =====
+output_metric=0.05527243999732577
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -59, -308, 99, 45;
@@ -278,8 +278,8 @@ rod_params = [
  -44, -386, 36, 106
 ];
 
-===== history_00029 | success_idx_000029 | 2026-10-14 21:11:42 | SUCCESS =====
-output_metric=0.043575614449475511
+===== history_00029 | success_idx_000029 | 2026-10-16 10:04:39 | SUCCESS =====
+output_metric=0.054469518186878521
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -364, 194, 12, 42;
@@ -288,8 +288,8 @@ rod_params = [
  -383, 445, 155, 80
 ];
 
-===== history_00030 | success_idx_000030 | 2026-10-14 21:11:51 | SUCCESS =====
-output_metric=0.011724870475664277
+===== history_00030 | success_idx_000030 | 2026-10-16 10:04:48 | SUCCESS =====
+output_metric=0.014656088122001823
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -284, 189, 116, 35;
@@ -298,8 +298,8 @@ rod_params = [
  -64, 326, 121, 38
 ];
 
-===== history_00031 | success_idx_000031 | 2026-10-14 21:11:59 | SUCCESS =====
-output_metric=0.018875742349735283
+===== history_00031 | success_idx_000031 | 2026-10-16 10:04:56 | SUCCESS =====
+output_metric=0.023594677981451196
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -239, 214, 47, 16;
@@ -308,8 +308,8 @@ rod_params = [
  -218, -23, 97, 48
 ];
 
-===== history_00032 | success_idx_000032 | 2026-10-14 21:12:08 | SUCCESS =====
-output_metric=0.0057534624092729159
+===== history_00032 | success_idx_000032 | 2026-10-16 10:05:05 | SUCCESS =====
+output_metric=0.0071918280112177073
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -279, 325, 169, 65;
@@ -318,8 +318,8 @@ rod_params = [
  -255, 270, 139, 60
 ];
 
-===== history_00033 | success_idx_000033 | 2026-10-14 21:12:17 | SUCCESS =====
-output_metric=0.028998349942674879
+===== history_00033 | success_idx_000033 | 2026-10-16 10:05:14 | SUCCESS =====
+output_metric=0.036247937478339307
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -249, -206, 77, 20;
@@ -328,8 +328,8 @@ rod_params = [
  -311, 251, 43, 40
 ];
 
-===== history_00034 | success_idx_000034 | 2026-10-14 21:12:26 | SUCCESS =====
-output_metric=0.032784338564564058
+===== history_00034 | success_idx_000034 | 2026-10-16 10:05:24 | SUCCESS =====
+output_metric=0.040980423200801176
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -85, -20, 67, 92;
@@ -338,8 +338,8 @@ rod_params = [
  -360, 271, 31, 28
 ];
 
-===== history_00035 | success_idx_000035 | 2026-10-14 21:12:35 | SUCCESS =====
-output_metric=0.0039144629348654729
+===== history_00035 | success_idx_000035 | 2026-10-16 10:05:33 | SUCCESS =====
+output_metric=0.0048930786721618829
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -35, 275, 56, 123;
@@ -348,8 +348,8 @@ rod_params = [
  -303, -187, 100, 19
 ];
 
-===== history_00036 | success_idx_000036 | 2026-10-14 21:12:44 | SUCCESS =====
-output_metric=0.0078860551781415565
+===== history_00036 | success_idx_000036 | 2026-10-16 10:05:41 | SUCCESS =====
+output_metric=0.0098575689774652534
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -95, -212, 57, 96;
@@ -358,8 +358,8 @@ rod_params = [
  -134, 259, 55, 89
 ];
 
-===== history_00037 | success_idx_000037 | 2026-10-14 21:12:52 | SUCCESS =====
-output_metric=0.0020961496626577514
+===== history_00037 | success_idx_000037 | 2026-10-16 10:05:50 | SUCCESS =====
+output_metric=0.0026201870823520435
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -512, -320, 141, 49;
@@ -368,8 +368,8 @@ rod_params = [
  -283, 371, 121, 43
 ];
 
-===== history_00038 | success_idx_000038 | 2026-10-14 21:13:01 | SUCCESS =====
-output_metric=0.011215746729708024
+===== history_00038 | success_idx_000038 | 2026-10-16 10:05:59 | SUCCESS =====
+output_metric=0.014019683412181294
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -518, -380, 91, 97;
@@ -378,8 +378,8 @@ rod_params = [
  -44, -188, 100, 26
 ];
 
-===== history_00039 | success_idx_000039 | 2026-10-14 21:13:10 | SUCCESS =====
-output_metric=0.010777505488170046
+===== history_00039 | success_idx_000039 | 2026-10-16 10:06:08 | SUCCESS =====
+output_metric=0.01347188189160644
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -96, 298, 21, 114;
@@ -388,8 +388,8 @@ rod_params = [
  -283, 329, 70, 132
 ];
 
-===== history_00040 | success_idx_000040 | 2026-10-14 21:13:19 | SUCCESS =====
-output_metric=0.0012659797868547612
+===== history_00040 | success_idx_000040 | 2026-10-16 10:06:17 | SUCCESS =====
+output_metric=0.0015824747397760045
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -314, 415, 100, 71;
@@ -398,8 +398,8 @@ rod_params = [
  -360, 188, 139, 86
 ];
 
-===== history_00041 | success_idx_000041 | 2026-10-14 21:13:28 | SUCCESS =====
-output_metric=0.016835108845805753
+===== history_00041 | success_idx_000041 | 2026-10-16 10:06:26 | SUCCESS =====
+output_metric=0.021043886057223432
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -380, 250, 70, 122;
@@ -408,8 +408,8 @@ rod_params = [
  -132, -312, 128, 60
 ];
 
-===== history_00042 | success_idx_000042 | 2026-10-14 21:13:37 | SUCCESS =====
-output_metric=0.0011935861596670668
+===== history_00042 | success_idx_000042 | 2026-10-16 10:06:35 | SUCCESS =====
+output_metric=0.0014919827014932641
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -496, -154, 37, 24;
@@ -418,8 +418,8 @@ rod_params = [
  -486, -407, 130, 101
 ];
 
-===== history_00043 | success_idx_000043 | 2026-10-14 21:13:46 | SUCCESS =====
-output_metric=0.0016399739575770551
+===== history_00043 | success_idx_000043 | 2026-10-16 10:06:44 | SUCCESS =====
+output_metric=0.0020499674468796381
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -199, -218, 138, 40;
@@ -428,8 +428,8 @@ rod_params = [
  -131, 406, 66, 59
 ];
 
-===== history_00044 | success_idx_000044 | 2026-10-14 21:13:55 | SUCCESS =====
-output_metric=0.010082364420793299
+===== history_00044 | success_idx_000044 | 2026-10-16 10:06:53 | SUCCESS =====
+output_metric=0.012602955525800834
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -449, 55, 116, 52;
@@ -438,8 +438,8 @@ rod_params = [
  -461, 391, 117, 94
 ];
 
-===== history_00045 | success_idx_000045 | 2026-10-14 21:14:04 | SUCCESS =====
-output_metric=0.036848345058419579
+===== history_00045 | success_idx_000045 | 2026-10-16 10:07:02 | SUCCESS =====
+output_metric=0.046060431325236406
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -378, 383, 99, 70;
@@ -448,8 +448,8 @@ rod_params = [
  -427, 180, 25, 40
 ];
 
-===== history_00046 | success_idx_000046 | 2026-10-14 21:14:13 | SUCCESS =====
-output_metric=0.025263201928426775
+===== history_00046 | success_idx_000046 | 2026-10-16 10:07:11 | SUCCESS =====
+output_metric=0.031579002407782678
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -399, -59, 7, 64;
@@ -458,8 +458,8 @@ rod_params = [
  -280, -20, 49, 74
 ];
 
-===== history_00047 | success_idx_000047 | 2026-10-14 21:14:22 | SUCCESS =====
-output_metric=0.016988159909846919
+===== history_00047 | success_idx_000047 | 2026-10-16 10:07:20 | SUCCESS =====
+output_metric=0.021235199888451805
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -302, -298, 68, 38;
@@ -468,8 +468,8 @@ rod_params = [
  -100, -147, 52, 102
 ];
 
-===== history_00048 | success_idx_000048 | 2026-10-14 21:14:31 | SUCCESS =====
-output_metric=0.005393669604490353
+===== history_00048 | success_idx_000048 | 2026-10-16 10:07:29 | SUCCESS =====
+output_metric=0.0067420870089659199
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -368, -222, 3, 96;
@@ -478,8 +478,8 @@ rod_params = [
  -528, 236, 165, 131
 ];
 
-===== history_00049 | success_idx_000049 | 2026-10-14 21:14:40 | SUCCESS =====
-output_metric=0.0013062869638682717
+===== history_00049 | success_idx_000049 | 2026-10-16 10:07:38 | SUCCESS =====
+output_metric=0.0016328587055085973
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -134, 383, 76, 80;
@@ -488,8 +488,8 @@ rod_params = [
  -308, -150, 166, 63
 ];
 
-===== history_00050 | success_idx_000050 | 2026-10-14 21:14:49 | SUCCESS =====
-output_metric=0.052101182261830685
+===== history_00050 | success_idx_000050 | 2026-10-16 10:07:47 | SUCCESS =====
+output_metric=0.065126478233717325
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -488, -120, 119, 49;
@@ -498,8 +498,8 @@ rod_params = [
  -314, 197, 107, 64
 ];
 
-===== history_00051 | success_idx_000051 | 2026-10-14 21:14:57 | SUCCESS =====
-output_metric=0.056725200066245964
+===== history_00051 | success_idx_000051 | 2026-10-16 10:07:55 | SUCCESS =====
+output_metric=0.070906500090825136
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -342, 407, 129, 88;
@@ -508,8 +508,8 @@ rod_params = [
  -450, 11, 72, 78
 ];
 
-===== history_00052 | success_idx_000052 | 2026-10-14 21:15:06 | SUCCESS =====
-output_metric=0.0043200002210074711
+===== history_00052 | success_idx_000052 | 2026-10-16 10:08:04 | SUCCESS =====
+output_metric=0.0054000002762902904
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -364, 445, 22, 59;
@@ -518,8 +518,8 @@ rod_params = [
  -262, -406, 47, 22
 ];
 
-===== history_00053 | success_idx_000053 | 2026-10-14 21:15:14 | SUCCESS =====
-output_metric=0.0015552069694776012
+===== history_00053 | success_idx_000053 | 2026-10-16 10:08:13 | SUCCESS =====
+output_metric=0.0019440087119374134
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -349, -321, 148, 65;
@@ -528,8 +528,8 @@ rod_params = [
  -318, 426, 18, 29
 ];
 
-===== history_00054 | success_idx_000054 | 2026-10-14 21:15:23 | SUCCESS =====
-output_metric=0.0041543229521513493
+===== history_00054 | success_idx_000054 | 2026-10-16 10:08:22 | SUCCESS =====
+output_metric=0.0051929036907582098
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -321, -5, 107, 86;
@@ -538,8 +538,8 @@ rod_params = [
  -11, 322, 0, 70
 ];
 
-===== history_00055 | success_idx_000055 | 2026-10-14 21:15:32 | SUCCESS =====
-output_metric=0.00036604311688373883
+===== history_00055 | success_idx_000055 | 2026-10-16 10:08:30 | SUCCESS =====
+output_metric=0.00045755389639376046
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -451, -386, 56, 60;
@@ -548,8 +548,8 @@ rod_params = [
  -162, -411, 154, 95
 ];
 
-===== history_00056 | success_idx_000056 | 2026-10-14 21:15:41 | SUCCESS =====
-output_metric=0.0011944651001956023
+===== history_00056 | success_idx_000056 | 2026-10-16 10:08:39 | SUCCESS =====
+output_metric=0.001493081374714957
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -298, 50, 114, 103;
@@ -558,8 +558,8 @@ rod_params = [
  -522, 428, 169, 147
 ];
 
-===== history_00057 | success_idx_000057 | 2026-10-14 21:15:49 | SUCCESS =====
-output_metric=0.0036507889982327017
+===== history_00057 | success_idx_000057 | 2026-10-16 10:08:48 | SUCCESS =====
+output_metric=0.0045634862479396387
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -459, 392, 76, 26;
@@ -568,8 +568,8 @@ rod_params = [
  -239, 401, 57, 69
 ];
 
-===== history_00058 | success_idx_000058 | 2026-10-14 21:15:58 | SUCCESS =====
-output_metric=0.006133683730268456
+===== history_00058 | success_idx_000058 | 2026-10-16 10:08:57 | SUCCESS =====
+output_metric=0.0076671046631716627
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -10, -112, 59, 51;
@@ -578,8 +578,8 @@ rod_params = [
  -356, -284, 126, 96
 ];
 
-===== history_00059 | success_idx_000059 | 2026-10-14 21:16:07 | SUCCESS =====
-output_metric=0.010373454095717419
+===== history_00059 | success_idx_000059 | 2026-10-16 10:09:05 | SUCCESS =====
+output_metric=0.012966817606609832
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -141, 427, 141, 29;
@@ -588,8 +588,8 @@ rod_params = [
  -490, -319, 80, 28
 ];
 
-===== history_00060 | success_idx_000060 | 2026-10-14 21:16:15 | SUCCESS =====
-output_metric=0.0049818669358303218
+===== history_00060 | success_idx_000060 | 2026-10-16 10:09:14 | SUCCESS =====
+output_metric=0.0062273336695040987
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -133, -181, 56, 93;
@@ -598,8 +598,8 @@ rod_params = [
  -123, 430, 69, 75
 ];
 
-===== history_00061 | success_idx_000061 | 2026-10-14 21:16:24 | SUCCESS =====
-output_metric=0.0041504501599698117
+===== history_00061 | success_idx_000061 | 2026-10-16 10:09:23 | SUCCESS =====
+output_metric=0.0051880626988802673
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -408, -110, 78, 117;
@@ -608,8 +608,8 @@ rod_params = [
  -128, 148, 175, 28
 ];
 
-===== history_00062 | success_idx_000062 | 2026-10-14 21:16:33 | SUCCESS =====
-output_metric=0.0059320537679972548
+===== history_00062 | success_idx_000062 | 2026-10-16 10:09:31 | SUCCESS =====
+output_metric=0.0074150672038294212
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -384, 116, 148, 43;
@@ -618,8 +618,8 @@ rod_params = [
  -402, -209, 115, 43
 ];
 
-===== history_00063 | success_idx_000063 | 2026-10-14 21:16:42 | SUCCESS =====
-output_metric=0.0028249104632305662
+===== history_00063 | success_idx_000063 | 2026-10-16 10:09:41 | SUCCESS =====
+output_metric=0.0035311380860195292
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -137, 46, 139, 77;
@@ -628,8 +628,8 @@ rod_params = [
  -289, 245, 43, 84
 ];
 
-===== history_00064 | success_idx_000064 | 2026-10-14 21:16:51 | SUCCESS =====
-output_metric=0.026493963228910202
+===== history_00064 | success_idx_000064 | 2026-10-16 10:09:49 | SUCCESS =====
+output_metric=0.033117454103789676
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -12, 143, 68, 27;
@@ -638,8 +638,8 @@ rod_params = [
  -150, 397, 144, 25
 ];
 
-===== history_00065 | success_idx_000065 | 2026-10-14 21:16:59 | SUCCESS =====
-output_metric=0.018334477527097961
+===== history_00065 | success_idx_000065 | 2026-10-16 10:09:58 | SUCCESS =====
+output_metric=0.022918096841959106
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -29, 304, 19, 62;
@@ -648,8 +648,8 @@ rod_params = [
  -159, 48, 26, 32
 ];
 
-===== history_00066 | success_idx_000066 | 2026-10-14 21:17:08 | SUCCESS =====
-output_metric=0.028737848349475688
+===== history_00066 | success_idx_000066 | 2026-10-16 10:10:07 | SUCCESS =====
+output_metric=0.035922310437408178
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -82, 135, 135, 51;
@@ -658,8 +658,8 @@ rod_params = [
  -34, 149, 149, 54
 ];
 
-===== history_00067 | success_idx_000067 | 2026-10-14 21:17:17 | SUCCESS =====
-output_metric=0.0030129128003840303
+===== history_00067 | success_idx_000067 | 2026-10-16 10:10:16 | SUCCESS =====
+output_metric=0.00376614098569168
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -27, 387, 134, 24;
@@ -668,8 +668,8 @@ rod_params = [
  -344, -141, 5, 62
 ];
 
-===== history_00068 | success_idx_000068 | 2026-10-14 21:17:26 | SUCCESS =====
-output_metric=0.0080634361049541185
+===== history_00068 | success_idx_000068 | 2026-10-16 10:10:25 | SUCCESS =====
+output_metric=0.010079295113792189
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -175, 403, 72, 94;
@@ -678,8 +678,8 @@ rod_params = [
  -142, 38, 158, 21
 ];
 
-===== history_00069 | success_idx_000069 | 2026-10-14 21:17:34 | SUCCESS =====
-output_metric=0.0067723220253985581
+===== history_00069 | success_idx_000069 | 2026-10-16 10:10:34 | SUCCESS =====
+output_metric=0.0084654025603729758
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -364, 77, 83, 96;
@@ -688,8 +688,8 @@ rod_params = [
  -441, -401, 137, 83
 ];
 
-===== history_00070 | success_idx_000070 | 2026-10-14 21:17:43 | SUCCESS =====
-output_metric=0.0086688239161392087
+===== history_00070 | success_idx_000070 | 2026-10-16 10:10:42 | SUCCESS =====
+output_metric=0.010836029898778587
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -361, 435, 103, 56;
@@ -698,8 +698,8 @@ rod_params = [
  -169, -53, 93, 44
 ];
 
-===== history_00071 | success_idx_000071 | 2026-10-14 21:17:51 | SUCCESS =====
-output_metric=0.040127019110775861
+===== history_00071 | success_idx_000071 | 2026-10-16 10:10:51 | SUCCESS =====
+output_metric=0.05015877393312447
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -232, -283, 102, 107;
@@ -708,8 +708,8 @@ rod_params = [
  -285, 234, 52, 19
 ];
 
-===== history_00072 | success_idx_000072 | 2026-10-14 21:18:01 | SUCCESS =====
-output_metric=0.0039563829526678617
+===== history_00072 | success_idx_000072 | 2026-10-16 10:11:00 | SUCCESS =====
+output_metric=0.0049454786931391716
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -402, 231, 123, 39;
@@ -718,8 +718,8 @@ rod_params = [
  -392, 289, 170, 77
 ];
 
-===== history_00073 | success_idx_000073 | 2026-10-14 21:18:09 | SUCCESS =====
-output_metric=0.012956016224003128
+===== history_00073 | success_idx_000073 | 2026-10-16 10:11:09 | SUCCESS =====
+output_metric=0.016195020246051593
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -385, -211, 21, 59;
@@ -728,8 +728,8 @@ rod_params = [
  -351, 245, 156, 57
 ];
 
-===== history_00074 | success_idx_000074 | 2026-10-14 21:18:18 | SUCCESS =====
-output_metric=0.00662511124328506
+===== history_00074 | success_idx_000074 | 2026-10-16 10:11:18 | SUCCESS =====
+output_metric=0.0082813890487847142
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -430, 243, 171, 86;
@@ -738,8 +738,8 @@ rod_params = [
  -305, 125, 170, 60
 ];
 
-===== history_00075 | success_idx_000075 | 2026-10-14 21:18:27 | SUCCESS =====
-output_metric=0.0068612136454462569
+===== history_00075 | success_idx_000075 | 2026-10-16 10:11:27 | SUCCESS =====
+output_metric=0.0085765170567619377
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -133, 253, 1, 44;
@@ -748,8 +748,8 @@ rod_params = [
  -505, -159, 52, 82
 ];
 
-===== history_00076 | success_idx_000076 | 2026-10-14 21:18:36 | SUCCESS =====
-output_metric=0.0029128062523117214
+===== history_00076 | success_idx_000076 | 2026-10-16 10:11:36 | SUCCESS =====
+output_metric=0.0036410078154165059
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -97, -361, 56, 98;
@@ -758,8 +758,8 @@ rod_params = [
  -410, -411, 162, 49
 ];
 
-===== history_00077 | success_idx_000077 | 2026-10-14 21:18:46 | SUCCESS =====
-output_metric=0.0033627112932084861
+===== history_00077 | success_idx_000077 | 2026-10-16 10:11:46 | SUCCESS =====
+output_metric=0.0042033891162962696
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -237, -347, 53, 42;
@@ -768,8 +768,8 @@ rod_params = [
  -177, -94, 91, 70
 ];
 
-===== history_00078 | success_idx_000078 | 2026-10-14 21:18:55 | SUCCESS =====
-output_metric=0.0083762432932014113
+===== history_00078 | success_idx_000078 | 2026-10-16 10:11:55 | SUCCESS =====
+output_metric=0.010470304116415911
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -27, -63, 123, 55;
@@ -778,8 +778,8 @@ rod_params = [
  -417, 311, 107, 21
 ];
 
-===== history_00079 | success_idx_000079 | 2026-10-14 21:19:03 | SUCCESS =====
-output_metric=0.0063726664475136198
+===== history_00079 | success_idx_000079 | 2026-10-16 10:12:04 | SUCCESS =====
+output_metric=0.0079658330601247249
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -71, -227, 103, 88;
@@ -788,8 +788,8 @@ rod_params = [
  -219, -426, 14, 35
 ];
 
-===== history_00080 | success_idx_000080 | 2026-10-14 21:19:12 | SUCCESS =====
-output_metric=0.018115316527472967
+===== history_00080 | success_idx_000080 | 2026-10-16 10:12:12 | SUCCESS =====
+output_metric=0.022644145604027673
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -92, -276, 43, 88;
@@ -798,8 +798,8 @@ rod_params = [
  -446, -367, 120, 37
 ];
 
-===== history_00081 | success_idx_000081 | 2026-10-14 21:19:21 | SUCCESS =====
-output_metric=0.0010282437485819359
+===== history_00081 | success_idx_000081 | 2026-10-16 10:12:21 | SUCCESS =====
+output_metric=0.0012853046848438107
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -345, 348, 47, 81;
@@ -808,8 +808,8 @@ rod_params = [
  -99, 218, 158, 60
 ];
 
-===== history_00082 | success_idx_000082 | 2026-10-14 21:19:30 | SUCCESS =====
-output_metric=0.0019364204733634373
+===== history_00082 | success_idx_000082 | 2026-10-16 10:12:30 | SUCCESS =====
+output_metric=0.0024205255917326965
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -133, -264, 13, 75;
@@ -818,8 +818,8 @@ rod_params = [
  -185, 229, 168, 25
 ];
 
-===== history_00083 | success_idx_000083 | 2026-10-14 21:19:38 | SUCCESS =====
-output_metric=0.045576282002799465
+===== history_00083 | success_idx_000083 | 2026-10-16 10:12:39 | SUCCESS =====
+output_metric=0.056970352504974023
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -326, 34, 86, 103;
@@ -828,8 +828,8 @@ rod_params = [
  -16, 340, 26, 41
 ];
 
-===== history_00084 | success_idx_000084 | 2026-10-14 21:19:47 | SUCCESS =====
-output_metric=0.0524079889029508
+===== history_00084 | success_idx_000084 | 2026-10-16 10:12:47 | SUCCESS =====
+output_metric=0.065509986126177838
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -539, 164, 121, 55;
@@ -838,8 +838,8 @@ rod_params = [
  -384, 167, 13, 43
 ];
 
-===== history_00085 | success_idx_000085 | 2026-10-14 21:19:56 | SUCCESS =====
-output_metric=0.0095991663537281623
+===== history_00085 | success_idx_000085 | 2026-10-16 10:12:56 | SUCCESS =====
+output_metric=0.011998957930781177
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -380, -214, 162, 45;
@@ -848,8 +848,8 @@ rod_params = [
  -326, -66, 137, 75
 ];
 
-===== history_00086 | success_idx_000086 | 2026-10-14 21:20:04 | SUCCESS =====
-output_metric=0.022198214573152304
+===== history_00086 | success_idx_000086 | 2026-10-16 10:13:05 | SUCCESS =====
+output_metric=0.027747768255012056
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -35, 126, 39, 17;
@@ -858,8 +858,8 @@ rod_params = [
  -39, -345, 81, 34
 ];
 
-===== history_00087 | success_idx_000087 | 2026-10-14 21:20:13 | SUCCESS =====
-output_metric=0.058335805734149461
+===== history_00087 | success_idx_000087 | 2026-10-16 10:13:14 | SUCCESS =====
+output_metric=0.072919757136950897
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -425, -130, 115, 81;
@@ -868,8 +868,8 @@ rod_params = [
  -54, -193, 90, 53
 ];
 
-===== history_00088 | success_idx_000088 | 2026-10-14 21:20:22 | SUCCESS =====
-output_metric=0.0013496953727491329
+===== history_00088 | success_idx_000088 | 2026-10-16 10:13:23 | SUCCESS =====
+output_metric=0.0016871192161674871
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -108, -97, 120, 118;
@@ -878,8 +878,8 @@ rod_params = [
  -132, -351, 129, 76
 ];
 
-===== history_00089 | success_idx_000089 | 2026-10-14 21:20:31 | SUCCESS =====
-output_metric=0.026733547615286134
+===== history_00089 | success_idx_000089 | 2026-10-16 10:13:32 | SUCCESS =====
+output_metric=0.033416934519860129
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -526, 382, 6, 54;
@@ -888,8 +888,8 @@ rod_params = [
  -167, -138, 1, 73
 ];
 
-===== history_00090 | success_idx_000090 | 2026-10-14 21:20:40 | SUCCESS =====
-output_metric=0.00065170487198178617
+===== history_00090 | success_idx_000090 | 2026-10-16 10:13:41 | SUCCESS =====
+output_metric=0.00081463109067011358
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -230, 16, 160, 59;
@@ -898,8 +898,8 @@ rod_params = [
  -191, 410, 177, 47
 ];
 
-===== history_00091 | success_idx_000091 | 2026-10-14 21:20:48 | SUCCESS =====
-output_metric=0.0024188436769722941
+===== history_00091 | success_idx_000091 | 2026-10-16 10:13:49 | SUCCESS =====
+output_metric=0.0030235545959744242
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -327, -126, 177, 97;
@@ -908,8 +908,8 @@ rod_params = [
  -446, -35, 163, 16
 ];
 
-===== history_00092 | success_idx_000092 | 2026-10-14 21:20:57 | SUCCESS =====
-output_metric=0.02528543993426368
+===== history_00092 | success_idx_000092 | 2026-10-16 10:13:58 | SUCCESS =====
+output_metric=0.031606799927292782
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -69, 285, 121, 102;
@@ -918,8 +918,8 @@ rod_params = [
  -147, 423, 123, 72
 ];
 
-===== history_00093 | success_idx_000093 | 2026-10-14 21:21:06 | SUCCESS =====
-output_metric=0.0061319177258105529
+===== history_00093 | success_idx_000093 | 2026-10-16 10:14:07 | SUCCESS =====
+output_metric=0.0076648971656603383
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -403, 206, 11, 59;
@@ -928,8 +928,8 @@ rod_params = [
  -534, 396, 173, 16
 ];
 
-===== history_00094 | success_idx_000094 | 2026-10-14 21:21:15 | SUCCESS =====
-output_metric=0.0077206856079125473
+===== history_00094 | success_idx_000094 | 2026-10-16 10:14:16 | SUCCESS =====
+output_metric=0.0096508570106775965
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -274, 37, 22, 34;
@@ -938,8 +938,8 @@ rod_params = [
  -198, 142, 41, 55
 ];
 
-===== history_00095 | success_idx_000095 | 2026-10-14 21:21:23 | SUCCESS =====
-output_metric=0.036964627942019039
+===== history_00095 | success_idx_000095 | 2026-10-16 10:14:25 | SUCCESS =====
+output_metric=0.046205784929704195
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -432, 105, 122, 34;
@@ -948,8 +948,8 @@ rod_params = [
  -538, -375, 163, 51
 ];
 
-===== history_00096 | success_idx_000096 | 2026-10-14 21:21:32 | SUCCESS =====
-output_metric=0.0053765713167111947
+===== history_00096 | success_idx_000096 | 2026-10-16 10:14:34 | SUCCESS =====
+output_metric=0.006720714145961296
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -50, 123, 60, 46;
@@ -958,8 +958,8 @@ rod_params = [
  -465, -235, 64, 47
 ];
 
-===== history_00097 | success_idx_000097 | 2026-10-14 21:21:41 | SUCCESS =====
-output_metric=0.0044453343918213102
+===== history_00097 | success_idx_000097 | 2026-10-16 10:14:43 | SUCCESS =====
+output_metric=0.0055566679890294299
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -536, -10, 37, 57;
@@ -968,8 +968,8 @@ rod_params = [
  -98, 396, 115, 21
 ];
 
-===== history_00098 | success_idx_000098 | 2026-10-14 21:21:50 | SUCCESS =====
-output_metric=0.026970206342388749
+===== history_00098 | success_idx_000098 | 2026-10-16 10:14:52 | SUCCESS =====
+output_metric=0.033712757926912515
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -351, 28, 74, 111;
@@ -978,8 +978,8 @@ rod_params = [
  -424, -300, 68, 88
 ];
 
-===== history_00099 | success_idx_000099 | 2026-10-14 21:21:58 | SUCCESS =====
-output_metric=0.0176435317261848
+===== history_00099 | success_idx_000099 | 2026-10-16 10:15:00 | SUCCESS =====
+output_metric=0.022054414553173595
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -136, -131, 55, 52;
@@ -988,8 +988,8 @@ rod_params = [
  -334, 353, 137, 163
 ];
 
-===== history_00100 | success_idx_000100 | 2026-10-14 21:22:07 | SUCCESS =====
-output_metric=0.12994621317737221
+===== history_00100 | success_idx_000100 | 2026-10-16 10:15:09 | SUCCESS =====
+output_metric=0.16243276646940288
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -76, -74, 88, 66;
@@ -998,8 +998,8 @@ rod_params = [
  -235, 252, 67, 67
 ];
 
-===== history_00101 | success_idx_000101 | 2026-10-14 21:22:15 | SUCCESS =====
-output_metric=0.0062956800720493913
+===== history_00101 | success_idx_000101 | 2026-10-16 10:15:18 | SUCCESS =====
+output_metric=0.0078696000920981599
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -262, -172, 61, 34;
@@ -1008,8 +1008,8 @@ rod_params = [
  -363, 178, 12, 74
 ];
 
-===== history_00102 | success_idx_000102 | 2026-10-14 21:22:24 | SUCCESS =====
-output_metric=0.016126447273155393
+===== history_00102 | success_idx_000102 | 2026-10-16 10:15:27 | SUCCESS =====
+output_metric=0.020158059057443199
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -78, -162, 68, 38;
@@ -1018,8 +1018,8 @@ rod_params = [
  -107, 317, 34, 80
 ];
 
-===== history_00103 | success_idx_000103 | 2026-10-14 21:22:33 | SUCCESS =====
-output_metric=0.010838905252857025
+===== history_00103 | success_idx_000103 | 2026-10-16 10:15:36 | SUCCESS =====
+output_metric=0.013548631569208828
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -335, 106, 65, 80;
@@ -1028,8 +1028,8 @@ rod_params = [
  -112, 60, 76, 23
 ];
 
-===== history_00104 | success_idx_000104 | 2026-10-14 21:22:43 | SUCCESS =====
-output_metric=0.0025414574020388549
+===== history_00104 | success_idx_000104 | 2026-10-16 10:15:45 | SUCCESS =====
+output_metric=0.0031768217521799666
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -440, 80, 123, 65;
@@ -1038,8 +1038,8 @@ rod_params = [
  -232, -361, 93, 23
 ];
 
-===== history_00105 | success_idx_000105 | 2026-10-14 21:22:51 | SUCCESS =====
-output_metric=0.0011085769927078543
+===== history_00105 | success_idx_000105 | 2026-10-16 10:15:54 | SUCCESS =====
+output_metric=0.0013857212410218053
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -532, 196, 167, 37;
@@ -1048,8 +1048,8 @@ rod_params = [
  -475, -325, 123, 64
 ];
 
-===== history_00106 | success_idx_000106 | 2026-10-14 21:23:00 | SUCCESS =====
-output_metric=0.016354525249442434
+===== history_00106 | success_idx_000106 | 2026-10-16 10:16:03 | SUCCESS =====
+output_metric=0.020443156557448453
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -427, -10, 112, 86;
@@ -1058,8 +1058,8 @@ rod_params = [
  -323, 148, 107, 31
 ];
 
-===== history_00107 | success_idx_000107 | 2026-10-14 21:23:09 | SUCCESS =====
-output_metric=0.040776060334081661
+===== history_00107 | success_idx_000107 | 2026-10-16 10:16:12 | SUCCESS =====
+output_metric=0.05097007539443401
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -313, -316, 13, 68;
@@ -1068,8 +1068,8 @@ rod_params = [
  -228, -390, 27, 66
 ];
 
-===== history_00108 | success_idx_000108 | 2026-10-14 21:23:18 | SUCCESS =====
-output_metric=0.014436445538821627
+===== history_00108 | success_idx_000108 | 2026-10-16 10:16:21 | SUCCESS =====
+output_metric=0.018045556923316816
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -286, 237, 8, 94;
@@ -1078,8 +1078,8 @@ rod_params = [
  -483, 200, 132, 33
 ];
 
-===== history_00109 | success_idx_000109 | 2026-10-14 21:23:27 | SUCCESS =====
-output_metric=0.018524821256496102
+===== history_00109 | success_idx_000109 | 2026-10-16 10:16:30 | SUCCESS =====
+output_metric=0.023156026583408342
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -94, 40, 100, 73;
@@ -1088,8 +1088,8 @@ rod_params = [
  -114, 439, 166, 34
 ];
 
-===== history_00110 | success_idx_000110 | 2026-10-14 21:23:35 | SUCCESS =====
-output_metric=0.0027294741641476911
+===== history_00110 | success_idx_000110 | 2026-10-16 10:16:39 | SUCCESS =====
+output_metric=0.0034118427065206805
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -129, 331, 92, 54;
@@ -1098,8 +1098,8 @@ rod_params = [
  -313, -148, 158, 58
 ];
 
-===== history_00111 | success_idx_000111 | 2026-10-14 21:23:44 | SUCCESS =====
-output_metric=0.0019856394203859751
+===== history_00111 | success_idx_000111 | 2026-10-16 10:16:47 | SUCCESS =====
+output_metric=0.0024820492754717154
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -246, 348, 11, 41;
@@ -1108,8 +1108,8 @@ rod_params = [
  -402, -258, 92, 113
 ];
 
-===== history_00112 | success_idx_000112 | 2026-10-14 21:23:53 | SUCCESS =====
-output_metric=0.021105962343814299
+===== history_00112 | success_idx_000112 | 2026-10-16 10:16:56 | SUCCESS =====
+output_metric=0.026382452928781927
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -401, -55, 45, 127;
@@ -1118,8 +1118,8 @@ rod_params = [
  -499, -215, 23, 92
 ];
 
-===== history_00113 | success_idx_000113 | 2026-10-14 21:24:02 | SUCCESS =====
-output_metric=0.011313343446462126
+===== history_00113 | success_idx_000113 | 2026-10-16 10:17:05 | SUCCESS =====
+output_metric=0.014141679307614235
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -5, 279, 86, 67;
@@ -1128,8 +1128,8 @@ rod_params = [
  -146, -103, 172, 65
 ];
 
-===== history_00114 | success_idx_000114 | 2026-10-14 21:24:10 | SUCCESS =====
-output_metric=0.0036968605003093653
+===== history_00114 | success_idx_000114 | 2026-10-16 10:17:14 | SUCCESS =====
+output_metric=0.0046210756242903847
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -522, 402, 106, 118;
@@ -1138,8 +1138,8 @@ rod_params = [
  -486, -159, 172, 160
 ];
 
-===== history_00115 | success_idx_000115 | 2026-10-14 21:24:19 | SUCCESS =====
-output_metric=0.0041611328701757324
+===== history_00115 | success_idx_000115 | 2026-10-16 10:17:23 | SUCCESS =====
+output_metric=0.0052014160877992717
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -233, 404, 88, 43;
@@ -1148,8 +1148,8 @@ rod_params = [
  -407, -196, 61, 79
 ];
 
-===== history_00116 | success_idx_000116 | 2026-10-14 21:24:28 | SUCCESS =====
-output_metric=0.001018646595336006
+===== history_00116 | success_idx_000116 | 2026-10-16 10:17:32 | SUCCESS =====
+output_metric=0.0012733082480886279
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -196, 317, 105, 53;
@@ -1158,8 +1158,8 @@ rod_params = [
  -42, 417, 159, 86
 ];
 
-===== history_00117 | success_idx_000117 | 2026-10-14 21:24:36 | SUCCESS =====
-output_metric=0.0030045227592110425
+===== history_00117 | success_idx_000117 | 2026-10-16 10:17:41 | SUCCESS =====
+output_metric=0.0037556534487473434
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -398, 73, 171, 17;
@@ -1168,8 +1168,8 @@ rod_params = [
  -501, -264, 79, 21
 ];
 
-===== history_00118 | success_idx_000118 | 2026-10-14 21:24:45 | SUCCESS =====
-output_metric=0.0044425363782086974
+===== history_00118 | success_idx_000118 | 2026-10-16 10:17:50 | SUCCESS =====
+output_metric=0.0055531704724359528
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -204, 329, 55, 53;
@@ -1178,8 +1178,8 @@ rod_params = [
  -512, -279, 170, 40
 ];
 
-===== history_00119 | success_idx_000119 | 2026-10-14 21:24:54 | SUCCESS =====
-output_metric=0.0056912025499731194
+===== history_00119 | success_idx_000119 | 2026-10-16 10:18:00 | SUCCESS =====
+output_metric=0.0071140031876375251
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -396, 152, 129, 30;
@@ -1188,8 +1188,8 @@ rod_params = [
  -487, 146, 7, 74
 ];
 
-===== history_00120 | success_idx_000120 | 2026-10-14 21:25:03 | SUCCESS =====
-output_metric=0.0048268612380045839
+===== history_00120 | success_idx_000120 | 2026-10-16 10:18:09 | SUCCESS =====
+output_metric=0.0060335765479572322
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -217, 285, 113, 48;
@@ -1198,8 +1198,8 @@ rod_params = [
  -180, -355, 15, 54
 ];
 
-===== history_00121 | success_idx_000121 | 2026-10-14 21:25:12 | SUCCESS =====
-output_metric=0.030175550557394827
+===== history_00121 | success_idx_000121 | 2026-10-16 10:18:18 | SUCCESS =====
+output_metric=0.037719438181422135
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -243, 100, 126, 26;
@@ -1208,8 +1208,8 @@ rod_params = [
  -57, 435, 75, 129
 ];
 
-===== history_00122 | success_idx_000122 | 2026-10-14 21:25:20 | SUCCESS =====
-output_metric=0.002569211651075981
+===== history_00122 | success_idx_000122 | 2026-10-16 10:18:27 | SUCCESS =====
+output_metric=0.0032115145482732878
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -5, -260, 56, 52;
@@ -1218,8 +1218,8 @@ rod_params = [
  -289, -359, 138, 62
 ];
 
-===== history_00123 | success_idx_000123 | 2026-10-14 21:25:29 | SUCCESS =====
-output_metric=0.010310642022883836
+===== history_00123 | success_idx_000123 | 2026-10-16 10:18:36 | SUCCESS =====
+output_metric=0.01288830248390265
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -417, 148, 2, 32;
@@ -1228,8 +1228,8 @@ rod_params = [
  -58, 160, 111, 50
 ];
 
-===== history_00124 | success_idx_000124 | 2026-10-14 21:25:38 | SUCCESS =====
-output_metric=0.012573148572915038
+===== history_00124 | success_idx_000124 | 2026-10-16 10:18:45 | SUCCESS =====
+output_metric=0.015716435715950137
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -410, -166, 118, 49;
@@ -1238,8 +1238,8 @@ rod_params = [
  -224, 379, 163, 37
 ];
 
-===== history_00125 | success_idx_000125 | 2026-10-14 21:25:47 | SUCCESS =====
-output_metric=0.00039352610799215434
+===== history_00125 | success_idx_000125 | 2026-10-16 10:18:53 | SUCCESS =====
+output_metric=0.00049190763470245355
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -288, -392, 168, 72;
@@ -1248,8 +1248,8 @@ rod_params = [
  -44, 275, 24, 71
 ];
 
-===== history_00126 | success_idx_000126 | 2026-10-14 21:25:57 | SUCCESS =====
-output_metric=0.0081564739416778928
+===== history_00126 | success_idx_000126 | 2026-10-16 10:19:04 | SUCCESS =====
+output_metric=0.010195592425989513
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -251, 145, 30, 61;
@@ -1258,8 +1258,8 @@ rod_params = [
  -124, 173, 146, 53
 ];
 
-===== history_00127 | success_idx_000127 | 2026-10-14 21:26:05 | SUCCESS =====
-output_metric=0.0011903924599320284
+===== history_00127 | success_idx_000127 | 2026-10-16 10:19:12 | SUCCESS =====
+output_metric=0.0014879905751143947
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -414, -150, 73, 145;
@@ -1268,8 +1268,8 @@ rod_params = [
  -517, -427, 123, 76
 ];
 
-===== history_00128 | success_idx_000128 | 2026-10-14 21:26:15 | SUCCESS =====
-output_metric=0.0041485250532600319
+===== history_00128 | success_idx_000128 | 2026-10-16 10:19:22 | SUCCESS =====
+output_metric=0.0051856563173473952
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -163, -422, 20, 20;
@@ -1278,8 +1278,8 @@ rod_params = [
  -12, 279, 85, 60
 ];
 
-===== history_00129 | success_idx_000129 | 2026-10-14 21:26:25 | SUCCESS =====
-output_metric=0.045412716894032874
+===== history_00129 | success_idx_000129 | 2026-10-16 10:19:32 | SUCCESS =====
+output_metric=0.056765896118454895
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -435, -268, 25, 52;
@@ -1288,8 +1288,8 @@ rod_params = [
  -225, 205, 174, 79
 ];
 
-===== history_00130 | success_idx_000130 | 2026-10-14 21:26:33 | SUCCESS =====
-output_metric=0.0075838787641897979
+===== history_00130 | success_idx_000130 | 2026-10-16 10:19:41 | SUCCESS =====
+output_metric=0.0094798484435264941
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -190, 214, 98, 60;
@@ -1298,8 +1298,8 @@ rod_params = [
  -24, 402, 84, 65
 ];
 
-===== history_00131 | success_idx_000131 | 2026-10-14 21:26:42 | SUCCESS =====
-output_metric=0.048522071159177366
+===== history_00131 | success_idx_000131 | 2026-10-16 10:19:49 | SUCCESS =====
+output_metric=0.060652588852020226
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -189, -23, 50, 62;
@@ -1308,8 +1308,8 @@ rod_params = [
  -10, 282, 108, 69
 ];
 
-===== history_00132 | success_idx_000132 | 2026-10-14 21:26:51 | SUCCESS =====
-output_metric=0.017039789568270038
+===== history_00132 | success_idx_000132 | 2026-10-16 10:19:59 | SUCCESS =====
+output_metric=0.021299736943366843
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -301, 134, 113, 57;
@@ -1318,8 +1318,8 @@ rod_params = [
  -498, 128, 168, 189
 ];
 
-===== history_00133 | success_idx_000133 | 2026-10-14 21:27:00 | SUCCESS =====
-output_metric=0.0018540919916343896
+===== history_00133 | success_idx_000133 | 2026-10-16 10:20:07 | SUCCESS =====
+output_metric=0.0023176149955327721
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -328, -205, 178, 65;
@@ -1328,8 +1328,8 @@ rod_params = [
  -129, 146, 149, 92
 ];
 
-===== history_00134 | success_idx_000134 | 2026-10-14 21:27:09 | SUCCESS =====
-output_metric=0.019769586848132185
+===== history_00134 | success_idx_000134 | 2026-10-16 10:20:17 | SUCCESS =====
+output_metric=0.024711983559406941
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -537, 59, 15, 79;
@@ -1338,8 +1338,8 @@ rod_params = [
  -368, -182, 18, 58
 ];
 
-===== history_00135 | success_idx_000135 | 2026-10-14 21:27:17 | SUCCESS =====
-output_metric=0.0010885498429123914
+===== history_00135 | success_idx_000135 | 2026-10-16 10:20:26 | SUCCESS =====
+output_metric=0.0013606873036490009
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -80, -27, 28, 55;
@@ -1348,8 +1348,8 @@ rod_params = [
  -295, -296, 118, 113
 ];
 
-===== history_00136 | success_idx_000136 | 2026-10-14 21:27:26 | SUCCESS =====
-output_metric=0.0063561961905759939
+===== history_00136 | success_idx_000136 | 2026-10-16 10:20:35 | SUCCESS =====
+output_metric=0.0079452452362874827
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -116, 46, 35, 50;
@@ -1358,8 +1358,8 @@ rod_params = [
  -335, -356, 119, 35
 ];
 
-===== history_00137 | success_idx_000137 | 2026-10-14 21:27:35 | SUCCESS =====
-output_metric=0.0046828546618381001
+===== history_00137 | success_idx_000137 | 2026-10-16 10:20:44 | SUCCESS =====
+output_metric=0.0058535683028282069
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -462, 114, 102, 21;
@@ -1368,8 +1368,8 @@ rod_params = [
  -414, 204, 8, 105
 ];
 
-===== history_00138 | success_idx_000138 | 2026-10-14 21:27:44 | SUCCESS =====
-output_metric=0.0021781705394839177
+===== history_00138 | success_idx_000138 | 2026-10-16 10:20:53 | SUCCESS =====
+output_metric=0.0027227131777198422
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -531, 271, 73, 51;
@@ -1378,8 +1378,8 @@ rod_params = [
  -119, 23, 155, 113
 ];
 
-===== history_00139 | success_idx_000139 | 2026-10-14 21:27:52 | SUCCESS =====
-output_metric=0.0097624409052477056
+===== history_00139 | success_idx_000139 | 2026-10-16 10:21:02 | SUCCESS =====
+output_metric=0.012203051131647798
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -459, -31, 10, 24;
@@ -1388,8 +1388,8 @@ rod_params = [
  -117, 131, 64, 165
 ];
 
-===== history_00140 | success_idx_000140 | 2026-10-14 21:28:01 | SUCCESS =====
-output_metric=0.010357958836846823
+===== history_00140 | success_idx_000140 | 2026-10-16 10:21:11 | SUCCESS =====
+output_metric=0.012947448542510296
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -455, 404, 0, 59;
@@ -1398,8 +1398,8 @@ rod_params = [
  -172, -180, 37, 107
 ];
 
-===== history_00141 | success_idx_000141 | 2026-10-14 21:28:10 | SUCCESS =====
-output_metric=0.018887844691947802
+===== history_00141 | success_idx_000141 | 2026-10-16 10:21:20 | SUCCESS =====
+output_metric=0.023609805863191904
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -304, 9, 34, 61;
@@ -1408,8 +1408,8 @@ rod_params = [
  -504, -252, 120, 90
 ];
 
-===== history_00142 | success_idx_000142 | 2026-10-14 21:28:19 | SUCCESS =====
-output_metric=0.0018060400030087045
+===== history_00142 | success_idx_000142 | 2026-10-16 10:21:29 | SUCCESS =====
+output_metric=0.0022575500039240561
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -178, 263, 172, 59;
@@ -1418,8 +1418,8 @@ rod_params = [
  -84, 33, 146, 25
 ];
 
-===== history_00143 | success_idx_000143 | 2026-10-14 21:28:27 | SUCCESS =====
-output_metric=0.0065574472520133651
+===== history_00143 | success_idx_000143 | 2026-10-16 10:21:38 | SUCCESS =====
+output_metric=0.0081968090711749264
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -222, 353, 154, 64;
@@ -1428,8 +1428,8 @@ rod_params = [
  -457, 181, 88, 67
 ];
 
-===== history_00144 | success_idx_000144 | 2026-10-14 21:28:36 | SUCCESS =====
-output_metric=0.0015230875827387084
+===== history_00144 | success_idx_000144 | 2026-10-16 10:21:47 | SUCCESS =====
+output_metric=0.0019038594786952899
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -486, -391, 120, 38;
@@ -1438,8 +1438,8 @@ rod_params = [
  -142, -87, 39, 19
 ];
 
-===== history_00145 | success_idx_000145 | 2026-10-14 21:28:45 | SUCCESS =====
-output_metric=0.035565628859092466
+===== history_00145 | success_idx_000145 | 2026-10-16 10:21:56 | SUCCESS =====
+output_metric=0.044457036060032463
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -513, 170, 166, 67;
@@ -1448,8 +1448,8 @@ rod_params = [
  -228, -214, 0, 25
 ];
 
-===== history_00146 | success_idx_000146 | 2026-10-14 21:28:54 | SUCCESS =====
-output_metric=0.088220411933199502
+===== history_00146 | success_idx_000146 | 2026-10-16 10:22:05 | SUCCESS =====
+output_metric=0.11027551491719854
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -83, 236, 109, 86;
@@ -1458,8 +1458,8 @@ rod_params = [
  -200, -213, 75, 55
 ];
 
-===== history_00147 | success_idx_000147 | 2026-10-14 21:29:03 | SUCCESS =====
-output_metric=0.040404340469301775
+===== history_00147 | success_idx_000147 | 2026-10-16 10:22:15 | SUCCESS =====
+output_metric=0.050505425586323219
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -206, -84, 41, 14;
@@ -1468,8 +1468,8 @@ rod_params = [
  -16, -195, 84, 37
 ];
 
-===== history_00148 | success_idx_000148 | 2026-10-14 21:29:11 | SUCCESS =====
-output_metric=0.0017234217180127278
+===== history_00148 | success_idx_000148 | 2026-10-16 10:22:28 | SUCCESS =====
+output_metric=0.0021542771480711851
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -371, 167, 175, 65;
@@ -1478,8 +1478,8 @@ rod_params = [
  -524, -337, 13, 145
 ];
 
-===== history_00149 | success_idx_000149 | 2026-10-14 21:29:20 | SUCCESS =====
-output_metric=0.015125325939954198
+===== history_00149 | success_idx_000149 | 2026-10-16 10:22:40 | SUCCESS =====
+output_metric=0.018906657424771874
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -378, 378, 75, 73;
@@ -1488,8 +1488,8 @@ rod_params = [
  -5, -236, 148, 66
 ];
 
-===== history_00150 | success_idx_000150 | 2026-10-14 21:29:29 | SUCCESS =====
-output_metric=0.016296740854294597
+===== history_00150 | success_idx_000150 | 2026-10-16 10:22:53 | SUCCESS =====
+output_metric=0.020370926117039469
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -188, 44, 85, 59;
@@ -1498,8 +1498,8 @@ rod_params = [
  -423, -335, 35, 50
 ];
 
-===== history_00151 | success_idx_000151 | 2026-10-14 21:29:37 | SUCCESS =====
-output_metric=0.0063775416497417036
+===== history_00151 | success_idx_000151 | 2026-10-16 10:23:06 | SUCCESS =====
+output_metric=0.0079719270630149372
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -375, 428, 41, 61;
@@ -1508,8 +1508,8 @@ rod_params = [
  -373, 425, 65, 65
 ];
 
-===== history_00152 | success_idx_000152 | 2026-10-14 21:29:46 | SUCCESS =====
-output_metric=0.0089351677031476468
+===== history_00152 | success_idx_000152 | 2026-10-16 10:23:19 | SUCCESS =====
+output_metric=0.011168959629082124
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -337, -343, 156, 87;
@@ -1518,8 +1518,8 @@ rod_params = [
  -429, 140, 13, 9
 ];
 
-===== history_00153 | success_idx_000153 | 2026-10-14 21:29:55 | SUCCESS =====
-output_metric=0.016726859942626716
+===== history_00153 | success_idx_000153 | 2026-10-16 10:23:32 | SUCCESS =====
+output_metric=0.020908574928942165
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -505, 205, 0, 39;
@@ -1528,8 +1528,8 @@ rod_params = [
  -403, -53, 22, 28
 ];
 
-===== history_00154 | success_idx_000154 | 2026-10-14 21:30:04 | SUCCESS =====
-output_metric=0.0059668836098883855
+===== history_00154 | success_idx_000154 | 2026-10-16 10:23:45 | SUCCESS =====
+output_metric=0.0074586045122725401
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -263, -6, 27, 81;
@@ -1538,8 +1538,8 @@ rod_params = [
  -10, -20, 121, 54
 ];
 
-===== history_00155 | success_idx_000155 | 2026-10-14 21:30:13 | SUCCESS =====
-output_metric=0.0037167954214377321
+===== history_00155 | success_idx_000155 | 2026-10-16 10:23:58 | SUCCESS =====
+output_metric=0.0046459942778616934
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -407, -199, 79, 73;
@@ -1548,8 +1548,8 @@ rod_params = [
  -338, 254, 179, 75
 ];
 
-===== history_00156 | success_idx_000156 | 2026-10-14 21:30:21 | SUCCESS =====
-output_metric=0.00083531342641406439
+===== history_00156 | success_idx_000156 | 2026-10-16 10:24:11 | SUCCESS =====
+output_metric=0.0010441417800670853
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -423, -367, 17, 116;
@@ -1558,8 +1558,8 @@ rod_params = [
  -528, 102, 7, 266
 ];
 
-===== history_00157 | success_idx_000157 | 2026-10-14 21:30:30 | SUCCESS =====
-output_metric=0.014454631011598332
+===== history_00157 | success_idx_000157 | 2026-10-16 10:24:24 | SUCCESS =====
+output_metric=0.018068288804450675
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -414, -298, 14, 31;
@@ -1568,8 +1568,8 @@ rod_params = [
  -520, -234, 154, 27
 ];
 
-===== history_00158 | success_idx_000158 | 2026-10-14 21:30:39 | SUCCESS =====
-output_metric=0.01369100090482143
+===== history_00158 | success_idx_000158 | 2026-10-16 10:24:37 | SUCCESS =====
+output_metric=0.01711375111805042
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -269, -26, 54, 42;
@@ -1578,8 +1578,8 @@ rod_params = [
  -189, 370, 28, 73
 ];
 
-===== history_00159 | success_idx_000159 | 2026-10-14 21:30:47 | SUCCESS =====
-output_metric=0.0041443191104405938
+===== history_00159 | success_idx_000159 | 2026-10-16 10:24:50 | SUCCESS =====
+output_metric=0.0051803989101226527
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -84, 292, 66, 92;
@@ -1588,8 +1588,8 @@ rod_params = [
  -460, -365, 48, 82
 ];
 
-===== history_00160 | success_idx_000160 | 2026-10-14 21:30:56 | SUCCESS =====
-output_metric=0.0062050604264530587
+===== history_00160 | success_idx_000160 | 2026-10-16 10:25:02 | SUCCESS =====
+output_metric=0.0077563255332387532
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -460, -302, 65, 11;
@@ -1598,8 +1598,8 @@ rod_params = [
  -285, 80, 51, 63
 ];
 
-===== history_00161 | success_idx_000161 | 2026-10-14 21:31:05 | SUCCESS =====
-output_metric=0.0035069045167251916
+===== history_00161 | success_idx_000161 | 2026-10-16 10:25:15 | SUCCESS =====
+output_metric=0.0043836306456791372
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -71, -29, 178, 36;
@@ -1608,8 +1608,8 @@ rod_params = [
  -429, -445, 159, 59
 ];
 
-===== history_00162 | success_idx_000162 | 2026-10-14 21:31:14 | SUCCESS =====
-output_metric=0.0059035868402169686
+===== history_00162 | success_idx_000162 | 2026-10-16 10:25:28 | SUCCESS =====
+output_metric=0.0073794835500956817
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -90, -255, 61, 73;
@@ -1618,8 +1618,8 @@ rod_params = [
  -484, 51, 51, 40
 ];
 
-===== history_00163 | success_idx_000163 | 2026-10-14 21:31:23 | SUCCESS =====
-output_metric=0.01496041939207775
+===== history_00163 | success_idx_000163 | 2026-10-16 10:25:42 | SUCCESS =====
+output_metric=0.018700524239899662
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -158, 258, 165, 23;
@@ -1628,8 +1628,8 @@ rod_params = [
  -467, 118, 136, 56
 ];
 
-===== history_00164 | success_idx_000164 | 2026-10-14 21:31:32 | SUCCESS =====
-output_metric=0.0067446056197403969
+===== history_00164 | success_idx_000164 | 2026-10-16 10:25:55 | SUCCESS =====
+output_metric=0.0084307570193411282
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -372, -369, 6, 16;
@@ -1638,8 +1638,8 @@ rod_params = [
  -411, 213, 84, 99
 ];
 
-===== history_00165 | success_idx_000165 | 2026-10-14 21:31:41 | SUCCESS =====
-output_metric=0.00062731201417895064
+===== history_00165 | success_idx_000165 | 2026-10-16 10:26:07 | SUCCESS =====
+output_metric=0.00078414001708485839
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -39, -266, 31, 73;
@@ -1648,8 +1648,8 @@ rod_params = [
  -173, -93, 34, 109
 ];
 
-===== history_00166 | success_idx_000166 | 2026-10-14 21:31:50 | SUCCESS =====
-output_metric=0.0039183226471187502
+===== history_00166 | success_idx_000166 | 2026-10-16 10:26:20 | SUCCESS =====
+output_metric=0.0048979033092258206
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -462, -291, 165, 18;
@@ -1658,8 +1658,8 @@ rod_params = [
  -125, -395, 74, 53
 ];
 
-===== history_00167 | success_idx_000167 | 2026-10-14 21:31:59 | SUCCESS =====
-output_metric=0.0092564106957790885
+===== history_00167 | success_idx_000167 | 2026-10-16 10:26:33 | SUCCESS =====
+output_metric=0.011570513369646188
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -68, 65, 139, 52;
@@ -1668,8 +1668,8 @@ rod_params = [
  -525, 77, 146, 11
 ];
 
-===== history_00168 | success_idx_000168 | 2026-10-14 21:32:08 | SUCCESS =====
-output_metric=0.026626002242739682
+===== history_00168 | success_idx_000168 | 2026-10-16 10:26:46 | SUCCESS =====
+output_metric=0.03328250279476417
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -179, 60, 1, 50;
@@ -1678,8 +1678,8 @@ rod_params = [
  -260, 166, 128, 58
 ];
 
-===== history_00169 | success_idx_000169 | 2026-10-14 21:32:17 | SUCCESS =====
-output_metric=0.022247065472835687
+===== history_00169 | success_idx_000169 | 2026-10-16 10:27:00 | SUCCESS =====
+output_metric=0.027808831991119026
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -302, -200, 153, 66;
@@ -1688,8 +1688,8 @@ rod_params = [
  -472, 52, 179, 35
 ];
 
-===== history_00170 | success_idx_000170 | 2026-10-14 21:32:25 | SUCCESS =====
-output_metric=0.0042372521181151543
+===== history_00170 | success_idx_000170 | 2026-10-16 10:27:12 | SUCCESS =====
+output_metric=0.005296565141524487
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -45, -61, 65, 42;
@@ -1698,8 +1698,8 @@ rod_params = [
  -236, 236, 37, 85
 ];
 
-===== history_00171 | success_idx_000171 | 2026-10-14 21:32:34 | SUCCESS =====
-output_metric=0.01389829484859033
+===== history_00171 | success_idx_000171 | 2026-10-16 10:27:25 | SUCCESS =====
+output_metric=0.017372868556367053
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -11, -281, 132, 91;
@@ -1708,8 +1708,8 @@ rod_params = [
  -490, -304, 147, 58
 ];
 
-===== history_00172 | success_idx_000172 | 2026-10-14 21:32:43 | SUCCESS =====
-output_metric=0.0025641282020074929
+===== history_00172 | success_idx_000172 | 2026-10-16 10:27:38 | SUCCESS =====
+output_metric=0.0032051602530077253
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -25, 44, 119, 69;
@@ -1718,8 +1718,8 @@ rod_params = [
  -211, -14, 10, 42
 ];
 
-===== history_00173 | success_idx_000173 | 2026-10-14 21:32:52 | SUCCESS =====
-output_metric=0.011236844729658005
+===== history_00173 | success_idx_000173 | 2026-10-16 10:27:51 | SUCCESS =====
+output_metric=0.014046055911936476
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -539, 151, 124, 16;
@@ -1728,8 +1728,8 @@ rod_params = [
  -482, -227, 71, 73
 ];
 
-===== history_00174 | success_idx_000174 | 2026-10-14 21:33:01 | SUCCESS =====
-output_metric=0.0032988888495196884
+===== history_00174 | success_idx_000174 | 2026-10-16 10:28:04 | SUCCESS =====
+output_metric=0.0041236110614129027
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -282, 187, 112, 75;
@@ -1738,8 +1738,8 @@ rod_params = [
  -58, 234, 3, 81
 ];
 
-===== history_00175 | success_idx_000175 | 2026-10-14 21:33:10 | SUCCESS =====
-output_metric=0.00025966436623059934
+===== history_00175 | success_idx_000175 | 2026-10-16 10:28:17 | SUCCESS =====
+output_metric=0.00032458045777996176
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -390, 339, 41, 109;
@@ -1748,8 +1748,8 @@ rod_params = [
  -109, 266, 90, 70
 ];
 
-===== history_00176 | success_idx_000176 | 2026-10-14 21:33:19 | SUCCESS =====
-output_metric=0.0068512256114025387
+===== history_00176 | success_idx_000176 | 2026-10-16 10:28:30 | SUCCESS =====
+output_metric=0.0085640320345812815
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -239, -228, 162, 42;
@@ -1758,8 +1758,8 @@ rod_params = [
  -449, -129, 175, 70
 ];
 
-===== history_00177 | success_idx_000177 | 2026-10-14 21:33:27 | SUCCESS =====
-output_metric=0.0059056419216511648
+===== history_00177 | success_idx_000177 | 2026-10-16 10:28:43 | SUCCESS =====
+output_metric=0.0073820524023134335
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -486, -440, 34, 66;
@@ -1768,8 +1768,8 @@ rod_params = [
  -501, 441, 66, 120
 ];
 
-===== history_00178 | success_idx_000178 | 2026-10-14 21:33:36 | SUCCESS =====
-output_metric=0.0030929299416550555
+===== history_00178 | success_idx_000178 | 2026-10-16 10:28:56 | SUCCESS =====
+output_metric=0.0038661624269527789
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -181, 93, 108, 9;
@@ -1778,8 +1778,8 @@ rod_params = [
  -227, 284, 7, 59
 ];
 
-===== history_00179 | success_idx_000179 | 2026-10-14 21:33:45 | SUCCESS =====
-output_metric=0.013181156866329671
+===== history_00179 | success_idx_000179 | 2026-10-16 10:29:09 | SUCCESS =====
+output_metric=0.016476446081268952
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -493, -66, 82, 44;
@@ -1788,8 +1788,8 @@ rod_params = [
  -538, -396, 34, 85
 ];
 
-===== history_00180 | success_idx_000180 | 2026-10-14 21:33:53 | SUCCESS =====
-output_metric=0.005879024058183256
+===== history_00180 | success_idx_000180 | 2026-10-16 10:29:22 | SUCCESS =====
+output_metric=0.0073487800733547373
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -133, -70, 122, 33;
@@ -1798,8 +1798,8 @@ rod_params = [
  -321, 157, 40, 108
 ];
 
-===== history_00181 | success_idx_000181 | 2026-10-14 21:34:02 | SUCCESS =====
-output_metric=0.0068422488975552042
+===== history_00181 | success_idx_000181 | 2026-10-16 10:29:35 | SUCCESS =====
+output_metric=0.008552811105393656
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -401, 414, 80, 87;
@@ -1808,8 +1808,8 @@ rod_params = [
  -441, -441, 138, 69
 ];
 
-===== history_00182 | success_idx_000182 | 2026-10-14 21:34:11 | SUCCESS =====
-output_metric=0.0047363927178665638
+===== history_00182 | success_idx_000182 | 2026-10-16 10:29:48 | SUCCESS =====
+output_metric=0.0059204908853453227
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -291, -14, 174, 47;
@@ -1818,8 +1818,8 @@ rod_params = [
  -378, 420, 105, 59
 ];
 
-===== history_00183 | success_idx_000183 | 2026-10-14 21:34:19 | SUCCESS =====
-output_metric=0.027830515164525227
+===== history_00183 | success_idx_000183 | 2026-10-16 10:30:01 | SUCCESS =====
+output_metric=0.034788143959121193
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -529, 199, 104, 92;
@@ -1828,8 +1828,8 @@ rod_params = [
  -104, 207, 119, 30
 ];
 
-===== history_00184 | success_idx_000184 | 2026-10-14 21:34:29 | SUCCESS =====
-output_metric=0.0034781784206116858
+===== history_00184 | success_idx_000184 | 2026-10-16 10:30:15 | SUCCESS =====
+output_metric=0.0043477230225280388
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -24, 381, 155, 7;
@@ -1838,8 +1838,8 @@ rod_params = [
  -494, -203, 160, 69
 ];
 
-===== history_00185 | success_idx_000185 | 2026-10-14 21:34:38 | SUCCESS =====
-output_metric=0.011931609547396745
+===== history_00185 | success_idx_000185 | 2026-10-16 10:30:28 | SUCCESS =====
+output_metric=0.014914511934186676
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -89, 350, 120, 35;
@@ -1848,8 +1848,8 @@ rod_params = [
  -36, -385, 178, 46
 ];
 
-===== history_00186 | success_idx_000186 | 2026-10-14 21:34:47 | SUCCESS =====
-output_metric=0.00050985188623044696
+===== history_00186 | success_idx_000186 | 2026-10-16 10:30:42 | SUCCESS =====
+output_metric=0.00063731485731006738
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -379, -405, 98, 147;
@@ -1858,8 +1858,8 @@ rod_params = [
  -496, 324, 54, 31
 ];
 
-===== history_00187 | success_idx_000187 | 2026-10-14 21:34:56 | SUCCESS =====
-output_metric=0.0022896146835713047
+===== history_00187 | success_idx_000187 | 2026-10-16 10:30:55 | SUCCESS =====
+output_metric=0.0028620183581763107
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -494, 271, 132, 14;
@@ -1868,8 +1868,8 @@ rod_params = [
  -446, 300, 116, 102
 ];
 
-===== history_00188 | success_idx_000188 | 2026-10-14 21:35:05 | SUCCESS =====
-output_metric=0.0010706847556825364
+===== history_00188 | success_idx_000188 | 2026-10-16 10:31:08 | SUCCESS =====
+output_metric=0.0013383559451913664
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -90, 55, 11, 79;
@@ -1878,8 +1878,8 @@ rod_params = [
  -89, 379, 68, 97
 ];
 
-===== history_00189 | success_idx_000189 | 2026-10-14 21:35:14 | SUCCESS =====
-output_metric=0.051983727179619764
+===== history_00189 | success_idx_000189 | 2026-10-16 10:31:21 | SUCCESS =====
+output_metric=0.064979658919592106
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -229, 286, 113, 50;
@@ -1888,8 +1888,8 @@ rod_params = [
  -282, -126, 99, 48
 ];
 
-===== history_00190 | success_idx_000190 | 2026-10-14 21:35:22 | SUCCESS =====
-output_metric=0.0075722184098277285
+===== history_00190 | success_idx_000190 | 2026-10-16 10:31:33 | SUCCESS =====
+output_metric=0.009465273017622863
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -495, -431, 175, 20;
@@ -1898,8 +1898,8 @@ rod_params = [
  -61, 54, 40, 66
 ];
 
-===== history_00191 | success_idx_000191 | 2026-10-14 21:35:32 | SUCCESS =====
-output_metric=0.0033342711722357185
+===== history_00191 | success_idx_000191 | 2026-10-16 10:31:47 | SUCCESS =====
+output_metric=0.004167838965594921
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -326, 79, 99, 47;
@@ -1908,8 +1908,8 @@ rod_params = [
  -32, 426, 178, 87
 ];
 
-===== history_00192 | success_idx_000192 | 2026-10-14 21:35:41 | SUCCESS =====
-output_metric=0.022379337934654221
+===== history_00192 | success_idx_000192 | 2026-10-16 10:32:00 | SUCCESS =====
+output_metric=0.027974172419591721
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -450, -299, 86, 65;
@@ -1918,8 +1918,8 @@ rod_params = [
  -299, 81, 22, 69
 ];
 
-===== history_00193 | success_idx_000193 | 2026-10-14 21:35:50 | SUCCESS =====
-output_metric=0.012827921325659021
+===== history_00193 | success_idx_000193 | 2026-10-16 10:32:13 | SUCCESS =====
+output_metric=0.016034901650089351
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -301, -121, 115, 51;
@@ -1928,8 +1928,8 @@ rod_params = [
  -231, 133, 47, 89
 ];
 
-===== history_00194 | success_idx_000194 | 2026-10-14 21:35:59 | SUCCESS =====
-output_metric=0.0036085103077022566
+===== history_00194 | success_idx_000194 | 2026-10-16 10:32:27 | SUCCESS =====
+output_metric=0.0045106378848615786
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -322, -178, 103, 93;
@@ -1938,8 +1938,8 @@ rod_params = [
  -310, 105, 167, 42
 ];
 
-===== history_00195 | success_idx_000195 | 2026-10-14 21:36:08 | SUCCESS =====
-output_metric=0.011779018762612007
+===== history_00195 | success_idx_000195 | 2026-10-16 10:32:37 | SUCCESS =====
+output_metric=0.014723773453121657
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -188, -64, 166, 64;
@@ -1948,8 +1948,8 @@ rod_params = [
  -507, 77, 4, 74
 ];
 
-===== history_00196 | success_idx_000196 | 2026-10-14 21:36:17 | SUCCESS =====
-output_metric=0.0068946358098239324
+===== history_00196 | success_idx_000196 | 2026-10-16 10:32:46 | SUCCESS =====
+output_metric=0.0086182947622545029
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -336, -321, 160, 58;
@@ -1958,8 +1958,8 @@ rod_params = [
  -27, 438, 168, 58
 ];
 
-===== history_00197 | success_idx_000197 | 2026-10-14 21:36:26 | SUCCESS =====
-output_metric=0.0034738725900830092
+===== history_00197 | success_idx_000197 | 2026-10-16 10:32:55 | SUCCESS =====
+output_metric=0.0043423407374878669
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -195, -333, 170, 13;
@@ -1968,8 +1968,8 @@ rod_params = [
  -451, 30, 3, 45
 ];
 
-===== history_00198 | success_idx_000198 | 2026-10-14 21:36:34 | SUCCESS =====
-output_metric=0.0065736619307487764
+===== history_00198 | success_idx_000198 | 2026-10-16 10:33:05 | SUCCESS =====
+output_metric=0.0082170774134647517
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -90, -135, 9, 32;
@@ -1978,8 +1978,8 @@ rod_params = [
  -19, 429, 37, 33
 ];
 
-===== history_00199 | success_idx_000199 | 2026-10-14 21:36:43 | SUCCESS =====
-output_metric=0.011737278605771881
+===== history_00199 | success_idx_000199 | 2026-10-16 10:33:18 | SUCCESS =====
+output_metric=0.014671598260340963
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -434, -413, 129, 65;
@@ -1988,8 +1988,8 @@ rod_params = [
  -507, 265, 67, 93
 ];
 
-===== history_00200 | success_idx_000200 | 2026-10-14 21:36:52 | SUCCESS =====
-output_metric=0.0091302916058516835
+===== history_00200 | success_idx_000200 | 2026-10-16 10:33:31 | SUCCESS =====
+output_metric=0.011412864506688917
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -279, 389, 156, 29;
@@ -1998,8 +1998,8 @@ rod_params = [
  -492, 180, 121, 30
 ];
 
-===== history_00201 | success_idx_000201 | 2026-10-14 21:37:01 | SUCCESS =====
-output_metric=0.019703929861239075
+===== history_00201 | success_idx_000201 | 2026-10-16 10:33:44 | SUCCESS =====
+output_metric=0.024629912351971314
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -266, 234, 146, 51;
@@ -2008,8 +2008,8 @@ rod_params = [
  -521, 207, 92, 55
 ];
 
-===== history_00202 | success_idx_000202 | 2026-10-14 21:37:10 | SUCCESS =====
-output_metric=0.041323392115335894
+===== history_00202 | success_idx_000202 | 2026-10-16 10:33:57 | SUCCESS =====
+output_metric=0.051654240144140717
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -268, 208, 145, 56;
@@ -2018,8 +2018,8 @@ rod_params = [
  -385, 414, 150, 137
 ];
 
-===== history_00203 | success_idx_000203 | 2026-10-14 21:37:19 | SUCCESS =====
-output_metric=0.0099420045550457446
+===== history_00203 | success_idx_000203 | 2026-10-16 10:34:11 | SUCCESS =====
+output_metric=0.012427505694342134
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -250, -411, 54, 49;
@@ -2028,8 +2028,8 @@ rod_params = [
  -486, 51, 123, 64
 ];
 
-===== history_00204 | success_idx_000204 | 2026-10-14 21:37:27 | SUCCESS =====
-output_metric=0.0053701347614841339
+===== history_00204 | success_idx_000204 | 2026-10-16 10:34:24 | SUCCESS =====
+output_metric=0.006712668465824561
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -288, -220, 78, 22;
@@ -2038,8 +2038,8 @@ rod_params = [
  -19, 92, 91, 87
 ];
 
-===== history_00205 | success_idx_000205 | 2026-10-14 21:37:36 | SUCCESS =====
-output_metric=0.0030148930382206071
+===== history_00205 | success_idx_000205 | 2026-10-16 10:34:37 | SUCCESS =====
+output_metric=0.003768616297876423
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -238, -281, 114, 59;
@@ -2048,8 +2048,8 @@ rod_params = [
  -63, -175, 90, 44
 ];
 
-===== history_00206 | success_idx_000206 | 2026-10-14 21:37:45 | SUCCESS =====
-output_metric=0.012420970111593594
+===== history_00206 | success_idx_000206 | 2026-10-16 10:34:50 | SUCCESS =====
+output_metric=0.015526212647311926
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -265, -178, 86, 55;
@@ -2058,8 +2058,8 @@ rod_params = [
  -499, 439, 152, 85
 ];
 
-===== history_00207 | success_idx_000207 | 2026-10-14 21:37:54 | SUCCESS =====
-output_metric=0.0063266419436706859
+===== history_00207 | success_idx_000207 | 2026-10-16 10:35:03 | SUCCESS =====
+output_metric=0.0079083024295417709
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -397, 406, 3, 92;
@@ -2068,8 +2068,8 @@ rod_params = [
  -398, 284, 27, 44
 ];
 
-===== history_00208 | success_idx_000208 | 2026-10-14 21:38:03 | SUCCESS =====
-output_metric=0.010139564962670039
+===== history_00208 | success_idx_000208 | 2026-10-16 10:35:16 | SUCCESS =====
+output_metric=0.012674456280355123
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -183, 196, 98, 91;
@@ -2078,8 +2078,8 @@ rod_params = [
  -183, 47, 124, 27
 ];
 
-===== history_00209 | success_idx_000209 | 2026-10-14 21:38:12 | SUCCESS =====
-output_metric=0.0031068478712816239
+===== history_00209 | success_idx_000209 | 2026-10-16 10:35:29 | SUCCESS =====
+output_metric=0.003883559839604814
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -69, -364, 115, 133;
@@ -2088,8 +2088,8 @@ rod_params = [
  -325, 116, 23, 40
 ];
 
-===== history_00210 | success_idx_000210 | 2026-10-14 21:38:21 | SUCCESS =====
-output_metric=0.0083703912937460757
+===== history_00210 | success_idx_000210 | 2026-10-16 10:35:42 | SUCCESS =====
+output_metric=0.010462989116320761
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -315, 369, 72, 37;
@@ -2098,8 +2098,8 @@ rod_params = [
  -381, 367, 68, 62
 ];
 
-===== history_00211 | success_idx_000211 | 2026-10-14 21:38:30 | SUCCESS =====
-output_metric=0.014498920315551608
+===== history_00211 | success_idx_000211 | 2026-10-16 10:35:55 | SUCCESS =====
+output_metric=0.018123650394852201
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -16, -77, 66, 92;
@@ -2108,8 +2108,8 @@ rod_params = [
  -155, -312, 49, 23
 ];
 
-===== history_00212 | success_idx_000212 | 2026-10-14 21:38:38 | SUCCESS =====
-output_metric=0.010780656969529243
+===== history_00212 | success_idx_000212 | 2026-10-16 10:36:08 | SUCCESS =====
+output_metric=0.013475821199480743
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -381, 296, 31, 31;
@@ -2118,8 +2118,8 @@ rod_params = [
  -490, 52, 152, 101
 ];
 
-===== history_00213 | success_idx_000213 | 2026-10-14 21:38:49 | SUCCESS =====
-output_metric=0.011936040668144741
+===== history_00213 | success_idx_000213 | 2026-10-16 10:36:23 | SUCCESS =====
+output_metric=0.014920050834088979
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -68, -85, 104, 50;
@@ -2128,8 +2128,8 @@ rod_params = [
  -346, -349, 4, 56
 ];
 
-===== history_00214 | success_idx_000214 | 2026-10-14 21:38:58 | SUCCESS =====
-output_metric=0.0038187724503002726
+===== history_00214 | success_idx_000214 | 2026-10-16 10:36:36 | SUCCESS =====
+output_metric=0.0047734655649167741
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -525, -49, 105, 74;
@@ -2138,8 +2138,8 @@ rod_params = [
  -279, -397, 125, 28
 ];
 
-===== history_00215 | success_idx_000215 | 2026-10-14 21:39:06 | SUCCESS =====
-output_metric=0.0051906153856886754
+===== history_00215 | success_idx_000215 | 2026-10-16 10:36:49 | SUCCESS =====
+output_metric=0.0064882692320053243
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -218, -92, 21, 63;
@@ -2148,8 +2148,8 @@ rod_params = [
  -15, 112, 116, 65
 ];
 
-===== history_00216 | success_idx_000216 | 2026-10-14 21:39:15 | SUCCESS =====
-output_metric=0.0069417328504282625
+===== history_00216 | success_idx_000216 | 2026-10-16 10:37:02 | SUCCESS =====
+output_metric=0.0086771660667466655
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -147, 362, 101, 134;
@@ -2158,8 +2158,8 @@ rod_params = [
  -281, -375, 25, 42
 ];
 
-===== history_00217 | success_idx_000217 | 2026-10-14 21:39:24 | SUCCESS =====
-output_metric=0.045007052159422592
+===== history_00217 | success_idx_000217 | 2026-10-16 10:37:16 | SUCCESS =====
+output_metric=0.056258815198941797
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -383, -16, 154, 13;
@@ -2168,8 +2168,8 @@ rod_params = [
  -362, -44, 35, 92
 ];
 
-===== history_00218 | success_idx_000218 | 2026-10-14 21:39:33 | SUCCESS =====
-output_metric=0.013662906368161391
+===== history_00218 | success_idx_000218 | 2026-10-16 10:37:29 | SUCCESS =====
+output_metric=0.01707863296001385
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -50, 211, 68, 24;
@@ -2178,8 +2178,8 @@ rod_params = [
  -379, -185, 132, 30
 ];
 
-===== history_00219 | success_idx_000219 | 2026-10-14 21:39:42 | SUCCESS =====
-output_metric=0.0031920877058919175
+===== history_00219 | success_idx_000219 | 2026-10-16 10:37:42 | SUCCESS =====
+output_metric=0.0039901096314056434
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -436, -128, 130, 120;
@@ -2188,8 +2188,8 @@ rod_params = [
  -154, 396, 179, 21
 ];
 
-===== history_00220 | success_idx_000220 | 2026-10-14 21:39:51 | SUCCESS =====
-output_metric=0.010170403260268896
+===== history_00220 | success_idx_000220 | 2026-10-16 10:37:55 | SUCCESS =====
+output_metric=0.012713004072281082
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -436, 203, 23, 38;
@@ -2198,8 +2198,8 @@ rod_params = [
  -543, -79, 172, 34
 ];
 
-===== history_00221 | success_idx_000221 | 2026-10-14 21:40:00 | SUCCESS =====
-output_metric=0.0096597135018377227
+===== history_00221 | success_idx_000221 | 2026-10-16 10:38:08 | SUCCESS =====
+output_metric=0.012074641877049635
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -504, 353, 37, 58;
@@ -2208,8 +2208,8 @@ rod_params = [
  -90, -25, 146, 67
 ];
 
-===== history_00222 | success_idx_000222 | 2026-10-14 21:40:08 | SUCCESS =====
-output_metric=0.014397277399155682
+===== history_00222 | success_idx_000222 | 2026-10-16 10:38:21 | SUCCESS =====
+output_metric=0.017996596748113658
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -300, 374, 65, 44;
@@ -2218,8 +2218,8 @@ rod_params = [
  -269, -241, 149, 106
 ];
 
-===== history_00223 | success_idx_000223 | 2026-10-14 21:40:17 | SUCCESS =====
-output_metric=0.013822415958401309
+===== history_00223 | success_idx_000223 | 2026-10-16 10:38:34 | SUCCESS =====
+output_metric=0.017278019937357635
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -132, -221, 53, 77;
@@ -2228,8 +2228,8 @@ rod_params = [
  -217, -247, 64, 60
 ];
 
-===== history_00224 | success_idx_000224 | 2026-10-14 21:40:26 | SUCCESS =====
-output_metric=0.0028208522531037407
+===== history_00224 | success_idx_000224 | 2026-10-16 10:38:47 | SUCCESS =====
+output_metric=0.0035260653170484865
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -430, -437, 52, 168;
@@ -2238,8 +2238,8 @@ rod_params = [
  -398, 398, 124, 54
 ];
 
-===== history_00225 | success_idx_000225 | 2026-10-14 21:40:35 | SUCCESS =====
-output_metric=0.0037340717658420207
+===== history_00225 | success_idx_000225 | 2026-10-16 10:39:00 | SUCCESS =====
+output_metric=0.0046675897071807009
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -28, 123, 138, 31;
@@ -2248,8 +2248,8 @@ rod_params = [
  -223, 13, 179, 91
 ];
 
-===== history_00226 | success_idx_000226 | 2026-10-14 21:40:44 | SUCCESS =====
-output_metric=0.00048746381766502205
+===== history_00226 | success_idx_000226 | 2026-10-16 10:39:13 | SUCCESS =====
+output_metric=0.0006093297718492562
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -434, -387, 45, 25;
@@ -2258,8 +2258,8 @@ rod_params = [
  -452, 404, 121, 201
 ];
 
-===== history_00227 | success_idx_000227 | 2026-10-14 21:40:53 | SUCCESS =====
-output_metric=0.0027669837066639788
+===== history_00227 | success_idx_000227 | 2026-10-16 10:39:26 | SUCCESS =====
+output_metric=0.0034587296335713206
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -31, 280, 61, 97;
@@ -2268,8 +2268,8 @@ rod_params = [
  -355, 342, 79, 19
 ];
 
-===== history_00228 | success_idx_000228 | 2026-10-14 21:41:02 | SUCCESS =====
-output_metric=0.0038949664743219564
+===== history_00228 | success_idx_000228 | 2026-10-16 10:39:40 | SUCCESS =====
+output_metric=0.0048687080913519089
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -138, 75, 72, 49;
@@ -2278,8 +2278,8 @@ rod_params = [
  -346, 406, 179, 62
 ];
 
-===== history_00229 | success_idx_000229 | 2026-10-14 21:41:11 | SUCCESS =====
-output_metric=0.0027829464026050761
+===== history_00229 | success_idx_000229 | 2026-10-16 10:39:53 | SUCCESS =====
+output_metric=0.0034786830030226912
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -537, -312, 43, 41;
@@ -2288,8 +2288,8 @@ rod_params = [
  -409, -271, 114, 106
 ];
 
-===== history_00230 | success_idx_000230 | 2026-10-14 21:41:20 | SUCCESS =====
-output_metric=0.01450661828210211
+===== history_00230 | success_idx_000230 | 2026-10-16 10:40:06 | SUCCESS =====
+output_metric=0.018133272852421729
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -124, 179, 1, 39;
@@ -2298,8 +2298,8 @@ rod_params = [
  -488, 257, 73, 112
 ];
 
-===== history_00231 | success_idx_000231 | 2026-10-14 21:41:28 | SUCCESS =====
-output_metric=0.0065111466016635547
+===== history_00231 | success_idx_000231 | 2026-10-16 10:40:19 | SUCCESS =====
+output_metric=0.008138933254826234
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -133, -158, 95, 75;
@@ -2308,8 +2308,8 @@ rod_params = [
  -19, 42, 126, 73
 ];
 
-===== history_00232 | success_idx_000232 | 2026-10-14 21:41:37 | SUCCESS =====
-output_metric=0.012278262344625321
+===== history_00232 | success_idx_000232 | 2026-10-16 10:40:32 | SUCCESS =====
+output_metric=0.015347827930559185
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -161, -139, 169, 70;
@@ -2318,8 +2318,8 @@ rod_params = [
  -120, -239, 31, 19
 ];
 
-===== history_00233 | success_idx_000233 | 2026-10-14 21:41:46 | SUCCESS =====
-output_metric=0.0032830432637446019
+===== history_00233 | success_idx_000233 | 2026-10-16 10:40:45 | SUCCESS =====
+output_metric=0.0041038040796213772
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -195, 393, 36, 53;
@@ -2328,8 +2328,8 @@ rod_params = [
  -306, -210, 102, 82
 ];
 
-===== history_00234 | success_idx_000234 | 2026-10-14 21:41:55 | SUCCESS =====
-output_metric=0.0026573143707802889
+===== history_00234 | success_idx_000234 | 2026-10-16 10:40:58 | SUCCESS =====
+output_metric=0.0033216429646681241
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -170, 249, 163, 62;
@@ -2338,8 +2338,8 @@ rod_params = [
  -520, -21, 135, 97
 ];
 
-===== history_00235 | success_idx_000235 | 2026-10-14 21:42:04 | SUCCESS =====
-output_metric=0.0021276994482160028
+===== history_00235 | success_idx_000235 | 2026-10-16 10:41:11 | SUCCESS =====
+output_metric=0.0026596243134096053
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -314, 122, 50, 104;
@@ -2348,8 +2348,8 @@ rod_params = [
  -263, 290, 42, 43
 ];
 
-===== history_00236 | success_idx_000236 | 2026-10-14 21:42:12 | SUCCESS =====
-output_metric=0.012833256149518758
+===== history_00236 | success_idx_000236 | 2026-10-16 10:41:24 | SUCCESS =====
+output_metric=0.01604157018997969
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -544, 382, 124, 57;
@@ -2358,8 +2358,8 @@ rod_params = [
  -395, -88, 48, 84
 ];
 
-===== history_00237 | success_idx_000237 | 2026-10-14 21:42:22 | SUCCESS =====
-output_metric=0.010423382671807977
+===== history_00237 | success_idx_000237 | 2026-10-16 10:41:38 | SUCCESS =====
+output_metric=0.013029228337515013
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -270, 66, 42, 66;
@@ -2368,8 +2368,8 @@ rod_params = [
  -339, -317, 45, 135
 ];
 
-===== history_00238 | success_idx_000238 | 2026-10-14 21:42:31 | SUCCESS =====
-output_metric=0.037566069282458613
+===== history_00238 | success_idx_000238 | 2026-10-16 10:41:51 | SUCCESS =====
+output_metric=0.046957586604183976
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -304, -366, 123, 42;
@@ -2378,8 +2378,8 @@ rod_params = [
  -23, 161, 173, 58
 ];
 
-===== history_00239 | success_idx_000239 | 2026-10-14 21:42:39 | SUCCESS =====
-output_metric=0.0013669007135133702
+===== history_00239 | success_idx_000239 | 2026-10-16 10:42:05 | SUCCESS =====
+output_metric=0.0017086258920509156
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -515, 308, 36, 70;
@@ -2388,8 +2388,8 @@ rod_params = [
  -171, 84, 68, 57
 ];
 
-===== history_00240 | success_idx_000240 | 2026-10-14 21:42:48 | SUCCESS =====
-output_metric=0.044364539663023429
+===== history_00240 | success_idx_000240 | 2026-10-16 10:42:17 | SUCCESS =====
+output_metric=0.055455674579501242
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -334, -63, 21, 109;
@@ -2398,8 +2398,8 @@ rod_params = [
  -100, 46, 116, 39
 ];
 
-===== history_00241 | success_idx_000241 | 2026-10-14 21:42:57 | SUCCESS =====
-output_metric=0.0037099061414479764
+===== history_00241 | success_idx_000241 | 2026-10-16 10:42:31 | SUCCESS =====
+output_metric=0.0046373826762192236
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -429, -195, 31, 29;
@@ -2408,8 +2408,8 @@ rod_params = [
  -435, -175, 160, 32
 ];
 
-===== history_00242 | success_idx_000242 | 2026-10-14 21:43:06 | SUCCESS =====
-output_metric=0.010836859362314509
+===== history_00242 | success_idx_000242 | 2026-10-16 10:42:44 | SUCCESS =====
+output_metric=0.013546074203484177
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -238, -328, 39, 59;
@@ -2418,8 +2418,8 @@ rod_params = [
  -144, -223, 77, 97
 ];
 
-===== history_00243 | success_idx_000243 | 2026-10-14 21:43:14 | SUCCESS =====
-output_metric=0.0062039595776672051
+===== history_00243 | success_idx_000243 | 2026-10-16 10:42:57 | SUCCESS =====
+output_metric=0.0077549494804526201
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -57, 382, 109, 71;
@@ -2428,8 +2428,8 @@ rod_params = [
  -327, 103, 149, 20
 ];
 
-===== history_00244 | success_idx_000244 | 2026-10-14 21:43:24 | SUCCESS =====
-output_metric=0.013705694644913792
+===== history_00244 | success_idx_000244 | 2026-10-16 10:43:11 | SUCCESS =====
+output_metric=0.017132118307202144
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -315, 105, 174, 24;
@@ -2438,8 +2438,8 @@ rod_params = [
  -14, 150, 134, 107
 ];
 
-===== history_00245 | success_idx_000245 | 2026-10-14 21:43:32 | SUCCESS =====
-output_metric=0.003849372519353831
+===== history_00245 | success_idx_000245 | 2026-10-16 10:43:24 | SUCCESS =====
+output_metric=0.0048117156490395793
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -497, 46, 11, 105;
@@ -2448,8 +2448,8 @@ rod_params = [
  -253, -371, 173, 58
 ];
 
-===== history_00246 | success_idx_000246 | 2026-10-14 21:43:41 | SUCCESS =====
-output_metric=0.00063014101241169111
+===== history_00246 | success_idx_000246 | 2026-10-16 10:43:37 | SUCCESS =====
+output_metric=0.00078767626611780733
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -100, 103, 117, 24;
@@ -2458,8 +2458,8 @@ rod_params = [
  -396, -390, 119, 60
 ];
 
-===== history_00247 | success_idx_000247 | 2026-10-14 21:43:50 | SUCCESS =====
-output_metric=0.035819557532038873
+===== history_00247 | success_idx_000247 | 2026-10-16 10:43:50 | SUCCESS =====
+output_metric=0.044774446911125858
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -358, -4, 32, 104;
@@ -2468,8 +2468,8 @@ rod_params = [
  -390, 233, 12, 23
 ];
 
-===== history_00248 | success_idx_000248 | 2026-10-14 21:43:59 | SUCCESS =====
-output_metric=0.023630518432574861
+===== history_00248 | success_idx_000248 | 2026-10-16 10:44:03 | SUCCESS =====
+output_metric=0.029538148040320709
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -210, -397, 68, 18;
@@ -2478,8 +2478,8 @@ rod_params = [
  -426, 147, 29, 59
 ];
 
-===== history_00249 | success_idx_000249 | 2026-10-14 21:44:08 | SUCCESS =====
-output_metric=0.00051947390292491388
+===== history_00249 | success_idx_000249 | 2026-10-16 10:44:16 | SUCCESS =====
+output_metric=0.00064934237860663825
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -18, -70, 100, 95;
@@ -2488,8 +2488,8 @@ rod_params = [
  -25, 193, 170, 20
 ];
 
-===== history_00250 | success_idx_000250 | 2026-10-14 21:44:17 | SUCCESS =====
-output_metric=0.0057428285101832855
+===== history_00250 | success_idx_000250 | 2026-10-16 10:44:29 | SUCCESS =====
+output_metric=0.0071785356391907721
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -289, -259, 13, 59;
@@ -2498,8 +2498,8 @@ rod_params = [
  -505, -324, 33, 50
 ];
 
-===== history_00251 | success_idx_000251 | 2026-10-14 21:44:26 | SUCCESS =====
-output_metric=0.012743232232240994
+===== history_00251 | success_idx_000251 | 2026-10-16 10:44:43 | SUCCESS =====
+output_metric=0.015929040290494367
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -465, -18, 149, 85;
@@ -2508,8 +2508,8 @@ rod_params = [
  -97, -169, 161, 88
 ];
 
-===== history_00252 | success_idx_000252 | 2026-10-14 21:44:35 | SUCCESS =====
-output_metric=0.023533136596829454
+===== history_00252 | success_idx_000252 | 2026-10-16 10:44:56 | SUCCESS =====
+output_metric=0.029416420742128153
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -300, -260, 19, 65;
@@ -2518,8 +2518,8 @@ rod_params = [
  -218, -210, 128, 39
 ];
 
-===== history_00253 | success_idx_000253 | 2026-10-14 21:44:44 | SUCCESS =====
-output_metric=0.0060953445211385871
+===== history_00253 | success_idx_000253 | 2026-10-16 10:45:09 | SUCCESS =====
+output_metric=0.0076191806206775646
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -312, 329, 171, 26;
@@ -2528,8 +2528,8 @@ rod_params = [
  -130, 334, 160, 88
 ];
 
-===== history_00254 | success_idx_000254 | 2026-10-14 21:44:52 | SUCCESS =====
-output_metric=0.0043875288380675588
+===== history_00254 | success_idx_000254 | 2026-10-16 10:45:22 | SUCCESS =====
+output_metric=0.0054844110473579949
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -243, 80, 26, 41;
@@ -2538,8 +2538,8 @@ rod_params = [
  -31, 62, 138, 45
 ];
 
-===== history_00255 | success_idx_000255 | 2026-10-14 21:45:01 | SUCCESS =====
-output_metric=0.0056727716049050853
+===== history_00255 | success_idx_000255 | 2026-10-16 10:45:35 | SUCCESS =====
+output_metric=0.0070909644847267812
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -280, 100, 177, 55;
@@ -2548,8 +2548,8 @@ rod_params = [
  -186, -162, 43, 71
 ];
 
-===== history_00256 | success_idx_000256 | 2026-10-14 21:45:10 | SUCCESS =====
-output_metric=0.0013063717456579707
+===== history_00256 | success_idx_000256 | 2026-10-16 10:45:48 | SUCCESS =====
+output_metric=0.0016329646821405771
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -103, 322, 76, 38;
@@ -2558,8 +2558,8 @@ rod_params = [
  -294, 222, 176, 59
 ];
 
-===== history_00257 | success_idx_000257 | 2026-10-14 21:45:20 | SUCCESS =====
-output_metric=0.01667725967898586
+===== history_00257 | success_idx_000257 | 2026-10-16 10:46:02 | SUCCESS =====
+output_metric=0.020846574598709866
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -349, -130, 141, 61;
@@ -2568,8 +2568,8 @@ rod_params = [
  -116, -140, 78, 37
 ];
 
-===== history_00258 | success_idx_000258 | 2026-10-14 21:45:28 | SUCCESS =====
-output_metric=0.0013474160268015635
+===== history_00258 | success_idx_000258 | 2026-10-16 10:46:15 | SUCCESS =====
+output_metric=0.001684270037034764
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -116, 287, 63, 152;
@@ -2578,8 +2578,8 @@ rod_params = [
  -358, 415, 144, 20
 ];
 
-===== history_00259 | success_idx_000259 | 2026-10-14 21:45:37 | SUCCESS =====
-output_metric=0.0067319490317774592
+===== history_00259 | success_idx_000259 | 2026-10-16 10:46:29 | SUCCESS =====
+output_metric=0.0084149362892191222
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -422, -21, 60, 65;
@@ -2588,8 +2588,8 @@ rod_params = [
  -102, -33, 123, 62
 ];
 
-===== history_00260 | success_idx_000260 | 2026-10-14 21:45:46 | SUCCESS =====
-output_metric=0.0072249805099867739
+===== history_00260 | success_idx_000260 | 2026-10-16 10:46:42 | SUCCESS =====
+output_metric=0.0090312256369829806
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -209, -346, 28, 84;
@@ -2598,8 +2598,8 @@ rod_params = [
  -506, 183, 122, 106
 ];
 
-===== history_00261 | success_idx_000261 | 2026-10-14 21:45:55 | SUCCESS =====
-output_metric=0.0024728642487922953
+===== history_00261 | success_idx_000261 | 2026-10-16 10:46:55 | SUCCESS =====
+output_metric=0.0030910803110045975
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -483, -176, 3, 37;
@@ -2608,8 +2608,8 @@ rod_params = [
  -414, -26, 42, 11
 ];
 
-===== history_00262 | success_idx_000262 | 2026-10-14 21:46:04 | SUCCESS =====
-output_metric=0.017199977547128528
+===== history_00262 | success_idx_000262 | 2026-10-16 10:47:08 | SUCCESS =====
+output_metric=0.021499971932848291
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -99, 98, 80, 32;
@@ -2618,8 +2618,8 @@ rod_params = [
  -211, -230, 146, 124
 ];
 
-===== history_00263 | success_idx_000263 | 2026-10-14 21:46:12 | SUCCESS =====
-output_metric=0.0019863219686835974
+===== history_00263 | success_idx_000263 | 2026-10-16 10:47:21 | SUCCESS =====
+output_metric=0.0024829024666694335
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -293, 416, 125, 214;
@@ -2628,8 +2628,8 @@ rod_params = [
  -523, 242, 145, 163
 ];
 
-===== history_00264 | success_idx_000264 | 2026-10-14 21:46:22 | SUCCESS =====
-output_metric=0.0019376910255012344
+===== history_00264 | success_idx_000264 | 2026-10-16 10:47:34 | SUCCESS =====
+output_metric=0.0024221137817135351
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -322, -133, 8, 13;
@@ -2638,8 +2638,8 @@ rod_params = [
  -72, 116, 40, 32
 ];
 
-===== history_00265 | success_idx_000265 | 2026-10-14 21:46:30 | SUCCESS =====
-output_metric=0.015999379285417246
+===== history_00265 | success_idx_000265 | 2026-10-16 10:47:47 | SUCCESS =====
+output_metric=0.019999224110030356
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -19, -88, 161, 78;
@@ -2648,8 +2648,8 @@ rod_params = [
  -50, 388, 151, 63
 ];
 
-===== history_00266 | success_idx_000266 | 2026-10-14 21:46:39 | SUCCESS =====
-output_metric=0.00026716543573524057
+===== history_00266 | success_idx_000266 | 2026-10-16 10:48:01 | SUCCESS =====
+output_metric=0.00033395679422088811
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -159, 405, 50, 134;
@@ -2658,8 +2658,8 @@ rod_params = [
  -415, 416, 34, 53
 ];
 
-===== history_00267 | success_idx_000267 | 2026-10-14 21:46:48 | SUCCESS =====
-output_metric=0.0036689565230711469
+===== history_00267 | success_idx_000267 | 2026-10-16 10:48:14 | SUCCESS =====
+output_metric=0.0045861956506875337
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -350, -168, 4, 62;
@@ -2668,8 +2668,8 @@ rod_params = [
  -468, -191, 138, 48
 ];
 
-===== history_00268 | success_idx_000268 | 2026-10-14 21:46:57 | SUCCESS =====
-output_metric=0.0012632030911442318
+===== history_00268 | success_idx_000268 | 2026-10-16 10:48:27 | SUCCESS =====
+output_metric=0.0015790038610835732
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -441, 366, 135, 149;
@@ -2678,8 +2678,8 @@ rod_params = [
  -83, -227, 118, 227
 ];
 
-===== history_00269 | success_idx_000269 | 2026-10-14 21:47:06 | SUCCESS =====
-output_metric=0.0027032090814167907
+===== history_00269 | success_idx_000269 | 2026-10-16 10:48:41 | SUCCESS =====
+output_metric=0.0033790113521043027
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -489, -241, 11, 85;
@@ -2688,8 +2688,8 @@ rod_params = [
  -292, -251, 110, 64
 ];
 
-===== history_00270 | success_idx_000270 | 2026-10-14 21:47:15 | SUCCESS =====
-output_metric=0.0020959324609818018
+===== history_00270 | success_idx_000270 | 2026-10-16 10:48:54 | SUCCESS =====
+output_metric=0.0026199155761762022
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -515, 78, 140, 29;
@@ -2698,8 +2698,8 @@ rod_params = [
  -127, -339, 21, 32
 ];
 
-===== history_00271 | success_idx_000271 | 2026-10-14 21:47:24 | SUCCESS =====
-output_metric=0.013423950899274034
+===== history_00271 | success_idx_000271 | 2026-10-16 10:49:07 | SUCCESS =====
+output_metric=0.016779938626310918
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -398, -249, 49, 37;
@@ -2708,8 +2708,8 @@ rod_params = [
  -278, 387, 130, 96
 ];
 
-===== history_00272 | success_idx_000272 | 2026-10-14 21:47:33 | SUCCESS =====
-output_metric=0.0023031330332648728
+===== history_00272 | success_idx_000272 | 2026-10-16 10:49:21 | SUCCESS =====
+output_metric=0.0028789162916645957
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -13, -426, 59, 86;
@@ -2718,8 +2718,8 @@ rod_params = [
  -20, -369, 72, 81
 ];
 
-===== history_00273 | success_idx_000273 | 2026-10-14 21:47:42 | SUCCESS =====
-output_metric=0.035723874117445022
+===== history_00273 | success_idx_000273 | 2026-10-16 10:49:33 | SUCCESS =====
+output_metric=0.044654842640626025
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -494, -177, 55, 28;
@@ -2728,8 +2728,8 @@ rod_params = [
  -346, 93, 79, 60
 ];
 
-===== history_00274 | success_idx_000274 | 2026-10-14 21:47:52 | SUCCESS =====
-output_metric=0.0018377282962022039
+===== history_00274 | success_idx_000274 | 2026-10-16 10:49:49 | SUCCESS =====
+output_metric=0.0022971603700722987
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -141, -172, 174, 14;
@@ -2738,8 +2738,8 @@ rod_params = [
  -52, -321, 98, 9
 ];
 
-===== history_00275 | success_idx_000275 | 2026-10-14 21:48:01 | SUCCESS =====
-output_metric=0.029227398264034591
+===== history_00275 | success_idx_000275 | 2026-10-16 10:50:02 | SUCCESS =====
+output_metric=0.036534247859718198
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -403, 386, 147, 56;
@@ -2748,8 +2748,8 @@ rod_params = [
  -109, -128, 71, 83
 ];
 
-===== history_00276 | success_idx_000276 | 2026-10-14 21:48:10 | SUCCESS =====
-output_metric=0.017473142507294172
+===== history_00276 | success_idx_000276 | 2026-10-16 10:50:15 | SUCCESS =====
+output_metric=0.021841428144561068
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -418, 139, 17, 35;
@@ -2758,8 +2758,8 @@ rod_params = [
  -290, 129, 150, 70
 ];
 
-===== history_00277 | success_idx_000277 | 2026-10-14 21:48:19 | SUCCESS =====
-output_metric=0.00073218539543539146
+===== history_00277 | success_idx_000277 | 2026-10-16 10:50:28 | SUCCESS =====
+output_metric=0.0009152317440480111
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -494, 360, 116, 64;
@@ -2768,8 +2768,8 @@ rod_params = [
  -46, -249, 23, 55
 ];
 
-===== history_00278 | success_idx_000278 | 2026-10-14 21:48:28 | SUCCESS =====
-output_metric=0.0097786277877381679
+===== history_00278 | success_idx_000278 | 2026-10-16 10:50:41 | SUCCESS =====
+output_metric=0.01222328473459343
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -505, 390, 31, 54;
@@ -2778,8 +2778,8 @@ rod_params = [
  -256, 414, 164, 70
 ];
 
-===== history_00279 | success_idx_000279 | 2026-10-14 21:48:37 | SUCCESS =====
-output_metric=0.0044000131098965662
+===== history_00279 | success_idx_000279 | 2026-10-16 10:50:55 | SUCCESS =====
+output_metric=0.0055000163870566401
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -147, -117, 20, 47;
@@ -2788,8 +2788,8 @@ rod_params = [
  -538, -12, 97, 76
 ];
 
-===== history_00280 | success_idx_000280 | 2026-10-14 21:48:46 | SUCCESS =====
-output_metric=0.021249190052818581
+===== history_00280 | success_idx_000280 | 2026-10-16 10:51:08 | SUCCESS =====
+output_metric=0.026561487566414511
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -333, -250, 54, 38;
@@ -2798,8 +2798,8 @@ rod_params = [
  -137, -16, 166, 24
 ];
 
-===== history_00281 | success_idx_000281 | 2026-10-14 21:48:55 | SUCCESS =====
-output_metric=0.0016699919464871851
+===== history_00281 | success_idx_000281 | 2026-10-16 10:51:21 | SUCCESS =====
+output_metric=0.0020874899326130949
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -7, -13, 16, 38;
@@ -2808,8 +2808,8 @@ rod_params = [
  -17, 208, 60, 26
 ];
 
-===== history_00282 | success_idx_000282 | 2026-10-14 21:49:04 | SUCCESS =====
-output_metric=0.0020774499529113903
+===== history_00282 | success_idx_000282 | 2026-10-16 10:51:35 | SUCCESS =====
+output_metric=0.0025968124408158699
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -460, 213, 157, 121;
@@ -2818,8 +2818,8 @@ rod_params = [
  -137, 386, 160, 38
 ];
 
-===== history_00283 | success_idx_000283 | 2026-10-14 21:49:13 | SUCCESS =====
-output_metric=0.018902711296930649
+===== history_00283 | success_idx_000283 | 2026-10-16 10:51:48 | SUCCESS =====
+output_metric=0.023628389119515036
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -385, -175, 162, 67;
@@ -2828,8 +2828,8 @@ rod_params = [
  -106, -311, 91, 71
 ];
 
-===== history_00284 | success_idx_000284 | 2026-10-14 21:49:22 | SUCCESS =====
-output_metric=0.011190082623633066
+===== history_00284 | success_idx_000284 | 2026-10-16 10:52:01 | SUCCESS =====
+output_metric=0.013987603279365985
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -115, 243, 146, 33;
@@ -2838,8 +2838,8 @@ rod_params = [
  -399, 177, 25, 33
 ];
 
-===== history_00285 | success_idx_000285 | 2026-10-14 21:49:31 | SUCCESS =====
-output_metric=0.019505445495167053
+===== history_00285 | success_idx_000285 | 2026-10-16 10:52:14 | SUCCESS =====
+output_metric=0.024381806869820482
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -467, 24, 34, 110;
@@ -2848,8 +2848,8 @@ rod_params = [
  -394, 193, 56, 11
 ];
 
-===== history_00286 | success_idx_000286 | 2026-10-14 21:49:40 | SUCCESS =====
-output_metric=0.0048205156176596388
+===== history_00286 | success_idx_000286 | 2026-10-16 10:52:27 | SUCCESS =====
+output_metric=0.0060256445226743068
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -80, 59, 38, 71;
@@ -2858,8 +2858,8 @@ rod_params = [
  -249, 191, 67, 18
 ];
 
-===== history_00287 | success_idx_000287 | 2026-10-14 21:49:50 | SUCCESS =====
-output_metric=0.0041095704710469756
+===== history_00287 | success_idx_000287 | 2026-10-16 10:52:40 | SUCCESS =====
+output_metric=0.005136963089550888
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -27, -261, 145, 78;
@@ -2868,8 +2868,8 @@ rod_params = [
  -265, 109, 66, 26
 ];
 
-===== history_00288 | success_idx_000288 | 2026-10-14 21:50:04 | SUCCESS =====
-output_metric=0.0043719703203905546
+===== history_00288 | success_idx_000288 | 2026-10-16 10:52:53 | SUCCESS =====
+output_metric=0.0054649628998198951
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -361, -121, 148, 34;
@@ -2878,8 +2878,8 @@ rod_params = [
  -316, -305, 129, 90
 ];
 
-===== history_00289 | success_idx_000289 | 2026-10-14 21:50:17 | SUCCESS =====
-output_metric=0.00093835556111948333
+===== history_00289 | success_idx_000289 | 2026-10-16 10:53:07 | SUCCESS =====
+output_metric=0.0011729444505805999
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -248, -418, 97, 80;
@@ -2888,8 +2888,8 @@ rod_params = [
  -314, 116, 159, 40
 ];
 
-===== history_00290 | success_idx_000290 | 2026-10-14 21:50:30 | SUCCESS =====
-output_metric=0.0097519875615794289
+===== history_00290 | success_idx_000290 | 2026-10-16 10:53:20 | SUCCESS =====
+output_metric=0.012189984450379646
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -339, 17, 151, 57;
@@ -2898,8 +2898,8 @@ rod_params = [
  -457, -189, 166, 100
 ];
 
-===== history_00291 | success_idx_000291 | 2026-10-14 21:50:44 | SUCCESS =====
-output_metric=0.0037412420888636613
+===== history_00291 | success_idx_000291 | 2026-10-16 10:53:33 | SUCCESS =====
+output_metric=0.0046765526122118277
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -251, -286, 104, 116;
@@ -2908,8 +2908,8 @@ rod_params = [
  -307, -36, 14, 29
 ];
 
-===== history_00292 | success_idx_000292 | 2026-10-14 21:50:57 | SUCCESS =====
-output_metric=0.0058040879459703111
+===== history_00292 | success_idx_000292 | 2026-10-16 10:53:46 | SUCCESS =====
+output_metric=0.0072551099460521655
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -358, 239, 75, 88;
@@ -2918,8 +2918,8 @@ rod_params = [
  -384, -255, 0, 41
 ];
 
-===== history_00293 | success_idx_000293 | 2026-10-14 21:51:11 | SUCCESS =====
-output_metric=0.030286211166613088
+===== history_00293 | success_idx_000293 | 2026-10-16 10:54:00 | SUCCESS =====
+output_metric=0.03785776395661785
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -190, -121, 52, 134;
@@ -2928,8 +2928,8 @@ rod_params = [
  -31, -191, 104, 58
 ];
 
-===== history_00294 | success_idx_000294 | 2026-10-14 21:51:24 | SUCCESS =====
-output_metric=0.014339345449865917
+===== history_00294 | success_idx_000294 | 2026-10-16 10:54:13 | SUCCESS =====
+output_metric=0.017924181813894085
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -527, 177, 172, 96;
@@ -2938,8 +2938,8 @@ rod_params = [
  -23, -368, 56, 80
 ];
 
-===== history_00295 | success_idx_000295 | 2026-10-14 21:51:38 | SUCCESS =====
-output_metric=0.038173157490184031
+===== history_00295 | success_idx_000295 | 2026-10-16 10:54:26 | SUCCESS =====
+output_metric=0.047716446841621379
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -192, -278, 146, 38;
@@ -2948,8 +2948,8 @@ rod_params = [
  -391, 368, 116, 199
 ];
 
-===== history_00296 | success_idx_000296 | 2026-10-14 21:51:51 | SUCCESS =====
-output_metric=0.0068560277602410478
+===== history_00296 | success_idx_000296 | 2026-10-16 10:54:39 | SUCCESS =====
+output_metric=0.008570034699934951
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -319, 365, 100, 72;
@@ -2958,8 +2958,8 @@ rod_params = [
  -56, -350, 19, 17
 ];
 
-===== history_00297 | success_idx_000297 | 2026-10-14 21:52:05 | SUCCESS =====
-output_metric=0.0012049697648336545
+===== history_00297 | success_idx_000297 | 2026-10-16 10:54:52 | SUCCESS =====
+output_metric=0.0015062122045167057
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -230, -92, 101, 49;
@@ -2968,8 +2968,8 @@ rod_params = [
  -365, -30, 105, 64
 ];
 
-===== history_00298 | success_idx_000298 | 2026-10-14 21:52:19 | SUCCESS =====
-output_metric=0.0067926046885128637
+===== history_00298 | success_idx_000298 | 2026-10-16 10:55:06 | SUCCESS =====
+output_metric=0.0084907558600533454
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -329, -23, 119, 90;
@@ -2978,8 +2978,8 @@ rod_params = [
  -13, 194, 131, 85
 ];
 
-===== history_00299 | success_idx_000299 | 2026-10-14 21:52:32 | SUCCESS =====
-output_metric=0.0053305968150284232
+===== history_00299 | success_idx_000299 | 2026-10-16 10:55:19 | SUCCESS =====
+output_metric=0.006663246019013953
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -162, 91, 15, 26;
@@ -2988,8 +2988,8 @@ rod_params = [
  -74, -400, 132, 115
 ];
 
-===== history_00300 | success_idx_000300 | 2026-10-14 21:52:46 | SUCCESS =====
-output_metric=0.0033954174315475685
+===== history_00300 | success_idx_000300 | 2026-10-16 10:55:33 | SUCCESS =====
+output_metric=0.0042442717891041795
 % [xc, yc, theta_deg, w] per row — paste into MphTest as rod_params:
 rod_params = [
  -28, -442, 54, 85;
