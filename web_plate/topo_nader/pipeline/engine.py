@@ -10,10 +10,11 @@ from scipy.io import loadmat
 
 from ..agents.client import TopoNaderOpenAICompatibleClient, resolve_toponader_llm_runtime
 from ..agents.orchestrator import TopoNaderAgentOrchestrator
+from ..agents.random_proposals import generate_random_candidates
 from ..architecture.spec import TopoNaderArchitectureSpec
 from ..architecture.validator import TopoNaderArchitectureValidator
 from ..bridge.matlab import load_fe_result, save_fe_request
-from ..config import TopoNaderConfig, TopoNaderEliteLocalSearchConfig, save_config
+from ..config import TopoNaderConfig, TopoNaderEliteLocalSearchConfig, TopoNaderInheritanceConfig, save_config
 from ..data.dataset import TopoNaderDataset, TopoNaderSplit
 from ..logging.experience import TopoNaderExperienceStore
 from ..logging.provenance import file_sha256, write_json_atomic
@@ -33,6 +34,7 @@ from ..training.evaluator import TopoNaderEvaluation, evaluate_predictions
 from ..training.trainer import TopoNaderTrainer
 from ..training.uncertainty import TopoNaderDeterministicPredictor, TopoNaderMCDropoutPredictor
 from ..training.zero_cost import TopoNaderZeroCostEvaluator
+from ..monitoring.inheritance import decide_inheritance
 from .state import TopoNaderRunState
 
 
@@ -116,6 +118,11 @@ class TopoNaderEngine:
             if not snapshot_path.exists():
                 raise ValueError(f"existing run is missing its config snapshot: {snapshot_path}")
             stored = json.loads(snapshot_path.read_text(encoding="utf-8"))
+            # Old snapshots used no cooldown or FE inheritance guard. Normalize
+            # to those legacy defaults, never to the requested new policy.
+            stored.setdefault("inheritance", asdict(TopoNaderInheritanceConfig()))
+            stored.setdefault("trigger", {}).setdefault("min_audit_interval", 0)
+            stored.setdefault("agents", {}).setdefault("proposal_source", "llm")
             # Compare the JSON representation because tuple-valued settings are
             # persisted as lists in config.snapshot.json.
             resolved_snapshot = json.loads(json.dumps(snapshot_config.to_dict()))
@@ -504,22 +511,32 @@ class TopoNaderEngine:
                 "last_training_history": parent_result.training_history[-5:],
             },
         }
-        experience_path = run / self.config.paths.experience_file
-        experiences = TopoNaderExperienceStore(experience_path).recent()
-        client = self.agent_client_factory(self.config.agents)
-        agents = TopoNaderAgentOrchestrator(
-            client,
-            iteration_dir / "agents",
-            structured_output_retries=self.config.agents.structured_output_retries,
-        )
-        candidates, trace = agents.generate_candidates(
-            current,
-            metrics,
-            experiences,
-            self.config.architecture.candidate_count,
-            validator=self.validator.validate,
-            retry_limit=self.config.architecture.candidate_retry_limit,
-        )
+        if self.config.agents.proposal_source == "random":
+            iteration = int(iteration_dir.name.rsplit("_", 1)[1])
+            candidates, trace = generate_random_candidates(
+                current, self.config.architecture,
+                self.config.seed_for(f"random_architecture:{iteration}"),
+                self.config.architecture.candidate_count, self.validator.validate,
+                self.config.architecture.candidate_retry_limit,
+            )
+        else:
+            experience_path = run / self.config.paths.experience_file
+            experiences = TopoNaderExperienceStore(experience_path).recent()
+            client = self.agent_client_factory(self.config.agents)
+            agents = TopoNaderAgentOrchestrator(
+                client,
+                iteration_dir / "agents",
+                structured_output_retries=self.config.agents.structured_output_retries,
+            )
+            candidates, trace = agents.generate_candidates(
+                current,
+                metrics,
+                experiences,
+                self.config.architecture.candidate_count,
+                validator=self.validator.validate,
+                retry_limit=self.config.architecture.candidate_retry_limit,
+            )
+            trace["proposal_source"] = "llm"
         zero_cost_reports = []
         if self.config.architecture.zero_cost_enabled and candidates:
             evaluator = TopoNaderZeroCostEvaluator(seed=self.seeds["zero_cost"])
@@ -784,17 +801,21 @@ class TopoNaderEngine:
         manifest = json.loads((iteration_dir / "manifest.json").read_text(encoding="utf-8"))
         parent_metrics = None
         post_reflection = None
+        inheritance_decision = None
+        inherited_metric_payload = metric_payload
         if manifest["audit"] and "parent_predicted_mean" in request:
             parent_prediction = np.asarray(request["parent_predicted_mean"], dtype=np.float64).reshape(-1)
             parent_uncertainty = np.asarray(request["parent_predicted_uncertainty"], dtype=np.float64).reshape(-1)
             parent_metrics = _evaluate_feedback(
                 outputs[valid], parent_prediction[valid], parent_uncertainty[valid]
             )
-            winner = select_provisional_architecture(
-                {"parent": parent_metrics, "child": metrics}
+            inheritance_decision = decide_inheritance(
+                parent_metrics, metrics, self.config.inheritance,
+                distinct_child=(inherited.architecture_id != manifest["parent_architecture_id"]),
             )
-            if winner == "parent":
+            if not inheritance_decision["accepted"]:
                 inherited = TopoNaderArchitectureSpec.load(run / state.current_architecture_file)
+                inherited_metric_payload = parent_metrics.to_dict()
             state.trigger.architecture_age = 0
             state.trigger.consecutive_degraded_rounds = 0
             state.trigger.last_audit_iteration = iteration
@@ -827,8 +848,10 @@ class TopoNaderEngine:
         state.current_architecture_id = inherited.architecture_id
         state.next_iteration = iteration + 1
         state.last_metrics_file = "state/last_metrics.json"
-        write_json_atomic(run / "state" / "last_metrics.json", metric_payload)
-        if manifest["audit"] and self.config.agents.enabled:
+        # Subsequent diagnosis must describe the inherited model, including rollback.
+        write_json_atomic(run / "state" / "last_metrics.json", inherited_metric_payload)
+        if (manifest["audit"] and self.config.agents.enabled
+                and self.config.agents.proposal_source == "llm"):
             reflection_input = {
                 "iteration": iteration,
                 "parent_architecture_id": manifest["parent_architecture_id"],
@@ -836,6 +859,7 @@ class TopoNaderEngine:
                 "inherited_architecture_id": inherited.architecture_id,
                 "parent_metrics": parent_metrics.to_dict() if parent_metrics else None,
                 "provisional_metrics": metric_payload,
+                "inheritance_decision": inheritance_decision,
             }
             try:
                 client = self.agent_client_factory(self.config.agents)
@@ -857,6 +881,8 @@ class TopoNaderEngine:
             "rejected_fe_samples": int((~valid).sum()),
             "provisional_metrics": metric_payload,
             "parent_metrics": parent_metrics.to_dict() if parent_metrics else None,
+            "inheritance_decision": inheritance_decision,
+            "inherited_metrics": inherited_metric_payload,
             "inherited_architecture_id": inherited.architecture_id,
             "next_audit_due": state.audit_due,
             "post_reflection": post_reflection,
@@ -869,6 +895,8 @@ class TopoNaderEngine:
             "provisional_architecture_id": manifest["provisional_architecture_id"],
             "inherited_architecture_id": inherited.architecture_id,
             "metrics": metric_payload,
+            "inheritance_decision": inheritance_decision,
+            "inherited_metrics": inherited_metric_payload,
             "parent_metrics": parent_metrics.to_dict() if parent_metrics else None,
             "post_reflection": post_reflection,
         })
@@ -906,6 +934,11 @@ class TopoNaderEngine:
             "inherited_architecture_id": inherited.architecture_id,
             "next_audit_due": state.audit_due,
             "method": manifest.get("method", {}),
+            "inheritance_decision": inheritance_decision,
+            "inheritance_accepted": inheritance_decision["accepted"] if inheritance_decision else None,
+            "inheritance_reasons": ";".join(inheritance_decision["reasons"]) if inheritance_decision else None,
+            "inheritance_pairwise_improvement": inheritance_decision["pairwise_improvement"] if inheritance_decision else None,
+            "inheritance_topk_regret_increase": inheritance_decision["topk_regret_increase"] if inheritance_decision else None,
             "coverage_actual_min": float(np.min(requested_coverage)) if requested_coverage.size else None,
             "coverage_actual_max": float(np.max(requested_coverage)) if requested_coverage.size else None,
             "coverage_actual_mean": float(np.mean(requested_coverage)) if requested_coverage.size else None,

@@ -1,7 +1,7 @@
 {
   "extends": "default.json",
   "experiment_name": "pilot-bars4-cov030-seed3",
-  "random_seed": 3,
+  "random_seed": 42,
 
   "training": {
     "epochs": 50,

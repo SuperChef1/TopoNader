@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -115,6 +116,17 @@ class TopoNaderTriggerConfig:
     min_kendall_tau: float = 0.20
     max_topk_regret: float = 0.20
     min_feedback_samples: int = 4
+    min_audit_interval: int = 0  # Legacy behavior unless explicitly enabled in JSON.
+
+
+@dataclass
+class TopoNaderInheritanceConfig:
+    enabled: bool = False  # Explicit opt-in prevents silent changes to old runs.
+    min_pairwise_improvement: float = 0.03
+    max_topk_regret_increase: float = 0.02
+    min_feedback_samples: int = 10
+    # Optional absolute quality gate; disabled unless independently calibrated.
+    min_pairwise_accuracy: float | None = None
 
 
 @dataclass
@@ -148,6 +160,7 @@ class TopoNaderReportingConfig:
 @dataclass
 class TopoNaderAgentConfig:
     enabled: bool = True
+    proposal_source: str = "llm"
     model: str = "gpt-5.6-sol"
     base_url: str = "https://api.openai.com/v1"
     timeout_seconds: int = 300
@@ -166,12 +179,13 @@ class TopoNaderPathsConfig:
 @dataclass
 class TopoNaderConfig:
     experiment_name: str = "toponader-default"
-    random_seed: int = 3
+    random_seed: int = 42
     data: TopoNaderDataConfig = field(default_factory=TopoNaderDataConfig)
     training: TopoNaderTrainingConfig = field(default_factory=TopoNaderTrainingConfig)
     uncertainty: TopoNaderUncertaintyConfig = field(default_factory=TopoNaderUncertaintyConfig)
     optimization: TopoNaderOptimizationConfig = field(default_factory=TopoNaderOptimizationConfig)
     trigger: TopoNaderTriggerConfig = field(default_factory=TopoNaderTriggerConfig)
+    inheritance: TopoNaderInheritanceConfig = field(default_factory=TopoNaderInheritanceConfig)
     architecture: TopoNaderArchitectureConfig = field(default_factory=TopoNaderArchitectureConfig)
     method: TopoNaderMethodConfig = field(default_factory=TopoNaderMethodConfig)
     reporting: TopoNaderReportingConfig = field(default_factory=TopoNaderReportingConfig)
@@ -243,10 +257,33 @@ class TopoNaderConfig:
             raise ValueError("agents max_retries must be positive")
         if self.agents.structured_output_retries < 0:
             raise ValueError("agents structured_output_retries must be non-negative")
+        if self.agents.proposal_source not in {"llm", "random"}:
+            raise ValueError("agents proposal_source must be llm or random")
+        if self.agents.proposal_source == "random" and not self.agents.enabled:
+            raise ValueError("random architecture search requires agents.enabled=true")
         if not 1 <= self.architecture.min_latent_dim <= self.architecture.max_latent_dim:
             raise ValueError("latent dimension bounds are invalid")
         if self.method.architecture_review_mode not in {"event_triggered", "every_round"}:
             raise ValueError("architecture_review_mode must be event_triggered or every_round")
+        for name, value, minimum in (
+            ("min_audit_interval", self.trigger.min_audit_interval, 0),
+            ("max_architecture_age", self.trigger.max_architecture_age, 1),
+            ("trigger patience", self.trigger.patience, 1),
+            ("inheritance min_feedback_samples", self.inheritance.min_feedback_samples, 2),
+        ):
+            if type(value) is not int or value < minimum:
+                raise ValueError(f"{name} must be an integer >= {minimum}")
+        if self.trigger.min_audit_interval > self.trigger.max_architecture_age:
+            raise ValueError("min_audit_interval must not exceed max_architecture_age")
+        for name, value in (
+            ("min_pairwise_improvement", self.inheritance.min_pairwise_improvement),
+            ("max_topk_regret_increase", self.inheritance.max_topk_regret_increase),
+        ):
+            if not math.isfinite(value) or not 0 <= value <= 1:
+                raise ValueError(f"inheritance {name} must be finite and in [0, 1]")
+        quality = self.inheritance.min_pairwise_accuracy
+        if quality is not None and (not math.isfinite(quality) or not 0 <= quality <= 1):
+            raise ValueError("inheritance min_pairwise_accuracy must be null or finite in [0, 1]")
         coverage = self.optimization.coverage
         if coverage.upper_bound_enabled:
             if not 0.0 <= coverage.upper_bound <= 1.0:
@@ -296,6 +333,7 @@ _SECTIONS = {
     "uncertainty": TopoNaderUncertaintyConfig,
     "optimization": TopoNaderOptimizationConfig,
     "trigger": TopoNaderTriggerConfig,
+    "inheritance": TopoNaderInheritanceConfig,
     "architecture": TopoNaderArchitectureConfig,
     "method": TopoNaderMethodConfig,
     "reporting": TopoNaderReportingConfig,

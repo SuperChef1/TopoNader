@@ -107,17 +107,22 @@ def analyze(name, limit):
             'trajectory': [{'iteration': v['iteration'], 'best': v['best_performance_so_far']} for v in rows]}
 
 
-results = []
-for suffix in ['4bars-30coverage-original-load-20261020', '4bars-30coverage', '6bars-30coverage']:
-    names = [prefix+'-'+suffix for prefix in ['Baseline', 'TopoNader']]
-    limit = min(read(ROOT/'runs'/n/'summary.json')['last_iteration'] for n in names)
-    pair = [analyze(n, limit) for n in names]
-    results.append({'case': suffix, 'common_iterations': limit, 'runs': pair})
-(OUT / 'evidence.json').write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding='utf-8')
-for pair in results:
-    print('CASE', pair['case'], 'common', pair['common_iterations'])
-    for r in pair['runs']:
-        print(json.dumps({k:v for k,v in r.items() if k not in ['config','audits','changes','trajectory']}, ensure_ascii=False))
-        print('CHANGES', [(v['iteration'], v['child_fe']['pairwise_accuracy'],
-                           v['parent_fe']['pairwise_accuracy'] if v['parent_fe'] else None,
-                           v['segment_best_gain']) for v in r['changes']])
+def main():
+    results = []
+    for suffix in ['4bars-30coverage-original-load-20261020', '4bars-30coverage', '6bars-30coverage']:
+        names = [prefix+'-'+suffix for prefix in ['Baseline', 'TopoNader']]
+        limit = min(read(ROOT/'runs'/n/'summary.json')['last_iteration'] for n in names)
+        pair = [analyze(n, limit) for n in names]
+        results.append({'case': suffix, 'common_iterations': limit, 'runs': pair})
+    (OUT / 'evidence.json').write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding='utf-8')
+    for pair in results:
+        print('CASE', pair['case'], 'common', pair['common_iterations'])
+        for r in pair['runs']:
+            print(json.dumps({k:v for k,v in r.items() if k not in ['config','audits','changes','trajectory']}, ensure_ascii=False))
+            print('CHANGES', [(v['iteration'], v['child_fe']['pairwise_accuracy'],
+                               v['parent_fe']['pairwise_accuracy'] if v['parent_fe'] else None,
+                               v['segment_best_gain']) for v in r['changes']])
+
+
+if __name__ == '__main__':
+    main()

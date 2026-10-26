@@ -1,0 +1,7 @@
+{
+  "extends": "TopoNader-4bars-30coverage.json",
+  "experiment_name": "Ablation-C-4bars-30coverage-seed42",
+  "random_seed": 42,
+  "agents": {"enabled": true, "proposal_source": "llm"},
+  "inheritance": {"enabled": false}
+}

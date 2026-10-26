@@ -1,0 +1,224 @@
+{
+  "method": "Reconstruct raw parent-child scope diffs; replay scope validation only, not architecture legality, training, deduplication, or FE.",
+  "policy_version": "proposal_scope_v2",
+  "historical_name_only_scope_rejections": 36,
+  "scope_rejections_cleared": 36,
+  "results": [
+    {
+      "iteration": 20,
+      "attempt": 3,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 30,
+      "attempt": 3,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 30,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 46,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 72,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 72,
+      "attempt": 3,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 83,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 83,
+      "attempt": 3,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 105,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 116,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 116,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 116,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 116,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 127,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 138,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 171,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 171,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 171,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 171,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 171,
+      "attempt": 3,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 182,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 182,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 193,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 204,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 204,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 215,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 215,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 215,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 215,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 226,
+      "attempt": 2,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 226,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 237,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 237,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 237,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 248,
+      "attempt": 1,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    },
+    {
+      "iteration": 248,
+      "attempt": 3,
+      "valid_after_scope_fix": true,
+      "remaining_scope_errors": []
+    }
+  ]
+}

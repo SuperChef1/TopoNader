@@ -21,7 +21,7 @@ class StubTopoNaderClient:
         if self.calls == 1:
             content = json.dumps({"diagnosis": "overfit", "evidence": [], "risks": [], "recommended_focus": "regularize"})
         elif self.calls == 2:
-            content = json.dumps({"proposals": [{"title": "dropout", "rationale": "test", "changes": {"dropout": 0.2}}]})
+            content = json.dumps({"proposals": [{"title": "dropout", "rationale": "test", "design_intent": "regularize", "changes": {"dropout": 0.2}}]})
         else:
             payload = TopoNaderArchitectureSpec(name="TopoNaderChild", dropout=0.2).to_dict()
             content = json.dumps(payload)
@@ -103,7 +103,7 @@ class TopoNaderAgentTests(unittest.TestCase):
                 if self.calls == 1:
                     content = json.dumps({"diagnosis": "test", "evidence": [], "risks": [], "recommended_focus": "test"})
                 elif self.calls == 2:
-                    content = json.dumps({"proposals": [{"title": "candidate", "rationale": "test", "changes": {}}]})
+                    content = json.dumps({"proposals": [{"title": "candidate", "rationale": "test", "design_intent": "regularize", "changes": {"dropout": 0.2}}]})
                 elif self.calls == 3:
                     content = json.dumps(TopoNaderArchitectureSpec(name="Invalid", input_dim=15).to_dict())
                 else:
