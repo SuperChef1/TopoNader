@@ -1,6 +1,8 @@
 import json
 import tempfile
 import unittest
+from dataclasses import replace
+from unittest.mock import patch
 from pathlib import Path
 
 import numpy as np
@@ -18,11 +20,13 @@ from topo_nader.config import (
     TopoNaderOptimizationConfig,
     TopoNaderTrainingConfig,
     TopoNaderUncertaintyConfig,
+    TopoNaderInheritanceConfig,
 )
 from topo_nader.pipeline import TopoNaderEngine
 from topo_nader.pipeline.engine import _allocate_integer
 from topo_nader.training.trainer import load_toponader_checkpoint
 from topo_nader.training.uncertainty import TopoNaderDeterministicPredictor
+from topo_nader.training.evaluator import evaluate_predictions
 
 
 class TinyTopoNaderEngine(TopoNaderEngine):
@@ -40,6 +44,75 @@ class TinyTopoNaderEngine(TopoNaderEngine):
 
 
 class TopoNaderPipelineTests(unittest.TestCase):
+    def test_feedback_guard_preserves_data_and_tracks_inherited_model_after_rollback(self):
+        for regret, accepted in [(0.13, False), (0.11, True)]:
+            with self.subTest(regret=regret), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                config = TopoNaderConfig(
+                    agents=TopoNaderAgentConfig(enabled=False),
+                    inheritance=TopoNaderInheritanceConfig(enabled=True),
+                )
+                engine = TinyTopoNaderEngine(config, Path(__file__).parents[1])
+                run = root / 'run'
+                engine.initialize_run(run)
+                parent = engine.default_architecture
+                child = replace(parent, dropout=.2)
+                iteration = run / 'iteration_0001'
+                iteration.mkdir()
+                child.save(iteration / 'provisional_architecture.json')
+                (iteration / 'manifest.json').write_text(json.dumps({
+                    'audit': True, 'parent_architecture_id': parent.architecture_id,
+                    'provisional_architecture_id': child.architecture_id,
+                }))
+                designs = np.ones((20, 4, 4))
+                savemat(iteration / 'fe_request.mat', {
+                    'inputs': designs, 'predicted_mean': np.ones(20),
+                    'predicted_uncertainty': np.zeros(20),
+                    'parent_predicted_mean': np.ones(20),
+                    'parent_predicted_uncertainty': np.zeros(20),
+                })
+                dataset = root / 'initial.mat'
+                savemat(dataset, {'inputs': designs[:3], 'outputs': np.arange(1., 4.)})
+                result = iteration / 'fe_result.mat'
+                savemat(result, {'outputs': np.arange(1., 21.)})
+                metric = evaluate_predictions(np.arange(1., 21.), np.arange(1., 21.))
+                child_metrics = replace(metric, pairwise_accuracy=.7, topk_regret=regret)
+                parent_metrics = replace(metric, pairwise_accuracy=.6, topk_regret=.1)
+                with patch('topo_nader.pipeline.engine._evaluate_feedback',
+                           side_effect=[child_metrics, parent_metrics]):
+                    engine.apply_feedback(run, dataset, 1, result, root / 'next.mat')
+                feedback = json.loads((iteration / 'feedback.json').read_text())
+                state = json.loads((run / 'state.json').read_text())
+                last_metrics = json.loads((run / 'state/last_metrics.json').read_text())
+                summary = json.loads((iteration / 'iteration_summary.json').read_text())
+                self.assertEqual(feedback['inheritance_decision']['accepted'], accepted)
+                self.assertEqual(state['current_architecture_id'],
+                                 child.architecture_id if accepted else parent.architecture_id)
+                self.assertEqual(state['next_iteration'], 2)
+                self.assertEqual(state['trigger']['last_audit_iteration'], 1)
+                self.assertEqual(last_metrics['pairwise_accuracy'], .7 if accepted else .6)
+                self.assertEqual(loadmat(root / 'next.mat')['outputsX'].size, 23)
+                self.assertEqual(summary['rollback'], not accepted)
+                self.assertIn('inheritance_decision', summary)
+
+    def test_old_snapshot_normalization_does_not_silently_enable_new_policy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = TopoNaderConfig()
+            engine = TinyTopoNaderEngine(config, Path(__file__).parents[1])
+            run = Path(directory) / 'run'
+            engine.initialize_run(run)
+            snapshot_path = run / 'config.snapshot.json'
+            snapshot = json.loads(snapshot_path.read_text())
+            snapshot.pop('inheritance')
+            snapshot['trigger'].pop('min_audit_interval')
+            snapshot_path.write_text(json.dumps(snapshot))
+            engine.initialize_run(run)  # Legacy semantics remain compatible.
+            config.inheritance.enabled = True
+            config.trigger.min_audit_interval = 5
+            with self.assertRaisesRegex(ValueError, 'different configuration'):
+                engine.initialize_run(run)
+            self.assertNotIn('inheritance', json.loads(snapshot_path.read_text()))
+
     def test_formal_elite_allocations_are_exact(self):
         self.assertEqual(_allocate_integer(300, (0.40, 0.20, 0.16, 0.12, 0.12)), [120, 60, 48, 36, 36])
         self.assertEqual(_allocate_integer(10, (0.40, 0.20, 0.20, 0.10, 0.10)), [4, 2, 2, 1, 1])
@@ -167,7 +240,7 @@ class TopoNaderPipelineTests(unittest.TestCase):
                     self.saw_parent_training = "current_parent_training" in payload["measured_metrics"]
                     content = json.dumps({"diagnosis": "test", "evidence": [], "risks": [], "recommended_focus": "test"})
                 elif self.calls == 2:
-                    content = json.dumps({"proposals": [{"title": "dropout", "rationale": "test", "changes": {}}]})
+                    content = json.dumps({"proposals": [{"title": "dropout", "rationale": "test", "design_intent": "regularize", "changes": {"dropout": 0.2}}]})
                 else:
                     content = json.dumps(
                         TopoNaderArchitectureSpec(

@@ -1,6 +1,6 @@
 {
   "experiment_name": "toponader-smoke",
-  "random_seed": 3,
+  "random_seed": 42,
   "training": {
     "epochs": 2,
     "quick_epochs": 1,

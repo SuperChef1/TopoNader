@@ -15,6 +15,15 @@ class TopoNaderModifier(TopoNaderBaseAgent):
             f"Preserve the parent's input_dim={current.input_dim} exactly. Return only the complete JSON object with fields name,input_dim,encoder_type,"
             "hidden_widths,latent_dim,activation,normalization,dropout,predictor_type,predictor_depth,"
             "predictor_width,predictor_activation,attention_heads,metadata."
+            " Implement the exact target values in proposal.changes. Preserve every unrelated parent field. "
+            "Necessary supporting changes are allowed, but declare EACH extra changed field in "
+            "metadata.supporting_changes as {field_name: nonempty explanation of why this is necessary "
+            "for the proposal or compatibility}. Use {} when no supporting changes are needed. "
+            "Cosmetic name and metadata edits do not count as architecture changes; do not list them "
+            "as supporting changes. They are ignored by structural scope checks, not by duplicate detection. "
+            "Do not copy old supporting_changes declarations from parent metadata. "
+            "The factory automatically rebuilds layer dimensions for latent_dim changes; changing latent_dim "
+            "does not by itself require changing predictor_width. Do not add independent improvements."
         )
         payload, record = self.call(
             system,

@@ -1,6 +1,6 @@
 {
   "experiment_name": "Baseline-4bars-30coverage",
-  "random_seed": 3,
+  "random_seed": 42,
   "data": {
     "input_key": "inputs",
     "output_key": "outputs",

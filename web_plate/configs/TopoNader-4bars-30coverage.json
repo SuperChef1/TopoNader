@@ -1,6 +1,6 @@
 {
   "experiment_name": "TopoNader-4bars-30coverage",
-  "random_seed": 3,
+  "random_seed": 42,
   "data": {
     "input_key": "inputs",
     "output_key": "outputs",
@@ -83,7 +83,8 @@
     "min_pairwise_accuracy": 0.6,
     "min_kendall_tau": 0.2,
     "max_topk_regret": 0.2,
-    "min_feedback_samples": 4
+    "min_feedback_samples": 4,
+    "min_audit_interval": 5
   },
   "architecture": {
     "max_parameters": 5000000,
@@ -120,5 +121,12 @@
     "experience_file": "state/architecture_experiences.jsonl",
     "source_topology_dir": "matlab",
     "comsol_model": "matlab/fuban_Beam.mph"
+  },
+  "inheritance": {
+    "enabled": true,
+    "min_pairwise_improvement": 0.03,
+    "max_topk_regret_increase": 0.02,
+    "min_feedback_samples": 10,
+    "min_pairwise_accuracy": null
   }
 }

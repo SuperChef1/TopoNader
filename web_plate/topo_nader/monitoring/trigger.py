@@ -53,7 +53,11 @@ class TopoNaderTrigger:
         if new_state.architecture_age >= self.config.max_architecture_age:
             reasons.append("maximum_architecture_age")
         audit_required = bool(reasons)
-        if audit_required:
-            new_state.last_audit_iteration = iteration
+        # Feedback at iteration t schedules prepare at t+1. Count from the last
+        # completed audit, never from an audit that was merely requested.
+        last_completed = state.last_audit_iteration or 0
+        if audit_required and iteration + 1 - last_completed < self.config.min_audit_interval:
+            reasons.append("minimum_audit_interval_not_met")
+            audit_required = False
         return TopoNaderTriggerDecision(audit_required, tuple(reasons), new_state)
 

@@ -8,6 +8,7 @@ from .client import TopoNaderLLMClient
 from .modifier import TopoNaderModifier
 from .proposer import TopoNaderProposer
 from .reflector import TopoNaderReflector
+from .change_scope import POLICY_VERSION, check_change_scope, proposal_errors
 
 
 class TopoNaderAgentOrchestrator:
@@ -59,6 +60,10 @@ class TopoNaderAgentOrchestrator:
             for proposal in proposals:
                 if len(candidates) >= count:
                     break
+                scope_errors = proposal_errors(proposal)
+                if scope_errors:
+                    failure_context.append({"proposal": proposal, "errors": scope_errors})
+                    continue
                 feedback: list[dict] = []
                 accepted = False
                 for attempt_index in range(max(1, retry_limit)):
@@ -71,6 +76,10 @@ class TopoNaderAgentOrchestrator:
                         usage.append(record)
                         attempt_record["architecture_id"] = candidate.architecture_id
                         errors: list[str] = []
+                        scope_report = check_change_scope(current, candidate, proposal)
+                        attempt_record["change_scope"] = scope_report
+                        errors.extend(scope_report["errors"])
+                        candidate.metadata["change_scope"] = scope_report
                         report_payload = None
                         if candidate.architecture_id in seen:
                             errors.append("duplicate_or_parent_architecture")
@@ -87,7 +96,8 @@ class TopoNaderAgentOrchestrator:
                             accepted = True
                             attempts.append(attempt_record)
                             break
-                        feedback.append({"candidate": candidate.to_dict(), "errors": errors})
+                        feedback.append({"candidate": candidate.to_dict(), "errors": errors,
+                                         "change_scope": scope_report})
                         attempt_record.update({"accepted": False, "errors": errors})
                     except Exception as exc:
                         feedback.append({"errors": [f"generation_or_parse_error: {exc}"]})
@@ -96,6 +106,7 @@ class TopoNaderAgentOrchestrator:
                 if not accepted:
                     failure_context.append({"proposal": proposal, "feedback": feedback})
         trace = {
+            "change_scope_policy": POLICY_VERSION,
             "diagnosis": diagnosis,
             "proposal_rounds": proposal_rounds,
             "candidate_attempts": attempts,

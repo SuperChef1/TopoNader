@@ -32,7 +32,7 @@ class TopoNaderConfigTests(unittest.TestCase):
             "matlab",
         )
         self.assertEqual(payload["paths"]["comsol_model"], "matlab/fuban_Beam.mph")
-        self.assertEqual(payload["random_seed"], 3)
+        self.assertEqual(payload["random_seed"], 42)
         self.assertEqual(payload["agents"]["structured_output_retries"], 2)
         self.assertIn("matlab_inputs", payload["resolved_seeds"])
         self.assertTrue(payload["optimization"]["coverage"]["upper_bound_enabled"])
@@ -74,6 +74,30 @@ class TopoNaderConfigTests(unittest.TestCase):
         TopoNaderConfig(experiment_name="六杆-覆盖率030-seed3").validate()
         with self.assertRaisesRegex(ValueError, "path-safe"):
             TopoNaderConfig(experiment_name="group/experiment").validate()
+
+    def test_inheritance_and_interval_configuration_reject_invalid_values(self):
+        for field, value in [('min_pairwise_improvement', float('nan')),
+                             ('max_topk_regret_increase', -0.1),
+                             ('min_feedback_samples', 1), ('min_pairwise_accuracy', 1.1)]:
+            config = TopoNaderConfig()
+            setattr(config.inheritance, field, value)
+            with self.assertRaises(ValueError):
+                config.validate()
+        config = TopoNaderConfig()
+        config.trigger.min_audit_interval = 11
+        with self.assertRaises(ValueError):
+            config.validate()
+
+    def test_random_architecture_source_requires_enabled_search(self):
+        config = TopoNaderConfig()
+        config.agents.proposal_source = 'random'
+        config.agents.enabled = False
+        with self.assertRaisesRegex(ValueError, 'requires agents.enabled'):
+            config.validate()
+        config.agents.enabled = True
+        config.agents.proposal_source = 'unknown'
+        with self.assertRaisesRegex(ValueError, 'proposal_source'):
+            config.validate()
 
 
 if __name__ == "__main__":
