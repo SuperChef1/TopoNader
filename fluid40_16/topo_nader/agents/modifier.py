@@ -1,0 +1,42 @@
+from __future__ import annotations
+
+import json
+
+from ..architecture.spec import TopoNaderArchitectureSpec
+from .base import TopoNaderBaseAgent
+
+
+class TopoNaderModifier(TopoNaderBaseAgent):
+    def modify(self, current: TopoNaderArchitectureSpec, proposal: dict, feedback: list[dict] | None = None):
+        system = (
+            "You are TopoNaderModifier. Convert one proposal into one complete architecture JSON. "
+            "Allowed encoder_type: mlp,residual_mlp; predictor_type: mlp; "
+            "activation: relu,gelu,leaky_relu,silu; normalization: layer_norm,batch_norm,none. "
+            f"Preserve the parent's input_dim={current.input_dim} exactly. Return only the complete JSON object with fields name,input_dim,encoder_type,"
+            "hidden_widths,latent_dim,activation,normalization,dropout,predictor_type,predictor_depth,"
+            "predictor_width,predictor_activation,attention_heads,metadata."
+            " Implement the exact target values in proposal.changes. Preserve every unrelated parent field. "
+            "Necessary supporting changes are allowed, but declare EACH extra changed field in "
+            "metadata.supporting_changes as {field_name: nonempty explanation of why this is necessary "
+            "for the proposal or compatibility}. Use {} when no supporting changes are needed. "
+            "Cosmetic name and metadata edits do not count as architecture changes; do not list them "
+            "as supporting changes. They are ignored by structural scope checks, not by duplicate detection. "
+            "Do not copy old supporting_changes declarations from parent metadata. "
+            "The factory automatically rebuilds layer dimensions for latent_dim changes; changing latent_dim "
+            "does not by itself require changing predictor_width. Do not add independent improvements."
+        )
+        payload, record = self.call(
+            system,
+            json.dumps(
+                {
+                    "parent": current.to_dict(),
+                    "proposal": proposal,
+                    "previous_attempt_feedback": feedback or [],
+                    "instruction": "Correct every reported error and return a distinct valid child architecture.",
+                },
+                ensure_ascii=False,
+            ),
+        )
+        payload.setdefault("metadata", {})
+        payload["metadata"]["proposal"] = proposal
+        return TopoNaderArchitectureSpec.from_dict(payload), record

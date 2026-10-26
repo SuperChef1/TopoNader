@@ -1,0 +1,17 @@
+{
+  "extends": "smoke.json",
+  "experiment_name": "fluid40-16-smoke-audit",
+  "method": {
+    "architecture_adaptation": true,
+    "architecture_review_mode": "every_round"
+  },
+  "agents": {
+    "enabled": true,
+    "proposal_source": "random"
+  },
+  "architecture": {
+    "candidate_count": 2,
+    "fully_train_count": 1,
+    "zero_cost_enabled": false
+  }
+}

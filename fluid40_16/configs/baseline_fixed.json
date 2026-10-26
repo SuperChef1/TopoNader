@@ -1,0 +1,10 @@
+{
+  "extends": "default.json",
+  "experiment_name": "fluid40-16-fixed",
+  "method": {
+    "architecture_adaptation": false
+  },
+  "agents": {
+    "enabled": false
+  }
+}

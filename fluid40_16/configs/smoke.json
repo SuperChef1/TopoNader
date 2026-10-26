@@ -1,0 +1,43 @@
+{
+  "extends": "baseline_fixed.json",
+  "experiment_name": "fluid40-16-smoke",
+  "training": {
+    "epochs": 2,
+    "quick_epochs": 1,
+    "batch_size": 128,
+    "patience": 2,
+    "device": "cpu"
+  },
+  "uncertainty": {
+    "mc_samples": 2
+  },
+  "optimization": {
+    "particles": 10,
+    "iterations": 2,
+    "candidate_pool_size": 30,
+    "fe_batch_size": 4,
+    "exploitation_count": 2,
+    "exploration_count": 2,
+    "refill_pool_size": 50,
+    "elite_local_search": {
+      "enabled": true,
+      "elite_count": 2,
+      "particle_weights": [
+        0.6,
+        0.4
+      ],
+      "selected_weights": [
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "initial_architecture": {
+    "hidden_widths": [
+      32,
+      16
+    ],
+    "latent_dim": 8,
+    "predictor_width": 16
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "experiment_name": "fluid40-16-toponader",
+  "random_seed": 3,
+  "data": {
+    "nx": 40,
+    "ny": 16,
+    "output_log10": true
+  },
+  "initial_architecture": {
+    "hidden_widths": [
+      512,
+      256,
+      128
+    ],
+    "latent_dim": 30,
+    "predictor_type": "mlp",
+    "predictor_width": 128
+  },
+  "optimization": {
+    "particles": 300,
+    "iterations": 500,
+    "fe_batch_size": 20,
+    "exploitation_count": 10,
+    "exploration_count": 10,
+    "coverage": {
+      "upper_bound_enabled": false,
+      "lower_bound_enabled": false
+    },
+    "elite_local_search": {
+      "enabled": true
+    }
+  },
+  "trigger": {
+    "min_audit_interval": 5
+  },
+  "inheritance": {
+    "enabled": true
+  },
+  "paths": {
+    "source_topology_dir": "matlab",
+    "comsol_model": "matlab/fluid.mph"
+  }
+}

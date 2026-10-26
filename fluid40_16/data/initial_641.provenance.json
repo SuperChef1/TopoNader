@@ -1,0 +1,17 @@
+{
+  "source": "reference/10ntrain_train_step.mat",
+  "sha256": "492f321ff43177c962a62aae1cee57ec8c96c120ca4c5d310fd41bd51fd6db31",
+  "shape": [
+    641,
+    40,
+    16
+  ],
+  "finite_positive_labels": 641,
+  "unique_designs": 641,
+  "legacy_feasible_designs": 641,
+  "outputs_min": 0.7419669736260367,
+  "outputs_max": 1.9456731199483108,
+  "labels_recomputed": false,
+  "chronological_order_known": false,
+  "solid_fraction_is_constraint": false
+}

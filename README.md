@@ -1,7 +1,7 @@
 # TopoNader 任务目录
 
 - `web_plate/`：现有腹板项目，保留原有程序内容、配置、数据、实验结果和备份。
-- `fluid40_16/`：原 `fluid_40_16/` 流道案例。此次只整理目录，尚未适配为流道版 TopoNader。
+- `fluid40_16/`：独立流道版 TopoNader，保留旧连通性规则，从 MATLAB 启动。使用方法见 [流道说明](fluid40_16/README.md)。
 - `.venv/`：现有共用 Python 环境。
 - `.git/`：共用版本库。
 
