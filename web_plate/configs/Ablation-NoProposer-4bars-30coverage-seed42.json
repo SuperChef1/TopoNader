@@ -1,0 +1,8 @@
+{
+  "extends": "TopoNader-Bv2-4bars-30coverage-seed42.json",
+  "experiment_name": "Ablation-NoProposer-4bars-30coverage-seed42",
+  "agents": {
+    "reflector_enabled": true,
+    "proposer_enabled": false
+  }
+}

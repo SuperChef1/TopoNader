@@ -1,0 +1,26 @@
+{
+  "existing_runs_read": [
+    "Ablation-C-4bars-30coverage-seed42",
+    "Ablation-D-4bars-30coverage-seed42",
+    "Ablation-NoReflector-NoProposer-4bars-30coverage-seed42",
+    "Baseline-4bars-30coverage",
+    "Baseline-4bars-30coverage-original-load-20261020",
+    "Baseline-4bars-30coverage-seed123",
+    "Baseline-4bars-30coverage-seed42-20261021",
+    "Baseline-6bars-30coverage",
+    "formal-llm-onetopai-seed3-01",
+    "smoke-onetopai-01",
+    "TopoNader-4bars-30coverage",
+    "TopoNader-4bars-30coverage-original-load-20261020",
+    "TopoNader-4bars-30coverage-seed42-20261021",
+    "TopoNader-6bars-30coverage",
+    "TopoNader-Bv2-4bars-30coverage-seed123",
+    "TopoNader-Bv2-4bars-30coverage-seed42",
+    "toponader-smoke-live-audit"
+  ],
+  "tests_passed": 75,
+  "legacy_prompt_parity": true,
+  "library_sha256": "ee98727710a91dd9b217854c703fcb6a66e477416f04083867fc77a46401eb34",
+  "new_config_runs_started": false,
+  "network_sources_commit": "20770bd694b3a9f616a7dc851442258b99e03e38"
+}

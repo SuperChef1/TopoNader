@@ -10,6 +10,7 @@ from scipy.io import loadmat
 
 from ..agents.client import TopoNaderOpenAICompatibleClient, resolve_toponader_llm_runtime
 from ..agents.orchestrator import TopoNaderAgentOrchestrator
+from ..agents.human_suggestions import generate_human_proposals, load_human_library
 from ..agents.random_proposals import generate_random_candidates
 from ..architecture.spec import TopoNaderArchitectureSpec
 from ..architecture.validator import TopoNaderArchitectureValidator
@@ -102,6 +103,8 @@ class TopoNaderEngine:
         return TopoNaderArchitectureSpec(input_dim=self.config.data.input_dim)
 
     def initialize_run(self, run_dir: str | Path, force: bool = False) -> TopoNaderRunState:
+        if self.config.agents.proposer_disabled_mode in {'human_suggestions', 'human_suggestions_select'}:
+            load_human_library(self.config.agents.human_suggestions_sha256)
         run = Path(run_dir)
         state_path = run / "state.json"
         runtime_model, runtime_base_url = resolve_toponader_llm_runtime(self.config.agents)
@@ -123,6 +126,12 @@ class TopoNaderEngine:
             stored.setdefault("inheritance", asdict(TopoNaderInheritanceConfig()))
             stored.setdefault("trigger", {}).setdefault("min_audit_interval", 0)
             stored.setdefault("agents", {}).setdefault("proposal_source", "llm")
+            # Before role switches existed both roles were always active.
+            # Normalize only in memory; never rewrite a historical snapshot.
+            stored["agents"].setdefault("reflector_enabled", True)
+            stored["agents"].setdefault("proposer_enabled", True)
+            stored["agents"].setdefault("proposer_disabled_mode", "modifier_direct")
+            stored["agents"].setdefault("human_suggestions_sha256", None)
             # Compare the JSON representation because tuple-valued settings are
             # persisted as lists in config.snapshot.json.
             resolved_snapshot = json.loads(json.dumps(snapshot_config.to_dict()))
@@ -523,10 +532,22 @@ class TopoNaderEngine:
             experience_path = run / self.config.paths.experience_file
             experiences = TopoNaderExperienceStore(experience_path).recent()
             client = self.agent_client_factory(self.config.agents)
+            human_proposals = human_policy = None
+            if self.config.agents.proposer_disabled_mode in {'human_suggestions', 'human_suggestions_select'}:
+                iteration = int(iteration_dir.name.rsplit('_', 1)[1])
+                human_proposals, human_policy = generate_human_proposals(
+                    current, self.config.architecture,
+                    self.config.seed_for(f'human_suggestions:{iteration}'),
+                    self.config.agents.human_suggestions_sha256, self.validator.validate)
             agents = TopoNaderAgentOrchestrator(
                 client,
                 iteration_dir / "agents",
                 structured_output_retries=self.config.agents.structured_output_retries,
+                reflector_enabled=self.config.agents.reflector_enabled,
+                proposer_enabled=self.config.agents.proposer_enabled,
+                human_proposals=human_proposals,
+                human_policy=human_policy,
+                modifier_selects_human=self.config.agents.proposer_disabled_mode == 'human_suggestions_select',
             )
             candidates, trace = agents.generate_candidates(
                 current,
@@ -851,7 +872,8 @@ class TopoNaderEngine:
         # Subsequent diagnosis must describe the inherited model, including rollback.
         write_json_atomic(run / "state" / "last_metrics.json", inherited_metric_payload)
         if (manifest["audit"] and self.config.agents.enabled
-                and self.config.agents.proposal_source == "llm"):
+                and self.config.agents.proposal_source == "llm"
+                and self.config.agents.reflector_enabled):
             reflection_input = {
                 "iteration": iteration,
                 "parent_architecture_id": manifest["parent_architecture_id"],
