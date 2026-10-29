@@ -44,6 +44,74 @@ class TinyTopoNaderEngine(TopoNaderEngine):
 
 
 class TopoNaderPipelineTests(unittest.TestCase):
+    def test_legacy_role_defaults_are_read_only_and_reject_midrun_switch_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = TopoNaderConfig(training=TopoNaderTrainingConfig(device='cpu'))
+            engine = TinyTopoNaderEngine(config, Path(__file__).parents[1])
+            run = Path(directory)/'run'
+            expected = engine.initialize_run(run)
+            snapshot_path = run/'config.snapshot.json'
+            snapshot = json.loads(snapshot_path.read_text(encoding='utf-8'))
+            snapshot['agents'].pop('reflector_enabled')
+            snapshot['agents'].pop('proposer_enabled')
+            snapshot_path.write_text(json.dumps(snapshot),encoding='utf-8')
+            original = snapshot_path.read_bytes()
+            self.assertEqual(engine.initialize_run(run).to_dict(),expected.to_dict())
+            for name in ('reflector_enabled','proposer_enabled'):
+                changed = replace(config,agents=replace(config.agents,**{name:False}))
+                with self.assertRaisesRegex(ValueError,'different configuration'):
+                    TinyTopoNaderEngine(changed,Path(__file__).parents[1]).initialize_run(run)
+            self.assertEqual(snapshot_path.read_bytes(),original)
+
+    def test_disabled_roles_complete_a_cpu_prepare_feedback_cycle_without_role_calls(self):
+        class DirectClient:
+            def __init__(self):
+                self.systems = []
+
+            def complete(self,messages):
+                self.systems.append(messages[0]['content'])
+                if 'No separate Proposer' not in messages[0]['content']:
+                    raise AssertionError('A disabled role was called')
+                parent = json.loads(messages[1]['content'])['parent']
+                parent.update(dropout=.2,metadata={'supporting_changes':{}})
+                proposal = {'design_intent':'regularize','changes':{'dropout':.2}}
+                return {'content':json.dumps({'proposal':proposal,'architecture':parent}),
+                        'model':'stub','prompt_tokens':1,'completion_tokens':1}
+
+        client = DirectClient()
+        config = TopoNaderConfig(
+            training=TopoNaderTrainingConfig(epochs=1,quick_epochs=1,batch_size=8,patience=1,device='cpu'),
+            uncertainty=TopoNaderUncertaintyConfig(mc_samples=2),
+            optimization=TopoNaderOptimizationConfig(particles=4,iterations=1,candidate_pool_size=8,
+                fe_batch_size=2,exploitation_count=1,exploration_count=1,
+                coverage=TopoNaderCoverageConfig(upper_bound=1.,upper_tolerance=0.)),
+            architecture=TopoNaderArchitectureConfig(candidate_count=1,fully_train_count=1,zero_cost_keep_count=1),
+            method=TopoNaderMethodConfig(architecture_review_mode='every_round',uncertainty_sampling=False),
+            agents=TopoNaderAgentConfig(reflector_enabled=False,proposer_enabled=False),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            run = root/'run'
+            engine = TinyTopoNaderEngine(config,Path(__file__).parents[1],
+                agent_client_factory=lambda _:client)
+            designs = engine.geometry.denormalize(np.random.default_rng(42).random((12,4,4)))
+            dataset = root/'initial.mat'
+            savemat(dataset,{'inputs':designs,'outputs':np.linspace(1.,2.,12)})
+            request = engine.prepare_iteration(run,dataset,1)
+            trace = json.loads((run/'iteration_0001/audit/trace.json').read_text(encoding='utf-8'))
+            self.assertEqual(trace['accepted_candidate_count'],1)
+            self.assertEqual(trace['agent_switches'],{'reflector_enabled':False,'proposer_enabled':False})
+            result = root/'fe.mat'
+            savemat(result,{'outputs':np.array([2.,3.])})
+            calls_before_feedback = len(client.systems)
+            engine.apply_feedback(run,dataset,1,result,root/'next.mat')
+            self.assertEqual(len(client.systems),calls_before_feedback)
+            feedback = json.loads((run/'iteration_0001/feedback.json').read_text(encoding='utf-8'))
+            self.assertIsNone(feedback['post_reflection'])
+            self.assertFalse((run/'iteration_0001/audit/post_reflection.json').exists())
+            self.assertEqual(loadmat(root/'next.mat')['outputsX'].size,14)
+            self.assertEqual(json.loads((run/'state.json').read_text())['next_iteration'],2)
+
     def test_feedback_guard_preserves_data_and_tracks_inherited_model_after_rollback(self):
         for regret, accepted in [(0.13, False), (0.11, True)]:
             with self.subTest(regret=regret), tempfile.TemporaryDirectory() as directory:

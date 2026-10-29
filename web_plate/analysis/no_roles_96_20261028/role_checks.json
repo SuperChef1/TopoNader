@@ -1,0 +1,219 @@
+{
+  "role_calls": {
+    "TopoNaderModifier": 121
+  },
+  "role_errors": [],
+  "adoptions": [
+    {
+      "iteration": 27,
+      "proposal": {
+        "title": "Smooth predictor activation for ranking stability",
+        "rationale": "The parent shows unstable recent ranking behavior, including negative rank correlation, negative R2, and near-chance pairwise accuracy at the audit boundary. Replacing the predictor's leaky ReLU with GELU provides smoother nonlinear transitions in the prediction head while preserving encoder capacity, latent size, normalization, dropout, attention configuration, and training conditions.",
+        "design_intent": "Improve predictor optimization smoothness and ranking consistency through a single predictor activation change.",
+        "changes": {
+          "predictor_activation": "gelu"
+        }
+      },
+      "decision": {
+        "policy_version": "single_batch_guard_v1",
+        "accepted": true,
+        "reasons": [
+          "ranking_gain_and_topk_protection_passed"
+        ],
+        "pairwise_improvement": 0.0368421052631579,
+        "topk_regret_increase": -0.3008164976690293,
+        "thresholds": {
+          "enabled": true,
+          "min_pairwise_improvement": 0.03,
+          "max_topk_regret_increase": 0.02,
+          "min_feedback_samples": 10,
+          "min_pairwise_accuracy": null
+        },
+        "parent_metrics": {
+          "sample_count": 20,
+          "rmse": 0.19424164456337806,
+          "mae": 0.15875188221808806,
+          "r2": -0.06740506707226368,
+          "kendall_tau": 0.12631578947368421,
+          "spearman_rho": 0.2300751879699248,
+          "pairwise_accuracy": 0.5631578947368421,
+          "topk_recall": 0.0,
+          "topk_regret": 0.3008164976690293,
+          "uncertainty_error_correlation": 0.11278195488721804
+        },
+        "child_metrics": {
+          "sample_count": 20,
+          "rmse": 0.23265205361088223,
+          "mae": 0.1932409319281029,
+          "r2": -0.5312931792740154,
+          "kendall_tau": 0.19999999999999998,
+          "spearman_rho": 0.30075187969924805,
+          "pairwise_accuracy": 0.6,
+          "topk_recall": 0.3333333333333333,
+          "topk_regret": 0.0,
+          "uncertainty_error_correlation": 0.47518796992481205
+        }
+      }
+    },
+    {
+      "iteration": 56,
+      "proposal": {
+        "title": "Silu predictor activation for smoother ranking optimization",
+        "rationale": "The parent exhibits persistent ranking degradation, including negative audit-time rank correlations, zero top-k recall, and below-chance pairwise accuracy. Replacing GELU with SiLU introduces a smooth, nonzero-gradient predictor activation that may improve optimization continuity while preserving encoder capacity, latent size, normalization, dropout, attention configuration, and training conditions.",
+        "design_intent": "Improve predictor optimization smoothness and ranking consistency through a single predictor activation change.",
+        "changes": {
+          "predictor_activation": "silu"
+        }
+      },
+      "decision": {
+        "policy_version": "single_batch_guard_v1",
+        "accepted": true,
+        "reasons": [
+          "ranking_gain_and_topk_protection_passed"
+        ],
+        "pairwise_improvement": 0.03157894736842104,
+        "topk_regret_increase": 0.0017752826533146693,
+        "thresholds": {
+          "enabled": true,
+          "min_pairwise_improvement": 0.03,
+          "max_topk_regret_increase": 0.02,
+          "min_feedback_samples": 10,
+          "min_pairwise_accuracy": null
+        },
+        "parent_metrics": {
+          "sample_count": 20,
+          "rmse": 0.2459286085109568,
+          "mae": 0.2200910230194406,
+          "r2": -0.19600392132844058,
+          "kendall_tau": -0.1473684210526316,
+          "spearman_rho": -0.15939849624060148,
+          "pairwise_accuracy": 0.4263157894736842,
+          "topk_recall": 0.0,
+          "topk_regret": 0.3876535884879849,
+          "uncertainty_error_correlation": -0.4285714285714286
+        },
+        "child_metrics": {
+          "sample_count": 20,
+          "rmse": 0.2882508843216806,
+          "mae": 0.26608656455669155,
+          "r2": -0.6430689749808856,
+          "kendall_tau": -0.08421052631578947,
+          "spearman_rho": -0.09473684210526315,
+          "pairwise_accuracy": 0.45789473684210524,
+          "topk_recall": 0.0,
+          "topk_regret": 0.3894288711412996,
+          "uncertainty_error_correlation": 0.010526315789473682
+        }
+      }
+    },
+    {
+      "iteration": 63,
+      "proposal": {
+        "title": "Moderate dropout for ranking stability",
+        "rationale": "The parent still shows unstable ranking behavior, including negative audit-time rank correlations, zero top-k recall, and substantial metric swings across recent evaluations. Increasing dropout modestly from 0.1 to 0.15 adds regularization while preserving the encoder, latent representation, predictor configuration, normalization, and training conditions.",
+        "design_intent": "Improve ranking consistency and generalization through a single bounded regularization change.",
+        "changes": {
+          "dropout": 0.15
+        }
+      },
+      "decision": {
+        "policy_version": "single_batch_guard_v1",
+        "accepted": true,
+        "reasons": [
+          "ranking_gain_and_topk_protection_passed"
+        ],
+        "pairwise_improvement": 0.0736842105263158,
+        "topk_regret_increase": -0.4257875520951245,
+        "thresholds": {
+          "enabled": true,
+          "min_pairwise_improvement": 0.03,
+          "max_topk_regret_increase": 0.02,
+          "min_feedback_samples": 10,
+          "min_pairwise_accuracy": null
+        },
+        "parent_metrics": {
+          "sample_count": 20,
+          "rmse": 0.31954307454764064,
+          "mae": 0.26304230830437475,
+          "r2": -0.41041049383596406,
+          "kendall_tau": -0.2631578947368421,
+          "spearman_rho": -0.25864661654135335,
+          "pairwise_accuracy": 0.3684210526315789,
+          "topk_recall": 0.0,
+          "topk_regret": 0.5634407219937079,
+          "uncertainty_error_correlation": 0.5203007518796992
+        },
+        "child_metrics": {
+          "sample_count": 20,
+          "rmse": 0.3476415825356253,
+          "mae": 0.2801556172761327,
+          "r2": -0.6693605572889141,
+          "kendall_tau": -0.11578947368421053,
+          "spearman_rho": -0.0781954887218045,
+          "pairwise_accuracy": 0.4421052631578947,
+          "topk_recall": 0.0,
+          "topk_regret": 0.1376531698985834,
+          "uncertainty_error_correlation": 0.5624060150375939
+        }
+      }
+    },
+    {
+      "iteration": 68,
+      "proposal": {
+        "title": "Switch normalization to batch normalization for ranking stability",
+        "rationale": "The parent continues to show unstable ranking behavior, including near-zero rank correlations, chance-level pairwise accuracy, and zero top-k recall across recent evaluations. Replacing layer normalization with batch normalization is a single bounded normalization experiment intended to improve feature-scale consistency while preserving the model topology, capacity, activation functions, dropout, predictor, latent dimension, and training conditions.",
+        "design_intent": "Improve ranking consistency through a single bounded normalization change.",
+        "changes": {
+          "normalization": "batch_norm"
+        }
+      },
+      "decision": {
+        "policy_version": "single_batch_guard_v1",
+        "accepted": true,
+        "reasons": [
+          "ranking_gain_and_topk_protection_passed"
+        ],
+        "pairwise_improvement": 0.047368421052631615,
+        "topk_regret_increase": 0.010483298845880493,
+        "thresholds": {
+          "enabled": true,
+          "min_pairwise_improvement": 0.03,
+          "max_topk_regret_increase": 0.02,
+          "min_feedback_samples": 10,
+          "min_pairwise_accuracy": null
+        },
+        "parent_metrics": {
+          "sample_count": 20,
+          "rmse": 0.32204364377330086,
+          "mae": 0.2981463719423768,
+          "r2": 0.30541203825234364,
+          "kendall_tau": 0.5578947368421052,
+          "spearman_rho": 0.7729323308270677,
+          "pairwise_accuracy": 0.7789473684210526,
+          "topk_recall": 0.6666666666666666,
+          "topk_regret": 0.008122160431804179,
+          "uncertainty_error_correlation": 0.11127819548872178
+        },
+        "child_metrics": {
+          "sample_count": 20,
+          "rmse": 0.24045449641510966,
+          "mae": 0.22539749034352913,
+          "r2": 0.6127748170103547,
+          "kendall_tau": 0.6526315789473685,
+          "spearman_rho": 0.8390977443609022,
+          "pairwise_accuracy": 0.8263157894736842,
+          "topk_recall": 0.3333333333333333,
+          "topk_regret": 0.01860545927768467,
+          "uncertainty_error_correlation": 0.26315789473684204
+        }
+      }
+    }
+  ],
+  "top5": [
+    1.100945832881057,
+    1.1009538444067284,
+    1.1011063946430606,
+    1.1011694477743377,
+    1.1012252806175309
+  ]
+}

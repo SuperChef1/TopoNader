@@ -1,0 +1,9 @@
+{
+  "extends": "Ablation-Human-NoProposer-4bars-30coverage-seed42.json",
+  "experiment_name": "Ablation-HumanSelect-NoProposer-4bars-30coverage-seed42",
+  "agents": {
+    "reflector_enabled": true,
+    "proposer_enabled": false,
+    "proposer_disabled_mode": "human_suggestions_select"
+  }
+}

@@ -166,6 +166,10 @@ class TopoNaderAgentConfig:
     timeout_seconds: int = 300
     max_retries: int = 3
     structured_output_retries: int = 2
+    reflector_enabled: bool = True
+    proposer_enabled: bool = True
+    proposer_disabled_mode: str = "modifier_direct"
+    human_suggestions_sha256: str | None = None
 
 
 @dataclass
@@ -259,6 +263,18 @@ class TopoNaderConfig:
             raise ValueError("agents structured_output_retries must be non-negative")
         if self.agents.proposal_source not in {"llm", "random"}:
             raise ValueError("agents proposal_source must be llm or random")
+        for name in ("reflector_enabled", "proposer_enabled"):
+            if not isinstance(getattr(self.agents, name), bool):
+                raise ValueError(f"agents.{name} must be a boolean")
+        if self.agents.proposer_disabled_mode not in {"modifier_direct", "human_suggestions", "human_suggestions_select"}:
+            raise ValueError("agents.proposer_disabled_mode must be modifier_direct, human_suggestions or human_suggestions_select")
+        if self.agents.proposer_disabled_mode in {"human_suggestions", "human_suggestions_select"}:
+            if (self.agents.proposer_enabled or not self.agents.enabled
+                    or self.agents.proposal_source != "llm" or not self.method.architecture_adaptation):
+                raise ValueError("human_suggestions requires enabled LLM architecture search and proposer_enabled=false")
+            digest = self.agents.human_suggestions_sha256
+            if not isinstance(digest, str) or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+                raise ValueError("human_suggestions requires the pinned library SHA256")
         if self.agents.proposal_source == "random" and not self.agents.enabled:
             raise ValueError("random architecture search requires agents.enabled=true")
         if not 1 <= self.architecture.min_latent_dim <= self.architecture.max_latent_dim:

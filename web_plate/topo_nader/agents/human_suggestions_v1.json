@@ -1,0 +1,50 @@
+{
+  "policy_version": "surrogate_human_v1",
+  "description": "Author-curated, literature-informed architectural hypotheses for the existing scalar FE surrogate. Not a published or validated surrogate rule benchmark.",
+  "selection": "Seeded permutation without replacement of applicable rules per audit; no performance ranking or LLM proposal selection.",
+  "numeric_choices": "Width factors, latent factors, depth steps and dropout values are project design choices, not values established by the cited papers.",
+  "construction_note": "Frozen after observing earlier project results, including the NoReflector/NoProposer pilot. Future comparisons are exploratory; do not treat this library as preregistered before those results.",
+  "sources": {
+    "nader_manual": "https://github.com/yang-ze-kang/NADER/blob/20770bd694b3a9f616a7dc851442258b99e03e38/data/inspirations/manual_v1.json",
+    "lemonade": "https://arxiv.org/abs/2402.18443",
+    "tabular": "https://proceedings.neurips.cc/paper/2021/hash/9d86d83f925f2149e9edb0ac3b49229c-Abstract.html",
+    "batch_norm": "https://arxiv.org/abs/1502.03167",
+    "layer_norm": "https://arxiv.org/abs/1607.06450",
+    "dropout": "https://jmlr.org/papers/v15/srivastava14a.html",
+    "gelu": "https://arxiv.org/abs/1606.08415",
+    "silu": "https://arxiv.org/abs/1710.05941"
+  },
+  "excluded_nader_rules": {
+    "grouped_convolution": "No convolution/group operator in the current surrogate schema.",
+    "depthwise_separable_convolution": "CNN operator absent from the current schema.",
+    "increase_kernel_size": "No convolution kernel in the current schema.",
+    "squeeze_and_excitation": "SE blocks are not implemented by the factory.",
+    "swap_activation_normalization": "Layer ordering cannot be changed through the current architecture JSON.",
+    "inverted_bottleneck": "A block expansion/projection operator is not exposed; latent expansion below is only a compression-capacity analogue.",
+    "cascade_and_parallel": "The schema does not expose arbitrary block composition. Adding a supported encoder layer is a limited project adaptation, not NADER graph composition."
+  },
+  "rules": [
+    {"id":"encoder_residual","intent":"Test residual encoder connections while preserving widths and depth.","operation":"set","targets":{"encoder_type":"residual_mlp"},"sources":["nader_manual","tabular"],"adaptation":"Map CNN residual motivation to the factory's existing dense residual encoder."},
+    {"id":"encoder_plain","intent":"Test the plain MLP encoder as the simpler alternative to residual blocks.","operation":"set","targets":{"encoder_type":"mlp"},"sources":["tabular"],"adaptation":"Project control; no claim that removing skips improves performance."},
+    {"id":"encoder_narrow","intent":"Test reduced encoder capacity and parameter cost.","operation":"scale_widths","factor":0.75,"sources":["lemonade","tabular"],"adaptation":"Capacity-control analogue; factor is a project choice."},
+    {"id":"encoder_wide","intent":"Test increased encoder capacity without adding layers.","operation":"scale_widths","factor":1.25,"sources":["lemonade","tabular"],"adaptation":"Bounded capacity hypothesis; factor is a project choice."},
+    {"id":"encoder_shallow","intent":"Test a shallower encoder by removing its terminal hidden layer.","operation":"depth_down","sources":["lemonade","tabular"],"adaptation":"Architecture simplification; training budget remains fixed."},
+    {"id":"encoder_deep","intent":"Test one additional terminal encoder layer for nonlinear representation.","operation":"depth_up","sources":["lemonade","tabular"],"adaptation":"Only the existing sequential encoder is extended; no arbitrary graph composition."},
+    {"id":"latent_compress","intent":"Test stronger compression of the learned latent representation.","operation":"scale_latent","factor":0.75,"sources":["nader_manual"],"adaptation":"Analogue of bottleneck compression, not a convolutional bottleneck block."},
+    {"id":"latent_relax","intent":"Test a less restrictive learned latent representation.","operation":"scale_latent","factor":1.5,"sources":["nader_manual","tabular"],"adaptation":"Project capacity counterpart to latent compression; not an inverted CNN bottleneck."},
+    {"id":"predictor_mlp","intent":"Test the existing lightweight MLP predictor instead of attention.","operation":"set","targets":{"predictor_type":"mlp"},"sources":["tabular"],"adaptation":"Use the implemented MLP head; not an exact reproduction of the paper's models."},
+    {"id":"predictor_transformer","intent":"Test the existing bar-token Transformer predictor for interactions.","operation":"predictor_transformer","sources":["tabular"],"adaptation":"The existing bar-token factory is not FT-Transformer. Required width/head compatibility is resolved by code."},
+    {"id":"norm_batch","intent":"Test batch normalization as the encoder normalization method.","operation":"set","targets":{"normalization":"batch_norm"},"sources":["batch_norm","tabular"],"adaptation":"Applies to supported encoder normalization, not all Transformer internals."},
+    {"id":"norm_layer","intent":"Test per-sample layer normalization in the encoder.","operation":"set","targets":{"normalization":"layer_norm"},"sources":["layer_norm"],"adaptation":"Changes only the encoder field exposed by this factory."},
+    {"id":"norm_none","intent":"Test whether explicit encoder normalization is necessary.","operation":"set","targets":{"normalization":"none"},"sources":["tabular"],"adaptation":"Project control; not a literature guarantee of better fitting."},
+    {"id":"encoder_relu","intent":"Test ReLU as the simple encoder activation control.","operation":"set","targets":{"activation":"relu"},"sources":["tabular"],"adaptation":"Keep all non-activation fields fixed."},
+    {"id":"encoder_gelu","intent":"Test GELU in the encoder while retaining predictor activation.","operation":"set","targets":{"activation":"gelu"},"sources":["gelu"],"adaptation":"Transfer a general activation hypothesis to this regression surrogate."},
+    {"id":"encoder_silu","intent":"Test SiLU in the encoder while retaining predictor activation.","operation":"set","targets":{"activation":"silu"},"sources":["silu"],"adaptation":"SiLU corresponds to the beta=1 Swish form."},
+    {"id":"predictor_relu","intent":"Test ReLU in the prediction head while preserving encoder activation.","operation":"set","targets":{"predictor_activation":"relu"},"sources":["tabular"],"adaptation":"Only the head activation field changes."},
+    {"id":"predictor_gelu","intent":"Test GELU in the prediction head while preserving encoder activation.","operation":"set","targets":{"predictor_activation":"gelu"},"sources":["gelu"],"adaptation":"Does not alter the hard-coded internal Transformer activation."},
+    {"id":"predictor_silu","intent":"Test SiLU in the prediction head while preserving encoder activation.","operation":"set","targets":{"predictor_activation":"silu"},"sources":["silu"],"adaptation":"Only the head activation field changes."},
+    {"id":"dropout_low","intent":"Test weaker but nonzero dropout regularization.","operation":"set","targets":{"dropout":0.05},"sources":["dropout"],"adaptation":"Value chosen for this project; nonzero to retain MC-dropout sampling."},
+    {"id":"dropout_standard","intent":"Test moderate dropout regularization.","operation":"set","targets":{"dropout":0.10},"sources":["dropout"],"adaptation":"Project control value, not a paper-derived optimum."},
+    {"id":"dropout_high","intent":"Test stronger dropout regularization without changing training settings.","operation":"set","targets":{"dropout":0.20},"sources":["dropout"],"adaptation":"Project choice; stronger regularization can also cause underfitting."}
+  ]
+}

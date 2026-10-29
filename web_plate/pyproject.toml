@@ -21,3 +21,6 @@ toponader = "topo_nader.cli:main"
 where = ["."]
 include = ["topo_nader*"]
 
+[tool.setuptools.package-data]
+"topo_nader.agents" = ["human_suggestions_v1.json"]
+
