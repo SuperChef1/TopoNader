@@ -1,10 +1,10 @@
 {
   "extends": "TopoNader-Bv2-4bars-30coverage-seed42.json",
-  "experiment_name": "Ablation-Human-NoProposer-4bars-30coverage-seed42",
   "agents": {
     "reflector_enabled": true,
     "proposer_enabled": false,
     "proposer_disabled_mode": "human_suggestions",
-    "human_suggestions_sha256": "ee98727710a91dd9b217854c703fcb6a66e477416f04083867fc77a46401eb34"
-  }
+    "human_suggestions_sha256": "c925ab00a19b2018414c94fea131127c958b79d1fbccc21f11b1f93309b926bf"
+  },
+  "experiment_name": "Ablation-Human18-NoProposer-4bars-30coverage-seed42"
 }

@@ -1,0 +1,670 @@
+{
+  "captured_at_beijing": "2026-11-10T11:45:35.562009+08:00",
+  "method": "Reconstruct inherited parent state chronologically; independently compare raw Modifier JSON, proposal targets and recorded scope for every accepted candidate.",
+  "runs": [
+    {
+      "run": "Ablation-Human-NoReflector-NoProposer-4bars-30coverage-seed42",
+      "completed_iterations": 250,
+      "mode_counts": {
+        "human_suggestions_modifier": 25
+      },
+      "counts": {
+        "audits": 25,
+        "attempts": 252,
+        "accepted": 111,
+        "accepted_raw_json_verified": 111,
+        "rejected": 141
+      },
+      "rejected_error_categories": {
+        "generation_or_parse_error": 141
+      },
+      "accepted_issues": [],
+      "extra_events": [],
+      "rejected_examples": [
+        {
+          "iteration": 141,
+          "error": "generation_or_parse_error: TopoNader LLM request failed: 503 Server Error: Service Unavailable for url: https://www.onetopai.com/v1/responses"
+        },
+        {
+          "iteration": 163,
+          "error": "generation_or_parse_error: TopoNader LLM request failed: HTTPSConnectionPool(host='www.onetopai.com', port=443): Max retries exceeded with url: /v1/responses (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in viol"
+        },
+        {
+          "iteration": 163,
+          "error": "generation_or_parse_error: TopoNader LLM request failed: HTTPSConnectionPool(host='www.onetopai.com', port=443): Max retries exceeded with url: /v1/responses (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in viol"
+        }
+      ],
+      "inactive_mlp_target_events": [],
+      "candidate_shortfalls": [
+        {
+          "iteration": 174,
+          "requested": 5,
+          "accepted": 0
+        },
+        {
+          "iteration": 185,
+          "requested": 5,
+          "accepted": 0
+        },
+        {
+          "iteration": 192,
+          "requested": 5,
+          "accepted": 1
+        }
+      ],
+      "human_library_hash": "ee98727710a91dd9b217854c703fcb6a66e477416f04083867fc77a46401eb34"
+    },
+    {
+      "run": "Ablation-Human-NoReflector-NoProposer-CurrentOnly-4bars-30coverage-seed42",
+      "completed_iterations": 95,
+      "mode_counts": {
+        "human_suggestions_modifier": 11
+      },
+      "counts": {
+        "audits": 11,
+        "attempts": 55,
+        "accepted": 55,
+        "accepted_raw_json_verified": 55
+      },
+      "rejected_error_categories": {},
+      "accepted_issues": [],
+      "extra_events": [],
+      "rejected_examples": [],
+      "inactive_mlp_target_events": [],
+      "candidate_shortfalls": [],
+      "human_library_hash": "ee98727710a91dd9b217854c703fcb6a66e477416f04083867fc77a46401eb34"
+    },
+    {
+      "run": "Ablation-HumanSelect-NoProposer-4bars-30coverage-seed42",
+      "completed_iterations": 250,
+      "mode_counts": {
+        "human_suggestions_modifier_select": 28
+      },
+      "counts": {
+        "audits": 28,
+        "attempts": 140,
+        "accepted": 140,
+        "accepted_raw_json_verified": 140
+      },
+      "rejected_error_categories": {},
+      "accepted_issues": [],
+      "extra_events": [],
+      "rejected_examples": [],
+      "inactive_mlp_target_events": [],
+      "candidate_shortfalls": [],
+      "human_library_hash": "ee98727710a91dd9b217854c703fcb6a66e477416f04083867fc77a46401eb34"
+    },
+    {
+      "run": "Ablation-NoReflector-4bars-30coverage-seed42",
+      "completed_iterations": 125,
+      "mode_counts": {
+        "separate_proposer_modifier": 17
+      },
+      "counts": {
+        "audits": 17,
+        "attempts": 86,
+        "accepted": 85,
+        "accepted_raw_json_verified": 85,
+        "rejected": 1
+      },
+      "rejected_error_categories": {
+        "generation_or_parse_error": 1
+      },
+      "accepted_issues": [],
+      "extra_events": [],
+      "rejected_examples": [
+        {
+          "iteration": 41,
+          "error": "generation_or_parse_error: TopoNaderModifier returned invalid JSON after 3 attempts: unable to parse structured JSON output: Expecting ',' delimiter: line 1 column 1216 (char 1215)"
+        }
+      ],
+      "inactive_mlp_target_events": [
+        {
+          "iteration": 5,
+          "architecture_id": "toponader-5635e01df96a",
+          "inactive_fields": [
+            "attention_heads",
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 128,
+            "predictor_activation": "gelu",
+            "attention_heads": 1
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 11,
+          "architecture_id": "toponader-fb8cdf8d8e5f",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_width": 64,
+            "predictor_depth": 2
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 63,
+          "architecture_id": "toponader-75c7b5f9f3a3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 64,
+            "predictor_activation": "relu"
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 68,
+          "architecture_id": "toponader-8066dae69139",
+          "inactive_fields": [
+            "attention_heads",
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 96,
+            "attention_heads": 1
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 81,
+          "architecture_id": "toponader-e118a8ff915a",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 128
+          },
+          "provisional_winner": false,
+          "inherited": false
+        }
+      ],
+      "candidate_shortfalls": [],
+      "human_library_hash": null
+    },
+    {
+      "run": "Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42",
+      "completed_iterations": 250,
+      "mode_counts": {
+        "separate_proposer_modifier": 29
+      },
+      "counts": {
+        "audits": 29,
+        "attempts": 155,
+        "accepted": 145,
+        "accepted_raw_json_verified": 145,
+        "rejected": 10
+      },
+      "rejected_error_categories": {
+        "generation_or_parse_error": 1,
+        "duplicate_or_parent_architecture": 9
+      },
+      "accepted_issues": [],
+      "extra_events": [
+        {
+          "iteration": 202,
+          "architecture_id": "toponader-05bbf383a75f",
+          "proposal": {
+            "title": "Shallower Predictor",
+            "rationale": "A two-layer predictor reduces transformation depth after the latent bottleneck while retaining the existing width and activation. This tests whether the current three-layer head contributes unnecessary fitting complexity that weakens validation top-k performance.",
+            "design_intent": "Simplify latent-to-scalar mapping to improve ranking consistency.",
+            "changes": {
+              "predictor_depth": 2
+            }
+          },
+          "actual_changes": {
+            "dropout": {
+              "before": 0.1,
+              "after": 0.05
+            },
+            "predictor_depth": {
+              "before": 3,
+              "after": 2
+            }
+          },
+          "supporting_changes": {
+            "dropout": "Reduced from 0.1 to 0.05 because the shallower two-layer predictor has fewer transformations over which to distribute regularization, so lighter dropout is necessary to avoid disproportionately suppressing its reduced-capacity latent-to-scalar path."
+          },
+          "provisional_winner": true,
+          "inherited": false,
+          "predictor_type": "mlp",
+          "inactive_mlp_target_fields": [
+            "predictor_depth"
+          ],
+          "trace_path": "D:\\Topo_Nader\\web_plate\\runs\\Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42\\iteration_0202\\audit\\trace.json",
+          "architecture_path": "D:\\Topo_Nader\\web_plate\\runs\\Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42\\iteration_0202\\provisional_architecture.json",
+          "summary_path": "D:\\Topo_Nader\\web_plate\\runs\\Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42\\iteration_0202\\iteration_summary.json"
+        },
+        {
+          "iteration": 224,
+          "architecture_id": "toponader-8362eba8ccbd",
+          "proposal": {
+            "title": "Shorten Predictor",
+            "rationale": "A shallower head may reduce unnecessary regression complexity and improve validation stability.",
+            "design_intent": "Reduce predictor depth to simplify the scalar regression head.",
+            "changes": {
+              "predictor_depth": 2
+            }
+          },
+          "actual_changes": {
+            "predictor_depth": {
+              "before": 3,
+              "after": 2
+            },
+            "predictor_width": {
+              "before": 96,
+              "after": 64
+            }
+          },
+          "supporting_changes": {
+            "predictor_width": "Reduce the head width alongside its depth so the simplified scalar regression head also has lower overall capacity."
+          },
+          "provisional_winner": true,
+          "inherited": false,
+          "predictor_type": "mlp",
+          "inactive_mlp_target_fields": [
+            "predictor_depth"
+          ],
+          "trace_path": "D:\\Topo_Nader\\web_plate\\runs\\Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42\\iteration_0224\\audit\\trace.json",
+          "architecture_path": "D:\\Topo_Nader\\web_plate\\runs\\Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42\\iteration_0224\\provisional_architecture.json",
+          "summary_path": "D:\\Topo_Nader\\web_plate\\runs\\Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42\\iteration_0224\\iteration_summary.json"
+        }
+      ],
+      "rejected_examples": [
+        {
+          "iteration": 27,
+          "error": "generation_or_parse_error: TopoNader LLM request failed: 503 Server Error: Service Unavailable for url: https://www.onetopai.com/v1/responses"
+        },
+        {
+          "iteration": 180,
+          "error": "duplicate_or_parent_architecture"
+        },
+        {
+          "iteration": 180,
+          "error": "duplicate_or_parent_architecture"
+        }
+      ],
+      "inactive_mlp_target_events": [
+        {
+          "iteration": 5,
+          "architecture_id": "toponader-5635e01df96a",
+          "inactive_fields": [
+            "attention_heads",
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 3,
+            "predictor_width": 128,
+            "predictor_activation": "gelu",
+            "attention_heads": 1
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 16,
+          "architecture_id": "toponader-c957cc4015b3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 3,
+            "predictor_width": 128
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 45,
+          "architecture_id": "toponader-c957cc4015b3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 3,
+            "predictor_width": 128
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 52,
+          "architecture_id": "toponader-0a792c940fae",
+          "inactive_fields": [
+            "attention_heads",
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 64,
+            "predictor_activation": "relu",
+            "attention_heads": 1
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 57,
+          "architecture_id": "toponader-c957cc4015b3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 128
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 78,
+          "architecture_id": "toponader-81c36c431daf",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 128,
+            "predictor_activation": "gelu"
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 83,
+          "architecture_id": "toponader-8362eba8ccbd",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 64
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 88,
+          "architecture_id": "toponader-3d84dc7991c8",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 64,
+            "predictor_activation": "relu"
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 127,
+          "architecture_id": "toponader-7bb51ac88aa3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 2,
+            "predictor_width": 128,
+            "predictor_activation": "leaky_relu"
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 138,
+          "architecture_id": "toponader-3a6345d4d275",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 3,
+            "predictor_width": 128,
+            "predictor_activation": "relu"
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 147,
+          "architecture_id": "toponader-8740dd1cdc11",
+          "inactive_fields": [
+            "attention_heads",
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_type": "mlp",
+            "predictor_depth": 3,
+            "predictor_width": 96,
+            "attention_heads": 1
+          },
+          "provisional_winner": true,
+          "inherited": true
+        },
+        {
+          "iteration": 158,
+          "architecture_id": "toponader-7bb51ac88aa3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_depth": 2,
+            "predictor_width": 128
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 169,
+          "architecture_id": "toponader-8362eba8ccbd",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_depth": 2,
+            "predictor_width": 64
+          },
+          "provisional_winner": false,
+          "inherited": false
+        },
+        {
+          "iteration": 202,
+          "architecture_id": "toponader-05bbf383a75f",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_depth": 2
+          },
+          "provisional_winner": true,
+          "inherited": false
+        },
+        {
+          "iteration": 213,
+          "architecture_id": "toponader-7bb51ac88aa3",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_depth": 4,
+            "predictor_width": 128
+          },
+          "provisional_winner": true,
+          "inherited": false
+        },
+        {
+          "iteration": 224,
+          "architecture_id": "toponader-8362eba8ccbd",
+          "inactive_fields": [
+            "predictor_depth"
+          ],
+          "planned_changes": {
+            "predictor_depth": 2
+          },
+          "provisional_winner": true,
+          "inherited": false
+        }
+      ],
+      "candidate_shortfalls": [],
+      "human_library_hash": null
+    },
+    {
+      "run": "Ablation-NoReflector-NoProposer-4bars-30coverage-seed42",
+      "completed_iterations": 96,
+      "mode_counts": {
+        "modifier_joint_proposal": 13
+      },
+      "counts": {
+        "audits": 13,
+        "attempts": 116,
+        "accepted": 65,
+        "accepted_raw_json_verified": 65,
+        "rejected": 51
+      },
+      "rejected_error_categories": {
+        "duplicate_or_parent_architecture": 51,
+        "supporting_declaration_not_extra_change": 2
+      },
+      "accepted_issues": [],
+      "extra_events": [],
+      "rejected_examples": [
+        {
+          "iteration": 5,
+          "error": "duplicate_or_parent_architecture"
+        },
+        {
+          "iteration": 5,
+          "error": "duplicate_or_parent_architecture"
+        },
+        {
+          "iteration": 5,
+          "error": "duplicate_or_parent_architecture"
+        }
+      ],
+      "inactive_mlp_target_events": [],
+      "candidate_shortfalls": [],
+      "human_library_hash": null
+    }
+  ],
+  "checkpoint_checks_for_extra_changes": [
+    {
+      "run": "Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42",
+      "iteration": 202,
+      "parent": {
+        "predictor_type": "mlp",
+        "predictor_depth_field": 3,
+        "predictor_weight_shapes": {
+          "predictor.0.weight": [
+            96,
+            12
+          ],
+          "predictor.0.bias": [
+            96
+          ],
+          "predictor.3.weight": [
+            1,
+            96
+          ],
+          "predictor.3.bias": [
+            1
+          ]
+        },
+        "checkpoint_matches_current_factory": true
+      },
+      "child": {
+        "predictor_type": "mlp",
+        "predictor_depth_field": 2,
+        "predictor_weight_shapes": {
+          "predictor.0.weight": [
+            96,
+            12
+          ],
+          "predictor.0.bias": [
+            96
+          ],
+          "predictor.3.weight": [
+            1,
+            96
+          ],
+          "predictor.3.bias": [
+            1
+          ]
+        },
+        "checkpoint_matches_current_factory": true
+      }
+    },
+    {
+      "run": "Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42",
+      "iteration": 224,
+      "parent": {
+        "predictor_type": "mlp",
+        "predictor_depth_field": 3,
+        "predictor_weight_shapes": {
+          "predictor.0.weight": [
+            96,
+            12
+          ],
+          "predictor.0.bias": [
+            96
+          ],
+          "predictor.3.weight": [
+            1,
+            96
+          ],
+          "predictor.3.bias": [
+            1
+          ]
+        },
+        "checkpoint_matches_current_factory": true
+      },
+      "child": {
+        "predictor_type": "mlp",
+        "predictor_depth_field": 2,
+        "predictor_weight_shapes": {
+          "predictor.0.weight": [
+            64,
+            12
+          ],
+          "predictor.0.bias": [
+            64
+          ],
+          "predictor.3.weight": [
+            1,
+            64
+          ],
+          "predictor.3.bias": [
+            1
+          ]
+        },
+        "checkpoint_matches_current_factory": true
+      }
+    }
+  ]
+}

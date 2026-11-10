@@ -1,0 +1,13 @@
+{
+  "run": "Ablation-Human-NoReflector-NoProposer-4bars-30coverage-seed42",
+  "audit_modes": {
+    "human_suggestions_modifier": 25
+  },
+  "accepted_candidates": 111,
+  "exact_target_mismatches": [],
+  "missing_or_false_strict_markers": [],
+  "oct28_backup_checks": {
+    "strict_prompt": true,
+    "code_rejection": true
+  }
+}

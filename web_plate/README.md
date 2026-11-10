@@ -401,100 +401,118 @@ not guarantee that a removed role will reduce performance.
 
 ## Human-suggestion implementation baseline
 
-The earlier role ablations remain unchanged: missing
-`agents.proposer_disabled_mode` means `modifier_direct`, including in existing
-snapshots. They continue to ask Modifier to plan and implement. Never relabel
-those results as the human-suggestion baseline or switch their mode mid-run.
+The human-suggestion route uses only
+`topo_nader/agents/human_suggestions_v3_18.json`, policy
+`surrogate_human_v3_18`. There is no library-version selector or historical
+library fallback. The runtime and package contain one 18-rule library.
+`human_suggestions_sha256` verifies these exact bytes; it does not choose
+between libraries. A different hash is rejected before training.
 
-The new `proposer_disabled_mode="human_suggestions"` requires an enabled LLM
-architecture-search route and `proposer_enabled=false`. Program code samples
-from `topo_nader/agents/human_suggestions_v1.json`, resolves exact targets,
-checks applicability/legality/parameter limits, and supplies the suggestion to
-Modifier. The LLM only implements the specified fields: even explained extra
-structural changes are rejected. When Reflector remains enabled its diagnosis
-is implementation context, not authority to choose or rewrite suggestions.
-Experience storage/retrieval and ordinary validity retries remain available.
+The menu covers nine categories with two rules each: plain/residual encoder,
+narrower/wider encoder, shallower/deeper encoder, compressed/expanded latent
+representation, MLP/Transformer predictor, BatchNorm/LayerNorm, encoder
+ReLU/GELU, predictor ReLU/GELU, and dropout 0.05/0.10. It has no SiLU,
+no-normalization, or dropout 0.20 suggestions. Removing suggestions does not
+remove operators from the architecture factory or alter existing trained models.
 
-The 22-rule library is literature-informed and adapted to this factory; it is
-not a published FE-surrogate expert-system benchmark or a literal copy of the
-CNN rules in NADER. Each rule records source links, intent and adaptation.
-Width/latent multipliers, depth steps and dropout values are project choices.
-CNN-only operations unsupported by the schema are explicitly excluded.
+Each rule records source links, intent and adaptation. These are project
+hypotheses for the existing FE surrogate, not validated universal rules or a
+literal copy of the CNN rules in NADER. Width/latent multipliers, depth steps
+and dropout values are project choices. CNN-only unsupported operations are
+excluded. The menu was revised after observing seed42 outcomes; future
+comparisons are exploratory and need fresh paired seeds.
 
+`agents.proposer_disabled_mode="human_suggestions"` requires enabled LLM
+architecture search and `proposer_enabled=false`. Program code resolves exact
+targets and checks applicability, scope, legality and parameter limits.
 Applicable unique rules are permuted without replacement using the independent
-`human_suggestions:<iteration>` seed. Neither metrics nor an LLM rank the
-suggestions. No-op/invalid/duplicate rules are skipped; exhausted pools and
-candidate shortfalls are logged. All existing candidate counts, retry limits,
-training, search, FE budget and inheritance protection stay configured as before.
-This is a finite expert-rule menu, unlike D's sampled random mutation operators;
-it still spends LLM calls to implement suggestions.
+`human_suggestions:<iteration>` seed. Neither metrics nor an LLM rank those
+random suggestions. Modifier implements the specified fields; even explained
+extra changes are rejected. Reflector diagnosis, when enabled, is implementation
+context and cannot choose or rewrite a random-mode suggestion.
 
-New configs pin `human_suggestions_sha256`; initialization checks the library
-bytes before training. A changed library requires an explicitly new experiment.
-The fingerprint covers the JSON library, not all executable source code.
-Trace files record policy version, hash, seed, ordered IDs, skipped rules and
-the exact proposal/implementation checks.
+No-op/invalid/duplicate rules are skipped; exhausted pools and candidate
+shortfalls are logged. Candidate counts, retries, training, search, FE budgets
+and inheritance protection remain configured as before. Fewer menu entries do
+not automatically reduce cost when the same number of candidates is trained.
+Traces record policy, fingerprint, seed, ordered IDs, skipped rules and exact
+proposal/implementation checks.
 
-Two independent seed-42 experiments are prepared:
+The current configs are:
 
-- `Ablation-Human-NoProposer-4bars-30coverage-seed42.json`: retain Reflector,
-  use program-selected human suggestions and Modifier implementation.
-- `Ablation-Human-NoReflector-NoProposer-4bars-30coverage-seed42.json`: skip
-  Reflector as well; Modifier implements the program-selected suggestions.
+- `configs/Ablation-Human18-NoReflector-NoProposer-4bars-30coverage-seed42.json`:
+  random suggestions, both roles disabled.
+- `configs/Ablation-Human18-NoReflector-NoProposer-CurrentOnly-4bars-30coverage-seed42.json`:
+  the same random menu with current-only context.
+- `configs/Ablation-Human18-NoProposer-4bars-30coverage-seed42.json`:
+  retain Reflector, random suggestions.
+- `configs/Ablation-Human18Select-NoProposer-4bars-30coverage-seed42.json`:
+  retain Reflector, Modifier selects IDs.
 
-Start each from the original 300 samples and iteration 1, never an earlier
-ablation's cumulative dataset. In the MATLAB launch example above replace
-`name` with the chosen new name and retain the 1-to-250 budget. Existing
-full Bv2 and NoReflector-only groups remain controls; the older direct-Modifier
-groups are additional, separately labelled planning baselines.
+Start each new experiment from the original initial dataset at iteration 1
+in its same-named directory; use the MATLAB launch example with the new name
+and the configured 1-to-250 budget. Earlier library files and their runnable
+configs have been removed. Historical run snapshots, FE results and experience
+logs remain as evidence, but runs pinned to a previous library cannot resume
+using this code. Do not substitute the new library into an old snapshot.
 
-The library was constructed after observing project pilot results. It includes
-balanced alternatives, but is not a pre-observation preregistration and does
-not establish that its advice improves FE optimization. Freeze this version
-before new runs; report equal-budget outcomes and costs even if the baseline
-outperforms the full framework. Sources and mapping decisions are documented in
-`analysis/human_suggestions_20261028/design.md`.
+Missing `agents.proposer_disabled_mode` in older role-ablation snapshots still
+means `modifier_direct`, a separate Modifier planning strategy, not an older
+human library. Existing direct-Modifier runs must not be relabelled as random
+human-suggestion experiments.
 
 ## Modifier selection guided by Reflector
 
-`agents.proposer_disabled_mode="human_suggestions_select"` is a separate
-opt-in strategy. It requires the same pinned human library and disabled
-Proposer as the random human-suggestion mode. It does not change existing
-`human_suggestions` or `modifier_direct` runs or their default meaning.
+`agents.proposer_disabled_mode="human_suggestions_select"` uses the same sole
+18-rule library and requires disabled Proposer. Reflector first diagnoses the
+parent using measured feedback/history. Modifier then receives the diagnosis
+and applicable pool, selecting distinct IDs in priority order. Program code
+validates IDs and resolves authoritative exact targets. Each suggestion is
+implemented as a separate child of the current parent; Modifier cannot invent
+targets, combine rules, or invoke a separate Proposer.
 
-The new seed-42 config is
-`configs/Ablation-HumanSelect-NoProposer-4bars-30coverage-seed42.json`.
-Reflector first diagnoses the parent using measured feedback/history. Modifier
-then receives the diagnosis and the entire applicable library pool, selecting
-distinct suggestion IDs in priority order. Program code validates those IDs
-and resolves their authoritative exact targets. Modifier implements each
-selected suggestion as a separate child of the current parent. All strict
-human-suggestion scope, parameter, training, FE and inheritance checks remain.
-Modifier selects among existing suggestions; it cannot invent target values,
-combine rules, or use a separate Proposer call.
+Selection and implementation are separate Modifier calls. Invalid/duplicate/
+unknown IDs, wrong counts, missing rationales and extra fields are rejected
+with bounded retries. Failed implementations consume the normal retry budget;
+their IDs are excluded from later selection rounds in that audit. There is no
+silent random fallback. The existing parent-only fallback remains if candidate
+generation ultimately fails. Calls/tokens may increase at equal FE budgets.
 
-Selection and implementation are separate calls under the Modifier role so
-that the implementation targets are fixed before architecture generation.
-Invalid/duplicate/unknown IDs, incorrect counts, missing rationales or extra
-selection fields are rejected with bounded retries. Failed implementations
-consume the normal retry budget; their suggestion IDs are excluded from later
-selection rounds in the same audit. There is no silent random fallback. If
-candidate generation ultimately fails, the existing parent-only fallback is
-retained. Calls/tokens may increase even with the same FE budget.
-
-Traces distinguish `human_suggestions_modifier_select`, record selection
+Traces distinguish `human_suggestions_modifier_select` and record selection
 attempts, available/selected IDs, rationales, errors and library provenance.
-The deterministic pool permutation only determines presentation order; the
-Modifier decides which IDs are used. Existing random-mode traces continue to
-mean program selection without LLM ranking.
-
-Start the new config from original data at iteration 1, ending at 250, in its
-own same-named runs directory (replace `name` in the MATLAB launch example).
-Do not resume an old random-mode or direct-Modifier run using this config.
-Configuration mismatch checks enforce that distinction.
+The deterministic pool order determines presentation only; Modifier chooses
+IDs. Random-mode traces still mean program selection without LLM ranking.
 
 Comparison against both roles disabled with random selection measures the
-combined effect of diagnosis and LLM selection. It does not isolate diagnosis
-alone. The new mode also supports `reflector_enabled=false`, retaining raw
-metrics/history for a possible matched selection control; no extra experiment
-is started automatically.
+combined effect of diagnosis and LLM selection, not diagnosis alone. Selection
+also supports `reflector_enabled=false`, retaining raw metrics/history for a
+possible matched control. No extra experiment is started automatically.
+
+## Current-information-only NoReflector
+
+`configs/Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42.json`
+retains Proposer, disables Reflector and sets
+`agents.history_context="current_only"`. The default `"recent"` preserves all
+existing configurations and snapshots; historical missing fields mean recent,
+and a different context policy cannot be substituted into an existing run.
+
+The new policy supplies the current parent structure, current parent training
+and validation measurements (including at most five epochs from that training),
+and the latest available FE feedback. The latest FE batch is retained because
+new candidate proposals precede their own FE evaluation. It does not load the
+recent ten-iteration experience list. Historical proposal/rationale metadata
+is removed from the LLM-visible parent, while the original persisted/trained
+parent is unchanged. Within-audit failure feedback and retries remain enabled.
+The trace records `context_policy` to make this scope visible.
+
+This restricts explicit LLM history context only. Cumulative FE training data,
+the inherited architecture, numerical trigger state, raw experiment logging,
+search and inheritance rules remain available to the optimization system.
+It is not a claim of a memory-free model or history-free optimizer. Its research
+question differs from the earlier NoReflector with raw history: removal of
+Reflector plus removal of explicit historical context should not be attributed
+solely to the Reflector role.
+
+Use a new same-named run directory and the original initial dataset, from
+iteration 1 through 250. Do not resume an older NoReflector experiment with this
+configuration. Substitute the new name in the MATLAB launch examples above.

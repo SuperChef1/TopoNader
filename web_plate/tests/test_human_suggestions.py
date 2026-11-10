@@ -9,12 +9,14 @@ import numpy as np
 import torch
 from scipy.io import savemat
 
-from topo_nader.agents.human_suggestions import LIBRARY_PATH, generate_human_proposals, load_human_library
+from topo_nader.agents.human_suggestions import (
+    LIBRARY_PATH, generate_human_proposals, load_human_library,
+)
 from topo_nader.agents.orchestrator import TopoNaderAgentOrchestrator
 from topo_nader.architecture import TopoNaderArchitectureSpec, TopoNaderArchitectureValidator
 from topo_nader.config import (TopoNaderConfig, TopoNaderAgentConfig, TopoNaderArchitectureConfig,
     TopoNaderTrainingConfig, TopoNaderMethodConfig, TopoNaderOptimizationConfig,
-    TopoNaderCoverageConfig, TopoNaderUncertaintyConfig)
+    TopoNaderCoverageConfig, TopoNaderUncertaintyConfig, load_config)
 from topo_nader.pipeline import TopoNaderEngine
 
 DIGEST = hashlib.sha256(LIBRARY_PATH.read_bytes()).hexdigest()
@@ -49,6 +51,47 @@ class TinyHumanEngine(TopoNaderEngine):
 
 
 class HumanSuggestionTests(unittest.TestCase):
+    def test_current_menu_constraints_and_configuration_fingerprints(self):
+        root = Path(__file__).parents[1]
+        library, digest = load_human_library(DIGEST)
+        self.assertEqual(len(library['rules']),18)
+        self.assertFalse(any('silu' in r['id'] for r in library['rules']))
+        norms = {r['targets']['normalization'] for r in library['rules']
+                 if 'normalization' in r.get('targets',{})}
+        self.assertEqual(norms,{'batch_norm','layer_norm'})
+        dropouts = {r['targets']['dropout'] for r in library['rules']
+                    if 'dropout' in r.get('targets',{})}
+        self.assertEqual(dropouts,{0.05,0.10})
+        configs = sorted((root/'configs').glob('Ablation-Human*.json'))
+        self.assertEqual(len(configs),4)
+        for path in configs:
+            config = load_config(path)
+            self.assertEqual(config.agents.human_suggestions_sha256,digest)
+            self.assertFalse(config.agents.proposer_enabled)
+            self.assertEqual(config.default_run_dir(root).name,config.experiment_name)
+        parent = TopoNaderArchitectureSpec()
+        bounds = TopoNaderArchitectureConfig()
+        proposals,policy = generate_human_proposals(parent,bounds,42,digest,
+            TopoNaderArchitectureValidator(bounds).validate)
+        self.assertEqual(policy['rule_count'],18)
+        self.assertGreaterEqual(len(proposals),5)
+        self.assertTrue({p['human_suggestion_id'] for p in proposals}
+                        <= {r['id'] for r in library['rules']})
+        self.assertFalse(any('silu' in p['changes'].values() for p in proposals))
+        config = load_config(root/'configs/Ablation-Human18-NoReflector-NoProposer-4bars-30coverage-seed42.json')
+        with tempfile.TemporaryDirectory() as d:
+            run = Path(d)/'run'
+            engine = TopoNaderEngine(config,root)
+            engine.initialize_run(run)
+            snapshot = run/'config.snapshot.json'
+            stored = json.loads(snapshot.read_text(encoding='utf-8'))
+            stored['agents']['human_suggestions_sha256'] = '0'*64
+            snapshot.write_text(json.dumps(stored),encoding='utf-8')
+            original = snapshot.read_bytes()
+            with self.assertRaisesRegex(ValueError,'different configuration'):
+                engine.initialize_run(run)
+            self.assertEqual(snapshot.read_bytes(),original)
+
     def test_inactive_mlp_attention_fields_are_resolved_by_program_not_llm(self):
         parent=TopoNaderArchitectureSpec(hidden_widths=(16,),predictor_type='mlp',
             predictor_width=16,predictor_depth=0,attention_heads=0)
@@ -122,7 +165,7 @@ class HumanSuggestionTests(unittest.TestCase):
 
     def test_even_explained_extra_changes_are_rejected(self):
         p={'human_suggestion_id':'fixed','library_sha256':DIGEST,'title':'fixed',
-            'design_intent':'regularize','changes':{'dropout':.2}}
+            'design_intent':'regularize','changes':{'dropout':.05}}
         with tempfile.TemporaryDirectory() as d:
             agent=TopoNaderAgentOrchestrator(HumanClient(extra=True),Path(d),reflector_enabled=False,
                 proposer_enabled=False,human_proposals=[p])

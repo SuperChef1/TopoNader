@@ -170,6 +170,7 @@ class TopoNaderAgentConfig:
     proposer_enabled: bool = True
     proposer_disabled_mode: str = "modifier_direct"
     human_suggestions_sha256: str | None = None
+    history_context: str = "recent"
 
 
 @dataclass
@@ -266,6 +267,8 @@ class TopoNaderConfig:
         for name in ("reflector_enabled", "proposer_enabled"):
             if not isinstance(getattr(self.agents, name), bool):
                 raise ValueError(f"agents.{name} must be a boolean")
+        if self.agents.history_context not in {"recent", "current_only"}:
+            raise ValueError("agents.history_context must be recent or current_only")
         if self.agents.proposer_disabled_mode not in {"modifier_direct", "human_suggestions", "human_suggestions_select"}:
             raise ValueError("agents.proposer_disabled_mode must be modifier_direct, human_suggestions or human_suggestions_select")
         if self.agents.proposer_disabled_mode in {"human_suggestions", "human_suggestions_select"}:

@@ -22,5 +22,5 @@ where = ["."]
 include = ["topo_nader*"]
 
 [tool.setuptools.package-data]
-"topo_nader.agents" = ["human_suggestions_v1.json"]
+"topo_nader.agents" = ["human_suggestions_v3_18.json"]
 

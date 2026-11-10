@@ -132,6 +132,7 @@ class TopoNaderEngine:
             stored["agents"].setdefault("proposer_enabled", True)
             stored["agents"].setdefault("proposer_disabled_mode", "modifier_direct")
             stored["agents"].setdefault("human_suggestions_sha256", None)
+            stored["agents"].setdefault("history_context", "recent")
             # Compare the JSON representation because tuple-valued settings are
             # persisted as lists in config.snapshot.json.
             resolved_snapshot = json.loads(json.dumps(snapshot_config.to_dict()))
@@ -530,7 +531,11 @@ class TopoNaderEngine:
             )
         else:
             experience_path = run / self.config.paths.experience_file
-            experiences = TopoNaderExperienceStore(experience_path).recent()
+            current_only = self.config.agents.history_context == 'current_only'
+            experiences = [] if current_only else TopoNaderExperienceStore(experience_path).recent()
+            # Metadata can contain old proposals, rationales and scope reports.
+            # Strip it only from the LLM-visible parent, never the persisted/trained parent.
+            agent_current = replace(current, metadata={}) if current_only else current
             client = self.agent_client_factory(self.config.agents)
             human_proposals = human_policy = None
             if self.config.agents.proposer_disabled_mode in {'human_suggestions', 'human_suggestions_select'}:
@@ -550,7 +555,7 @@ class TopoNaderEngine:
                 modifier_selects_human=self.config.agents.proposer_disabled_mode == 'human_suggestions_select',
             )
             candidates, trace = agents.generate_candidates(
-                current,
+                agent_current,
                 metrics,
                 experiences,
                 self.config.architecture.candidate_count,
@@ -558,6 +563,13 @@ class TopoNaderEngine:
                 retry_limit=self.config.architecture.candidate_retry_limit,
             )
             trace["proposal_source"] = "llm"
+            if current_only:
+                trace['context_policy'] = {
+                    'history_context': 'current_only', 'recent_experience_count': 0,
+                    'parent_metadata_included': False, 'latest_fe_feedback_included': bool(previous_feedback),
+                    'training_history_scope': 'last five epochs of the current parent training',
+                    'within_audit_retry_feedback': True,
+                }
         zero_cost_reports = []
         if self.config.architecture.zero_cost_enabled and candidates:
             evaluator = TopoNaderZeroCostEvaluator(seed=self.seeds["zero_cost"])

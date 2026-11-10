@@ -20,7 +20,7 @@ DIGEST=hashlib.sha256(LIBRARY_PATH.read_bytes()).hexdigest()
 
 
 class SelectingClient:
-    def __init__(self, focus='dropout_high', invalid=None, always_invalid=False, fail_first_rule=False):
+    def __init__(self, focus='dropout_low', invalid=None, always_invalid=False, fail_first_rule=False):
         self.messages=[]
         self.focus=focus
         self.invalid=invalid
@@ -47,7 +47,7 @@ class SelectingClient:
         else:
             self.implementation_calls+=1
             payload={**user['parent'],**user['proposal']['changes'],'metadata':{'supporting_changes':{}}}
-            if self.fail_first_rule and user['proposal']['human_suggestion_id']=='dropout_high':
+            if self.fail_first_rule and user['proposal']['human_suggestion_id']=='dropout_low':
                 payload['normalization']='batch_norm'
                 payload['metadata']['supporting_changes']={'normalization':'claimed implementation requirement'}
         return {'content':json.dumps(payload),'model':'stub','prompt_tokens':1,'completion_tokens':1}
@@ -70,7 +70,7 @@ class ModifierSelectionTests(unittest.TestCase):
 
     def test_diagnosis_reaches_modifier_and_changes_selected_library_id(self):
         parent,pool,policy=self.pool()
-        for focus in ('dropout_high','encoder_gelu'):
+        for focus in ('dropout_low','encoder_gelu'):
             client=SelectingClient(focus)
             with tempfile.TemporaryDirectory() as d:
                 agents=TopoNaderAgentOrchestrator(client,Path(d),proposer_enabled=False,
@@ -117,7 +117,7 @@ class ModifierSelectionTests(unittest.TestCase):
 
     def test_failed_suggestion_is_excluded_and_extra_changes_remain_forbidden(self):
         parent,pool,policy=self.pool()
-        ids=['dropout_high','encoder_gelu'];by_id={p['human_suggestion_id']:p for p in pool}
+        ids=['dropout_low','encoder_gelu'];by_id={p['human_suggestion_id']:p for p in pool}
         pool=[by_id[i] for i in ids]
         client=SelectingClient(fail_first_rule=True)
         with tempfile.TemporaryDirectory() as d:
@@ -126,7 +126,7 @@ class ModifierSelectionTests(unittest.TestCase):
             children,trace=agents.generate_candidates(parent,{},[],1,retry_limit=2)
         self.assertEqual(len(children),1)
         self.assertEqual(children[0].metadata['human_suggestion']['id'],'encoder_gelu')
-        self.assertNotIn('dropout_high',trace['human_suggestion_selection_attempts'][1]['available_ids'])
+        self.assertNotIn('dropout_low',trace['human_suggestion_selection_attempts'][1]['available_ids'])
         self.assertTrue(any('human_suggestion_extra_changes_forbidden' in e
             for e in trace['candidate_attempts'][0]['errors']))
 

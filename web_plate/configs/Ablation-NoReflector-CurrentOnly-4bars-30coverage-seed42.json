@@ -1,0 +1,9 @@
+{
+  "extends": "Ablation-NoReflector-4bars-30coverage-seed42.json",
+  "experiment_name": "Ablation-NoReflector-CurrentOnly-4bars-30coverage-seed42",
+  "agents": {
+    "reflector_enabled": false,
+    "proposer_enabled": true,
+    "history_context": "current_only"
+  }
+}

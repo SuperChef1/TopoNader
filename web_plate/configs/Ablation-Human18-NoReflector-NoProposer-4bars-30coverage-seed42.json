@@ -1,0 +1,7 @@
+{
+  "extends": "Ablation-Human18-NoProposer-4bars-30coverage-seed42.json",
+  "agents": {
+    "reflector_enabled": false
+  },
+  "experiment_name": "Ablation-Human18-NoReflector-NoProposer-4bars-30coverage-seed42"
+}

@@ -12,17 +12,17 @@ from ..architecture.spec import TopoNaderArchitectureSpec
 from ..config import TopoNaderArchitectureConfig
 from .change_scope import check_change_scope
 
-LIBRARY_PATH = Path(__file__).with_name('human_suggestions_v1.json')
+LIBRARY_PATH = Path(__file__).with_name('human_suggestions_v3_18.json')
 
 
 def load_human_library(expected_sha256: str):
     raw = LIBRARY_PATH.read_bytes()
     digest = hashlib.sha256(raw).hexdigest()
     if digest != expected_sha256:
-        raise ValueError('human suggestion library SHA256 mismatch; use the original library or a new experiment')
+        raise ValueError('human suggestion library SHA256 mismatch; only the current 18-rule library is supported')
     library = json.loads(raw)
     rules = library['rules']
-    if library['policy_version'] != 'surrogate_human_v1' or len({r['id'] for r in rules}) != len(rules):
+    if library['policy_version'] != 'surrogate_human_v3_18' or len({r['id'] for r in rules}) != len(rules):
         raise ValueError('invalid human suggestion library version or duplicate IDs')
     return library, digest
 
