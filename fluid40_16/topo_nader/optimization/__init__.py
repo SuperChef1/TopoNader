@@ -7,12 +7,15 @@ from .acquisition import (
     select_from_finalized_pool,
 )
 from .geometry import TopoNaderGeometry
+from .bba import TopoNaderBBA, TopoNaderBBAResult
 from .pso import TopoNaderPSO, TopoNaderPSOResult
 
 __all__ = [
     "TopoNaderBatchSelection",
     "TopoNaderFinalizedPool",
     "TopoNaderGeometry",
+    "TopoNaderBBA",
+    "TopoNaderBBAResult",
     "TopoNaderPSO",
     "TopoNaderPSOResult",
     "combine_batches",

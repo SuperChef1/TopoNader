@@ -71,9 +71,23 @@ class TopoNaderEliteLocalSearchConfig:
     sampling_densities: tuple[float, ...] = (0.01, 0.03, 0.08, 0.15, 0.25)
 
 
+@dataclass
+class TopoNaderBBAConfig:
+    """Binary Bat Algorithm settings adapted to the 640-bit fluid design."""
+
+    initialization_mode: str = "legacy"
+    frequency_min: float = 0.0
+    frequency_max: float = 2.0
+    loudness: float = 0.25
+    pulse_rate: float = 0.4
+    loudness_decay: float = 0.999
+    pulse_decay: float = 10.0
+
+
 
 @dataclass
 class TopoNaderOptimizationConfig:
+    optimizer: str = "pso"
     particles: int = 300
     iterations: int = 500
     mutation_rate: float = 0.1
@@ -86,6 +100,7 @@ class TopoNaderOptimizationConfig:
     elite_local_search: TopoNaderEliteLocalSearchConfig = field(
         default_factory=TopoNaderEliteLocalSearchConfig
     )
+    bba: TopoNaderBBAConfig = field(default_factory=TopoNaderBBAConfig)
     refill_attempts: int = 4
     refill_pool_size: int = 500
 
@@ -98,6 +113,8 @@ class TopoNaderOptimizationConfig:
                 if key in payload:
                     payload[key] = tuple(float(value) for value in payload[key])
             self.elite_local_search = TopoNaderEliteLocalSearchConfig(**payload)
+        if isinstance(self.bba, dict):
+            self.bba = TopoNaderBBAConfig(**self.bba)
 
 
 @dataclass
@@ -203,6 +220,21 @@ class TopoNaderConfig:
             raise ValueError("this task requires the 40x16 binary fluid grid")
         if self.optimization.coverage.upper_bound_enabled or self.optimization.coverage.lower_bound_enabled:
             raise ValueError("fluid case has no volume constraint; disable coverage bounds")
+        if self.optimization.optimizer not in {"pso", "bba"}:
+            raise ValueError("optimization.optimizer must be 'pso' or 'bba'")
+        bba = self.optimization.bba
+        if bba.initialization_mode not in {"legacy", "stratified"}:
+            raise ValueError("BBA initialization_mode must be 'legacy' or 'stratified'")
+        if not 0 <= bba.frequency_min <= bba.frequency_max:
+            raise ValueError("BBA frequencies must satisfy 0 <= frequency_min <= frequency_max")
+        if not 0 < bba.loudness <= 1:
+            raise ValueError("BBA loudness must be in (0,1]")
+        if not 0 <= bba.pulse_rate <= 1:
+            raise ValueError("BBA pulse_rate must be in [0,1]")
+        if not 0 < bba.loudness_decay <= 1:
+            raise ValueError("BBA loudness_decay must be in (0,1]")
+        if bba.pulse_decay <= 0:
+            raise ValueError("BBA pulse_decay must be positive")
         if self.optimization.refill_attempts < 0 or self.optimization.refill_pool_size < 1:
             raise ValueError("invalid bounded refill settings")
         if not 1 <= self.optimization.elite_local_search.min_flips <= self.optimization.elite_local_search.max_flips <= 640:

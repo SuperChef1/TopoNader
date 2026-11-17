@@ -1,0 +1,15 @@
+{
+  "extends": "default.json",
+  "experiment_name": "fluid40-16-toponader-nodiversity-seed42",
+  "random_seed": 42,
+  "training": {
+    "device": "cpu"
+  },
+  "method": {
+    "diversity_sampling": false
+  },
+  "agents": {
+    "model": "gpt-5.6-sol",
+    "base_url": "https://www.onetopai.com/v1"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "extends": "baseline_fixed.json",
+  "experiment_name": "fluid40-16-fixed-nodiversity-seed42",
+  "random_seed": 42,
+  "training": {
+    "device": "cpu"
+  },
+  "method": {
+    "diversity_sampling": false
+  }
+}

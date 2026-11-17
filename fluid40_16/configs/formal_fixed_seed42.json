@@ -1,0 +1,8 @@
+{
+  "extends": "baseline_fixed.json",
+  "experiment_name": "fluid40-16-fixed-seed42",
+  "random_seed": 42,
+  "training": {
+    "device": "cpu"
+  }
+}

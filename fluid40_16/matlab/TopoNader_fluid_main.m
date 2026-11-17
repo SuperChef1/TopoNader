@@ -29,6 +29,12 @@ function TopoNader_fluid_main(initial_dataset, start_iteration, max_iteration, r
     command(root,python,config_file,sprintf('init --run-dir "%s"',run_dir));
     model_file=fullfile(run_dir,'runtime','fluid.mph');
     dataset_file=initial_dataset;
+    fprintf('\n%s\n',repmat('=',1,88));
+    fprintf('TopoNader fluid run\n');
+    fprintf('Experiment : %s\n',config.experiment_name);
+    fprintf('Run folder : %s\n',run_dir);
+    fprintf('Iterations : %d through %d\n',start_iteration,max_iteration);
+    fprintf('%s\n',repmat('=',1,88));
     for iteration=start_iteration:max_iteration
         folder=fullfile(run_dir,sprintf('iteration_%04d',iteration));
         request_file=fullfile(folder,'fe_request.mat');
@@ -37,6 +43,11 @@ function TopoNader_fluid_main(initial_dataset, start_iteration, max_iteration, r
         state=jsondecode(fileread(fullfile(run_dir,'state.json')));
         assert(state.next_iteration==iteration, ...
             'State expects iteration %d; use its matching dataset and start_iteration.',state.next_iteration);
+        fprintf('\n%s\n',repmat('-',1,88));
+        fprintf('STARTING ITERATION %d | completed rounds before this iteration: %d\n', ...
+            iteration,iteration-1);
+        fprintf('Dataset: %s\n',dataset_file);
+        fprintf('%s\n',repmat('-',1,88));
         if ~isfile(request_file)
             command(root,python,config_file,sprintf( ...
                 'prepare --run-dir "%s" --dataset "%s" --iteration %d',run_dir,dataset_file,iteration));
@@ -48,8 +59,48 @@ function TopoNader_fluid_main(initial_dataset, start_iteration, max_iteration, r
         command(root,python,config_file,sprintf( ...
             'feedback --run-dir "%s" --dataset "%s" --iteration %d --fe-result "%s" --next-dataset "%s"', ...
             run_dir,dataset_file,iteration,result_file,next_dataset));
+        print_iteration_results(run_dir,result_file,iteration);
         dataset_file=next_dataset;
     end
+end
+
+function print_iteration_results(run_dir,result_file,iteration)
+    fe=load(result_file);
+    n=size(fe.inputs,1);
+    sample=(1:n)';
+    status=string(fe.status(:));
+    objective=double(fe.outputs(:));
+    inlet_pressure=double(fe.inlet_pressure(:));
+    elapsed_seconds=double(fe.elapsed_seconds(:));
+    solid_fraction=mean(reshape(double(fe.inputs),n,[]),2);
+    results=table(sample,status,objective,inlet_pressure,solid_fraction,elapsed_seconds, ...
+        'VariableNames',{'Sample','Status','Objective','InletPressure', ...
+        'SolidFraction','ElapsedSeconds'});
+
+    fprintf('\nRESULTS FOR ITERATION %d\n',iteration);
+    disp(results);
+    success_count=sum(status=="success");
+    fprintf('Successful FE results: %d/%d\n',success_count,n);
+    valid=isfinite(objective);
+    if any(valid)
+        fprintf('Iteration best objective: %.12g\n',max(objective(valid)));
+        fprintf('Iteration best inlet pressure: %.12g\n',min(inlet_pressure(valid)));
+    else
+        fprintf('Iteration produced no finite objective values.\n');
+    end
+
+    state=jsondecode(fileread(fullfile(run_dir,'state.json')));
+    summary=jsondecode(fileread(fullfile(run_dir,'summary.json')));
+    fprintf('\nCOMPLETED ITERATION %d\n',iteration);
+    fprintf('Total completed rounds: %d\n',summary.iterations_completed);
+    fprintf('Next iteration: %d\n',state.next_iteration);
+    fprintf('Cumulative valid new FE results: %d/%d\n', ...
+        summary.cumulative_valid_fe_results,summary.cumulative_new_fe_calls);
+    fprintf('Cumulative best objective: %.12g\n',summary.best_performance);
+    fprintf('Cumulative best inlet pressure: %.12g\n',summary.best_inlet_pressure);
+    fprintf('Architecture audits/changes/rollbacks: %d/%d/%d\n', ...
+        summary.audits_performed,summary.architecture_changes,summary.rollbacks);
+    fprintf('%s\n',repmat('=',1,88));
 end
 
 function output=command(root,python,config,args)

@@ -56,10 +56,35 @@ TopoNader_fluid_main('',1,2,'',fullfile(task,'configs','smoke.json'));
 |---|---|
 | `smoke.json` | 固定小网络、2 个训练 epoch、2 次 PSO 迭代、每轮 4 个 FE 设计，检查流程 |
 | `smoke_audit.json` | 与 smoke 同预算，用随机架构提案检查调整/反馈流程，不调用 LLM |
+| `smoke_bba.json` | 与 smoke 同预算，但把搜索后端切换为二进制 BBA |
+| `smoke_bba_stratified.json` | BBA 分层、精确去重初始种群的小规模闭环检查 |
 | `baseline_fixed.json` | 固定初始架构，保留不确定性与多样性，用于对照 |
 | `default.json` | 启用事件触发架构调整，默认每轮 20 个 FE 设计；触发时需要配置现有框架使用的 LLM 凭据 |
 
 正式运行轮数由 `TopoNader_fluid_main` 的 `max_iteration` 显式给出。`smoke` 配置用于程序检查，不适合评价优化性能。不要在同一 run 目录混用配置或模型。
+
+搜索后端由 `optimization.optimizer` 选择。缺省值 `pso` 保持历史 EPSO
+运行兼容；新运行可设为 `bba` 使用二进制 Bat Algorithm。BBA 继续复用多精英
+利用、全局 UCB 探索、旧连通性过滤、精确去重和最终 FE 选样，只替换每个搜索
+通道内部的群智能更新。`particles` 和 `iterations` 同时供两个后端使用；
+`mutation_rate` 与 `stall_limit` 仅供 PSO 使用。BBA 参数位于
+`optimization.bba`，默认采用 `frequency_min=0`、`frequency_max=2`、
+`loudness=0.25`、`pulse_rate=0.4`、`loudness_decay=0.999`、
+`pulse_decay=10`。
+
+`optimization.bba.initialization_mode=stratified` 只改变 BBA 每个搜索通道的
+初始种群：局部通道混合 1--4 位、5--8 位和至多 2x2 的块翻转；探索通道
+混合多精英 2--12 位变异、小块翻转和低密度随机设计，并在优化前做精确
+二值去重。首轮消融保留 `pulse_rate=0.4`，补样仍走原采样器，以免同时改变
+多个因素。正式配置为
+`formal_toponader_bba_stratified_nodiversity_seed42.json` 和
+`formal_fixed_bba_stratified_nodiversity_seed42.json`；它们必须使用新 run 目录，
+不能拿来续跑旧的 legacy BBA run。
+
+BBA 实现改写自上游 `fluid_fine/bba.py`。上游为复现实验保留了一个已注明的
+`1/160` 翻转项错误；本任务是 640 位新问题，因此采用其注释所述的标准
+`1/dim`，并将频率按非负区间 `[frequency_min, frequency_max]` 采样。许可和
+版本信息见 `THIRD_PARTY_NOTICES.md`。
 
 ## 恢复与诊断
 

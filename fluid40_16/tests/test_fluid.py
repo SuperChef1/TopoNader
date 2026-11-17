@@ -13,13 +13,23 @@ from topo_nader.config import load_config
 from topo_nader.data.dataset import TopoNaderDataset
 from topo_nader.optimization.geometry import TopoNaderGeometry
 from topo_nader.optimization.acquisition import finalize_candidate_pool
+from topo_nader.optimization.bba import TopoNaderBBA
 from topo_nader.optimization.pso import TopoNaderPSO
-from topo_nader.optimization.fluid_search import search_batch
+from topo_nader.optimization.fluid_search import search_batch, sample_bba_stratified_designs
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class FluidTests(unittest.TestCase):
+    def test_structured_output_only_repairs_uncertain_numeric_literal(self):
+        from topo_nader.agents.base import TopoNaderStructuredOutputError, parse_json_object
+        payload=parse_json_object('{"values":[1.0,-0.172932081?],"label":"keep 3?"}')
+        self.assertEqual(payload['values'][0],1.0)
+        self.assertIsNone(payload['values'][1])
+        self.assertEqual(payload['label'],'keep 3?')
+        with self.assertRaises(TopoNaderStructuredOutputError):
+            parse_json_object('{"a":1 "b":2}')
+
     def test_legacy_code_and_decisions_unchanged(self):
         original = ROOT / 'reference/utils.py'
         copied = ROOT / 'topo_nader/optimization/legacy_connectivity.py'
@@ -66,9 +76,51 @@ class FluidTests(unittest.TestCase):
         self.assertLessEqual(len(result.trajectory_positions),12)
         np.testing.assert_equal(result.trajectory_scores,objective(result.trajectory_positions))
 
+    def test_bba_is_binary_and_archive_scores_stay_aligned(self):
+        objective=lambda x:x.sum(axis=1).astype(float)
+        initial=np.zeros((8,640),dtype=float)
+        initial[0,:12]=1
+        result=TopoNaderBBA(8,5,seed=3).optimize(
+            objective,dimensions=640,initial_positions=initial,archive_size=20)
+        self.assertLessEqual(len(result.trajectory_positions),20)
+        self.assertTrue(np.isin(result.positions,[0,1]).all())
+        self.assertTrue(np.isin(result.trajectory_positions,[0,1]).all())
+        np.testing.assert_equal(result.scores,objective(result.positions))
+        np.testing.assert_equal(result.trajectory_scores,objective(result.trajectory_positions))
+        self.assertGreaterEqual(result.trajectory_scores[0],12)
+
+    def test_bba_stratified_initialization_is_unique_and_bounded(self):
+        cfg=load_config(ROOT/'configs/smoke_bba_stratified.json')
+        settings=cfg.optimization.elite_local_search
+        elites=np.zeros((5,40,16),dtype=float)
+        for index in range(5):
+            elites[index,index,index]=1
+
+        local,local_stats=sample_bba_stratified_designs(
+            np.random.default_rng(42),30,elites[:1],settings,local=True)
+        self.assertEqual(local.shape,(30,640))
+        self.assertTrue(np.isin(local,[0,1]).all())
+        self.assertEqual(len({row.tobytes() for row in local}),30)
+        np.testing.assert_equal(local[0],elites[0].reshape(-1))
+        distances=np.count_nonzero(local != elites[0].reshape(-1),axis=1)
+        self.assertLessEqual(int(distances.max()),settings.local_hamming_limit)
+        self.assertEqual(local_stats['unique_count'],30)
+        self.assertEqual(sum(local_stats['category_counts'].values()),30)
+
+        global_population,global_stats=sample_bba_stratified_designs(
+            np.random.default_rng(42),40,elites,settings,local=False)
+        self.assertEqual(len({row.tobytes() for row in global_population}),40)
+        for elite in elites:
+            self.assertTrue(any(np.array_equal(row,elite.reshape(-1))
+                                for row in global_population))
+        self.assertEqual(global_stats['unique_count'],40)
+
     def test_configs_and_architecture_are_fluid_specific(self):
         from topo_nader.pipeline.engine import TopoNaderEngine
-        for name in ['default','baseline_fixed','smoke','smoke_audit']:
+        for name in ['default','baseline_fixed','smoke','smoke_audit','smoke_bba',
+                     'smoke_bba_stratified',
+                     'formal_toponader_bba_stratified_nodiversity_seed42',
+                     'formal_fixed_bba_stratified_nodiversity_seed42']:
             cfg=load_config(ROOT/f'configs/{name}.json')
             engine=TopoNaderEngine(cfg,ROOT)
             self.assertEqual(cfg.data.design_shape,(40,16))
@@ -148,6 +200,11 @@ class FluidTests(unittest.TestCase):
             self.assertTrue(np.all(payload['predicted_uncertainty']==0))
 
     def test_fixed_prepare_feedback_resume(self):self.run_cycle('smoke')
+
+    def test_bba_prepare_feedback_resume(self):self.run_cycle('smoke_bba')
+
+    def test_bba_stratified_prepare_feedback_resume(self):
+        self.run_cycle('smoke_bba_stratified')
 
     def test_architecture_audit_and_feedback(self):self.run_cycle('smoke_audit')
 

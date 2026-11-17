@@ -1,0 +1,7 @@
+{
+  "extends": "smoke.json",
+  "experiment_name": "fluid40-16-smoke-bba",
+  "optimization": {
+    "optimizer": "bba"
+  }
+}

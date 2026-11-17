@@ -14,7 +14,13 @@ from ..agents.random_proposals import generate_random_candidates
 from ..architecture.spec import TopoNaderArchitectureSpec
 from ..architecture.validator import TopoNaderArchitectureValidator
 from ..bridge.matlab import load_fe_result, save_fe_request
-from ..config import TopoNaderConfig, TopoNaderEliteLocalSearchConfig, TopoNaderInheritanceConfig, save_config
+from ..config import (
+    TopoNaderBBAConfig,
+    TopoNaderConfig,
+    TopoNaderEliteLocalSearchConfig,
+    TopoNaderInheritanceConfig,
+    save_config,
+)
 from ..data.dataset import TopoNaderDataset, TopoNaderSplit
 from ..logging.experience import TopoNaderExperienceStore
 from ..logging.provenance import file_sha256, write_json_atomic
@@ -151,6 +157,16 @@ class TopoNaderEngine:
                 stored["optimization"]["elite_local_search"] = json.loads(
                     json.dumps(asdict(TopoNaderEliteLocalSearchConfig()))
                 )
+                stored_optimization = stored["optimization"]
+            if isinstance(stored_optimization, dict):
+                stored = dict(stored)
+                stored["optimization"] = dict(stored_optimization)
+                stored["optimization"].setdefault("optimizer", "pso")
+                legacy_bba = json.loads(json.dumps(asdict(TopoNaderBBAConfig())))
+                stored_bba = dict(stored["optimization"].get("bba", {}))
+                for key, value in legacy_bba.items():
+                    stored_bba.setdefault(key, value)
+                stored["optimization"]["bba"] = stored_bba
             if stored != resolved_snapshot:
                 raise ValueError(
                     f"experiment directory already contains a different configuration: {run}"

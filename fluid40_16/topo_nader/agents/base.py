@@ -13,7 +13,21 @@ class TopoNaderStructuredOutputError(ValueError):
     """Raised when an agent response cannot be recovered as JSON."""
 
 
-def parse_json_object(text: str):
+def _replace_uncertain_numeric_literals(candidate: str) -> tuple[str, bool]:
+    """Replace a model's invalid ``12.3?`` JSON value with auditable ``null``.
+
+    The pattern is deliberately restricted to a complete numeric token followed
+    by ``?`` immediately before a JSON value delimiter.  It does not infer the
+    missing digits or repair punctuation, keys, strings, or object structure.
+    """
+    pattern = re.compile(
+        r"(?<![\w.])[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?\?(?=\s*[,}\]])"
+    )
+    repaired, count = pattern.subn("null", candidate)
+    return repaired, count > 0
+
+
+def _parse_json_object_with_repair(text: str) -> tuple[dict | list, str | None]:
     """Parse a JSON object/array using conservative, non-semantic recovery.
 
     Recovery is intentionally limited to presentation mistakes: Markdown JSON
@@ -35,7 +49,7 @@ def parse_json_object(text: str):
             value = json.loads(candidate)
             if not isinstance(value, (dict, list)):
                 raise TypeError(f"top-level JSON must be an object or array, got {type(value).__name__}")
-            return value
+            return value, None
         except (json.JSONDecodeError, TypeError) as exc:
             errors.append(str(exc))
 
@@ -47,12 +61,30 @@ def parse_json_object(text: str):
             value, _ = decoder.raw_decode(candidate, left)
             if not isinstance(value, (dict, list)):
                 raise TypeError(f"top-level JSON must be an object or array, got {type(value).__name__}")
-            return value
+            return value, None
         except (json.JSONDecodeError, TypeError) as exc:
             errors.append(str(exc))
 
+        repaired, changed = _replace_uncertain_numeric_literals(candidate)
+        if changed:
+            try:
+                value = json.loads(repaired)
+                if not isinstance(value, (dict, list)):
+                    raise TypeError(
+                        f"top-level JSON must be an object or array, got {type(value).__name__}"
+                    )
+                return value, "invalid numeric uncertainty marker replaced with null"
+            except (json.JSONDecodeError, TypeError) as exc:
+                errors.append(str(exc))
+
     detail = errors[-1] if errors else "no JSON object or array was found"
     raise TopoNaderStructuredOutputError(f"unable to parse structured JSON output: {detail}")
+
+
+def parse_json_object(text: str):
+    """Parse a structured response and return its JSON value."""
+    value, _ = _parse_json_object_with_repair(text)
+    return value
 
 
 class TopoNaderBaseAgent:
@@ -90,7 +122,7 @@ class TopoNaderBaseAgent:
                 "created_at": datetime.now(timezone.utc).isoformat(),
             }
             try:
-                payload = parse_json_object(response["content"])
+                payload, parse_repair = _parse_json_object_with_repair(response["content"])
             except (TopoNaderStructuredOutputError, json.JSONDecodeError) as exc:
                 record.update({"parse_status": "failed", "parse_error": str(exc)})
                 attempt_records.append(record)
@@ -114,13 +146,15 @@ class TopoNaderBaseAgent:
 
             attempt_records.append(record)
             record.update({
-                "parse_status": "ok",
+                "parse_status": "repaired" if parse_repair else "ok",
                 "structured_output_attempts": len(attempt_records),
                 "structured_output_retries_used": attempt_index,
                 "prompt_tokens": sum(int(item.get("prompt_tokens", 0)) for item in attempt_records),
                 "completion_tokens": sum(int(item.get("completion_tokens", 0)) for item in attempt_records),
                 "elapsed_seconds": time.time() - started,
             })
+            if parse_repair:
+                record["parse_repair"] = parse_repair
             if attempt_index:
                 record["retry_parse_errors"] = [
                     item["parse_error"] for item in attempt_records[:-1] if "parse_error" in item

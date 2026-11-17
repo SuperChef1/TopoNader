@@ -1,0 +1,12 @@
+{
+  "extends": "default.json",
+  "experiment_name": "fluid40-16-toponader-seed42",
+  "random_seed": 42,
+  "training": {
+    "device": "cpu"
+  },
+  "agents": {
+    "model": "gpt-5.6-sol",
+    "base_url": "https://www.onetopai.com/v1"
+  }
+}

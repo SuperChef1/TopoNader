@@ -1,0 +1,23 @@
+{
+  "extends": "formal_toponader_bba_nodiversity_seed42.json",
+  "experiment_name": "fluid40-16-toponader-bba-stratified-nodiversity-seed42",
+  "optimization": {
+    "bba": {
+      "initialization_mode": "stratified"
+    },
+    "elite_local_search": {
+      "min_flips": 1,
+      "max_flips": 8,
+      "local_hamming_limit": 32,
+      "block_max_side": 2,
+      "sampling_densities": [
+        0.005,
+        0.01,
+        0.02,
+        0.03,
+        0.04,
+        0.05
+      ]
+    }
+  }
+}
